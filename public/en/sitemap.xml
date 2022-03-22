@@ -2,6 +2,48 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>http://ydsungan.com/categories/</loc>
+    <lastmod>2022-03-22T12:44:12+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="http://ydsungan.com/zh-cn/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="ar"
+                href="http://ydsungan.com/ar/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="http://ydsungan.com/categories/"
+                />
+  </url><url>
+    <loc>http://ydsungan.com/categories/hugo/</loc>
+    <lastmod>2022-03-22T12:44:12+08:00</lastmod>
+  </url><url>
+    <loc>http://ydsungan.com/post/</loc>
+    <lastmod>2022-03-22T12:44:12+08:00</lastmod>
+  </url><url>
+    <loc>http://ydsungan.com/tags/</loc>
+    <lastmod>2022-03-22T12:44:12+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="http://ydsungan.com/zh-cn/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="ar"
+                href="http://ydsungan.com/ar/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="http://ydsungan.com/tags/"
+                />
+  </url><url>
     <loc>http://ydsungan.com/</loc>
     <lastmod>2022-03-22T12:44:12+08:00</lastmod>
     <xhtml:link
@@ -20,50 +62,19 @@
                 href="http://ydsungan.com/"
                 />
   </url><url>
-    <loc>http://ydsungan.com/p/my-first-blog/</loc>
+    <loc>http://ydsungan.com/p/%E4%BD%BF%E7%94%A8hugo%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</loc>
     <lastmod>2022-03-22T12:44:12+08:00</lastmod>
   </url><url>
-    <loc>http://ydsungan.com/p/my-first-blog/</loc>
-    <lastmod>2022-03-22T12:44:12+08:00</lastmod>
-  </url><url>
-    <loc>http://ydsungan.com/post/</loc>
+    <loc>http://ydsungan.com/tags/%E8%BD%AF%E4%BB%B6/</loc>
     <lastmod>2022-03-22T12:44:12+08:00</lastmod>
   </url><url>
     <loc>http://ydsungan.com/about/</loc>
     <lastmod>2022-03-22T12:39:41+08:00</lastmod>
   </url><url>
-    <loc>http://ydsungan.com/categories/</loc>
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-cn"
-                href="http://ydsungan.com/zh-cn/categories/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="ar"
-                href="http://ydsungan.com/ar/categories/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="http://ydsungan.com/categories/"
-                />
+    <loc>http://ydsungan.com/categories/linux/</loc>
   </url><url>
-    <loc>http://ydsungan.com/tags/</loc>
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-cn"
-                href="http://ydsungan.com/zh-cn/tags/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="ar"
-                href="http://ydsungan.com/ar/tags/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="http://ydsungan.com/tags/"
-                />
+    <loc>http://ydsungan.com/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</loc>
+  </url><url>
+    <loc>http://ydsungan.com/tags/linux/</loc>
   </url>
 </urlset>

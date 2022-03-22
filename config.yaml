@@ -7,11 +7,11 @@ title: ydsungan的博客
 languages:
     en:
         languageName: English
-        title: Example Site
+        title: ydsungan的博客
         weight: 1
     zh-cn:
         languageName: 中文
-        title: 演示站点
+        title: ydsungan的博客
         weight: 2
     ar:
         languageName: عربي
@@ -197,7 +197,7 @@ menu:
     social:
         - identifier: github
           name: GitHub
-          url: https://github.com/CaiJimmy/hugo-theme-stack
+          url: https://gitee.com/ydsungan
           params:
               icon: brand-github
 

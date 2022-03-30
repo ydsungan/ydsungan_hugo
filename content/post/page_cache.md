@@ -1,5 +1,5 @@
 ---
-title: "页缓存、直接IO与内存映射"
+title: "页缓存与直接IO"
 date: 2022-03-30T14:30:12+08:00
 draft: false
 tags:

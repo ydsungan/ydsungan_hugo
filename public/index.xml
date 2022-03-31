@@ -6,7 +6,228 @@
         <description>Recent content on ydsungan的博客</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Wed, 30 Mar 2022 14:47:12 +0800</lastBuildDate><atom:link href="http://ydsungan.com/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Thu, 31 Mar 2022 18:25:12 +0800</lastBuildDate><atom:link href="http://ydsungan.com/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>NVM方向调研</title>
+        <link>http://ydsungan.com/p/nvm%E6%96%B9%E5%90%91%E8%B0%83%E7%A0%94/</link>
+        <pubDate>Thu, 31 Mar 2022 18:25:12 +0800</pubDate>
+        
+        <guid>http://ydsungan.com/p/nvm%E6%96%B9%E5%90%91%E8%B0%83%E7%A0%94/</guid>
+        <description>&lt;h1 id=&#34;研究方向&#34;&gt;研究方向&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;文件系统&lt;/li&gt;
+&lt;li&gt;键值存储系统&lt;/li&gt;
+&lt;li&gt;索引结构&lt;/li&gt;
+&lt;li&gt;数据一致性&lt;/li&gt;
+&lt;li&gt;磨损均衡&lt;/li&gt;
+&lt;li&gt;动态图&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;傲腾pmem特性&#34;&gt;傲腾PMem特性&lt;/h1&gt;
+&lt;h2 id=&#34;pmem架构&#34;&gt;PMem架构&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;每个 CPU 芯片有2个 iMC，每个 iMC 支持3个通道，所以每个 CPU 芯片支持6个傲腾DIMM。一台双 CPU 的服务器最大可装载 6TB (2 socket * 6 channel * 512GB/DIMM = 6TB)。&lt;/li&gt;
+&lt;li&gt;使用 ADR 域来掉电保护；CPU中的 iMC 中为每个傲腾 DIMM 维护着读/写挂起队列，WPQ 在ADR 域中，只要数据达到 WPQ 中，ADR域即可确保在掉电后 iMC 把数据刷回 DIMM；Cache中的数据无法保护，ADR域中的 WPQ 和 XPBuffer 中的数据可以被持久化。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;pmem运行模式&#34;&gt;PMem运行模式&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;内存模式&lt;/strong&gt;：DCPMM为易失性，一个DCPMM和一个DRAM组合在同一个内存通道上，DRAM 相当于一个 L4 级缓存，缓存块为 64B， DCPMM被视为主存。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;直连模式&lt;/strong&gt;： DCPMM提供持久性，可以使用交错和非交错配置；交错的DCPMM被视为一个整体空间，将数据等量分散存储到各个DIMM，交错大小为4KB，类似RAID 0；非交错的DCPMM将一个 DIMM的内存空间追加到另一个DIMM的后面。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;pmem读写&#34;&gt;PMem读写&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;iMC 与傲腾 PMem 之间通过基于事物的双倍速率协议 (DDR-T) 以缓存行大小 (64B) 的粒度进行传输。&lt;/li&gt;
+&lt;li&gt;傲腾 PMem 内部的最小读写粒度为 256B，内部用一个小的写合并缓冲区 XPBuffer 来解决 DDR-T协议传输粒度和傲腾 PMem 的操作粒度不一致的问题。例如，64 B的数据写操作需要先从傲腾 PMem中将对应的256 B数据读入到 XPBuffer 中，然后在 XPBuffer 中更新请求的64 B数据，最后再将256 B数据写入到傲腾PMem存储介质中。这一操作会导致写放大，降低傲腾PMM的性能。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;延时测试&#34;&gt;延时测试&lt;/h2&gt;
+&lt;p&gt;傲腾 PMem 内部的最小读写粒度为 256B，内部用一个小的写合并缓冲区 XPBuffer 来解决 DDR-T协议传输粒度和傲腾 PMem 的操作粒度不一致的问题。例如，64 B的数据写操作需要先从傲腾 PMem中将对应的256 B数据读入到 XPBuffer 中，然后在 XPBuffer 中更新请求的64 B数据，最后再将256 B数据写入到傲腾PMem存储介质中。这一操作会导致写放大，降低傲腾PMM的性能。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://ydsungan.com/timetest1.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;延时测试&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;访问粒度对带宽的影响&#34;&gt;访问粒度对带宽的影响&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;DRAM：访问粒度的大小对读写带宽没什么影响；&lt;/li&gt;
+&lt;li&gt;交错和非交错：访问粒度小于 256B时会造成较差的带宽，原因是 XPLine大小为 256B；&lt;/li&gt;
+&lt;li&gt;非交错：读写带宽较非交错提升 5.8x 和 5.6x (与交错的DIMM个数接近)，在 4KB 处带宽降低，接近交错大小，最大化 iMC 竞争；尽量避免以4KB的交错大小进行随机访问；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;http://ydsungan.com/bandwidth1.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;带宽测试&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h1 id=&#34;文件系统&#34;&gt;文件系统&lt;/h1&gt;
+&lt;h2 id=&#34;传统块设备文件系统-vs-持久内存文件系统&#34;&gt;传统块设备文件系统 vs 持久内存文件系统&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;基于块设备的文件系统：读写粒度通常为 512B 或 4KB，如文件系统需要修改块设备中的 8B 时，需要找到这 8B 所在的块号，将其所在的 4KB 块读取到内存中的 page cache中，再拷贝到应用缓冲区，在应用缓冲区中修改这 8B ，并将修改后的缓存页写回到块设备，是一个“读取-修改-写回”的过程，存在双份拷贝花销的问题、写放大问题、块设备访问速度慢导致大量的访问操作会带来 I/O 阻塞问题。
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;读缓存&lt;/strong&gt;：文件访问具有时间局部性，从块设备读取了一个文件的数据后，可以让它在内存中保存一段时间，命中时可直接访问；&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;写缓冲区和写合并&lt;/strong&gt;：文件访问具有空间局部性，文件在高速缓存页中修改之后，不马上持久化，若后续再次请求修改相同的块时，可直接修改。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;基于持久内存的文件系统：NVM 设备直接连接在 DDR 内存通道，移除了页高速缓存和块设备的写入缓冲区和写入合并；具有可按字节寻址的特性，数据直接在文件系统和应用缓冲区之间通过 Load/Store 访存，无需以整个块粒度读写；&lt;/li&gt;
+&lt;li&gt;持久内存文件系统的优点
+&lt;ul&gt;
+&lt;li&gt;访问文件数据不需要经过传统面向块设备的 I/O 软件层次，文件请求到内存级就直接返回;&lt;/li&gt;
+&lt;li&gt;访问文件数据不需要多次拷贝，不需要经过 VFS 中的高速缓存，因为PM是直接装在内存总线上，直接在内存与用户进程缓冲区之间直接拷贝数据；&lt;/li&gt;
+&lt;li&gt;访问NVM通常不会引起进程阻塞挂起。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;http://ydsungan.com/pm1.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;持久内存文件系统架构&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;文件系统的结构特征&#34;&gt;文件系统的结构特征&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;索引结构：树形索引 vs 哈希索引 vs 跳表&lt;/li&gt;
+&lt;li&gt;内存架构：纯NVM vs DRAM-NVM混合内存&lt;/li&gt;
+&lt;li&gt;数据更新机制：日志型更新 vs 写时复制&lt;/li&gt;
+&lt;li&gt;是否支持 MMap：是 vs 否&lt;/li&gt;
+&lt;li&gt;访问均衡性：弱 vs 强&lt;/li&gt;
+&lt;li&gt;一致性层级：元数据一致性 vs 数据一致性 vs 版本一致性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;http://ydsungan.com/fs.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;现有的研究工作&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;数据更新机制&#34;&gt;数据更新机制&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;日志&lt;/strong&gt;：一种原地更新的方式，是指新数据在旧数据所在的位置上进行更新，新写入的数据将覆盖原有数据，对于可能存在的不完整写问题，一般采取记录日志 (Journaling) 的方式对被修改前的数据和被修改后的数据进行记录，更新完全成功后再丢弃日志。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;写时复制&lt;/strong&gt;：一种异地更新方式，写时复制是指当进行数据更新时，先将原有数据原原本本地复制一份，然后在复制出的副本上进行数据修改，数据修改完成后再将数据原本删除，若修改失败，则将数据恢复到原本状态，这样就即可以完成数据更新，又保证了数据更新的一致性。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;nvm-dram-混合内存文件系统&#34;&gt;NVM-DRAM 混合内存文件系统&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;DRAM 和 NVM 采用平行架构，DRAM 和 NVM 同时作为系统主存连接在内存控制器上，俩者采用统一编址的方式；&lt;/li&gt;
+&lt;li&gt;关键的变化是如何确定 DRAM 和 NVM 各自存放程序的哪些数据，当系统发生异常时DRAM掉电易失，而 NVM 中的数据在 DRAM 中的数据已然丢失的情况下，如何维护数据一致性；&lt;/li&gt;
+&lt;li&gt;对应为 Intel 傲腾持久内存的 App-Direct Mode，系统可用的总内存空间为DRAM和NVM容量之和。被更多的研究采用。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;http://ydsungan.com/h1.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;混合内存架构&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h1 id=&#34;键值存储系统&#34;&gt;键值存储系统&lt;/h1&gt;
+&lt;h2 id=&#34;非关系型数据库&#34;&gt;非关系型数据库&lt;/h2&gt;
+&lt;p&gt;主要可以分为四种类型：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;键值对存储&lt;/strong&gt; (Key-Value Store)：其基本结构就是一个 Key-Value 的映射关系集合；&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;文档存储&lt;/strong&gt; (Document Store)：如MongoDB；&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;列数据库&lt;/strong&gt; (Column-oriented Store)：将每一列分别单独存放数据。与基于行的传统关系型数据库的区别在于：以牺牲存储空间和更多的索引文件为代价使得查找速度得到提升，主要适用于批量数据处理和即时查询，而数据以行相关的存储体系架构，主要适合于大规模的数据处理和联机事务型数据处理；如Cassandra、HBase；&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;图数据库&lt;/strong&gt; (Graph Database)：又分为静态图和动态图。适用于被存储的数据之间具有较为紧密的联系，图形数据库主要由两部分组成，节点和连接边，节点表示实体本身，连接边表示实体之间的关系。如静态图数据库Neo4J、动态图数据库Stinger。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;k-v-store&#34;&gt;K-V store&lt;/h2&gt;
+&lt;p&gt;键值对存储系统主要采用的数据结构：LSM树、B+树、哈希表、跳表&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;LSM树&lt;/strong&gt;：LSM 树多用于 HDD 或 SSD 的键值对存储系统，在内存中将随机写请求聚集并顺序写到外存中，适应HDD 或 SSD的顺序写性能远远高于随机写性能的特性；LSM 树主要应用于查询频率远远低于写入频率的情况，能降低索引的写入开销。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;哈希表&lt;/strong&gt;：主要被用在基于内存的场景中，利用了哈希表常数级别的点操作时间复杂度，包括Add、Get、Update、Delete等操作。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;索引结构&#34;&gt;索引结构&lt;/h1&gt;
+&lt;h2 id=&#34;树型索引&#34;&gt;树型索引&lt;/h2&gt;
+&lt;p&gt;一般B+树、基数树，为有序索引数据结构，范围查询的性能最好，但需要额外的开销来维护有序性。Add、Get、Update、Delete、Scan等操作的时间复杂度都为O(logN)。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://ydsungan.com/tree.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;现有研究工作&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;哈希索引结构&#34;&gt;哈希索引结构&lt;/h2&gt;
+&lt;p&gt;哈希表完全不维护数据结构中的有序性，一般而言额外开销最小，范围查询时需要遍历所有的键值对，效率很低。不过Add、Get、Update、Delete等点操作类型的时间复杂度都是O(1)，性能优于树形索引结构。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;静态哈希&lt;/strong&gt;：适合数据集大小相对稳定的场景，在插入频繁的场景下，数据的波动较大，静态哈希要重建哈希索引进行扩容，导致大量的NVM写操作，造成性能的抖动和下降，且在并发时要对扩容的哈希索引加锁，导致索引的访问被阻塞。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;动态哈希&lt;/strong&gt;：包括可扩展哈希、线性哈希；动态哈希通过桶分裂来增量式扩容，扩容过程不需要重建整个哈希索引，而且不需要加锁，平衡了可扩展性和性能。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;布谷鸟散列&#34;&gt;布谷鸟散列&lt;/h3&gt;
+&lt;p&gt;布谷鸟散列：使用俩个哈希函数分别计算 key对应的位置：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;若两个位置均为空，任选一个插入；&lt;/li&gt;
+&lt;li&gt;若两个位置中一个为空，插入到空的位置；&lt;/li&gt;
+&lt;li&gt;若两个位置均非空，则随机踢出一个位置上的 keyx，被踢出的 keyx 再执行该算法找其另一个位置，循环直到插入成功；&lt;/li&gt;
+&lt;li&gt;如果被踢出的次数达到一定的阈值，则认为hash表已满，并进行重新哈希 rehashing。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&#34;http://ydsungan.com/hash.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;现有工作研究&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h1 id=&#34;数据一致性&#34;&gt;数据一致性&lt;/h1&gt;
+&lt;h2 id=&#34;数据的崩溃一致性问题&#34;&gt;数据的崩溃一致性问题&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;写粒度问题&lt;/strong&gt;：CPU对SSD原子写的粒度为闪存页大小4KB ，对HDD原子写的粒度为扇区大小512B，可以保证一条日志的追加更新是原子性的。而CPU对NVM的原子写粒度只有8B，面临修改持久性数据的过程中发生断电导致数据不一致的问题。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;缓存问题&lt;/strong&gt;：传统DRAM和Cache都是易失的，系统在DRAM和Cache之间采用写回法和写分配法的策略不会产生断电恢复的问题。而NVM作为全部内存时，CPU先写入Cache中，没有写入NVM中。这样指令运行结束之后，我们无法判断数据何时才会真正被持久化存储，在断电后无法判断数据出于何种状态。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;CPU重排序问题&lt;/strong&gt;：对于多周期流水线CPU，在一个基本时钟周期内同时从指令Cache中读出多条指令，同时对多条指令进行译码。当指令没有数据相关性时且有空闲运算部件时就会被执行，不能保证各个语句执行的先后顺序和输入代码中的顺序一致。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;原子更新技术sfenceclflush&#34;&gt;原子更新技术：sfence、clflush&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;内存屏障&lt;/strong&gt;：CPU 采用乱序调度来增加性能，但 NVM 的写入要保证顺序性否则会导致崩溃一致性的问题，内存屏障的方式如 sfence 指令，可以保证 cache line 刷回NVM 的顺序。但加入 sfence 等内存屏障指令降低 CPU 流水线效率会降低处理器性能。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;缓存行刷新&lt;/strong&gt;：x86 提供了 clflush、clflushopt 和 clwb 等指令可以让数据在每次对NVM的写入操作之后从 cache line 强制写回到 NVM。但这些指令减少了Cache作为高速缓存的作用，降低了处理器性能。clwb 指令后跟着 sfence 指令为一次持久化操作。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://ydsungan.com/flush1.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;fl&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://ydsungan.com/flush2.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;fl&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;日志&#34;&gt;日志&lt;/h2&gt;
+&lt;p&gt;redo日志、undo日志：或叫做写前日志，是一种原地更新设计。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;undo日志：原始值被修改之前，将原始值存储到undo日志中，如果修改出现异常，可以对undo日志进行回滚；&lt;/li&gt;
+&lt;li&gt;redo日志：将数据位置和此位置上即将被写入的新数据保存在日志中，日志提交之后用户进行真正的修改，在恢复的时候根据这个日志把数据重写到记录的位置上。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;redo 日志一旦提交，就认为已成功持久化，无论修改是否已经写到原位置上；
+undo 日志使用时，数据修改的持久化取决于日志是否被标记为无效。只有真实的修改被写到原位置上，用户再将 undo 日志标记为无效，才能保证完成持久化。&lt;/p&gt;
+&lt;h2 id=&#34;写时拷贝&#34;&gt;写时拷贝&lt;/h2&gt;
+&lt;p&gt;写时拷贝：修改数据时，先对原数据进行一次拷贝，在拷贝出来的数据副本上进行修改。此后，写时拷贝通过继续修改指向原数据的指针，使其指向新数据，让副本中的数据修改生效。写时拷贝经常被用在树形结构中。&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>内存管理</title>
         <link>http://ydsungan.com/p/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</link>
         <pubDate>Wed, 30 Mar 2022 14:47:12 +0800</pubDate>
@@ -30,9 +251,28 @@
 &lt;p&gt;​		应用程序的虚拟地址空间由若干个&lt;strong&gt;不同大小的段&lt;/strong&gt;组成，比如代码段、数据段等。当 CPU访问虚拟地址空间中某一个段的时候，MMU 会通过查询&lt;strong&gt;段表&lt;/strong&gt;得到该段对应的物理内存区域。具体来说，虚拟地址由两部分构成：第—个部分表示段号，标识着该虚拟地址属于整个虚拟地址空间中的哪—个段；第二个部分表示段内地址，或称段内偏移，即相对于该段起始地址的偏移量。&lt;/p&gt;
 &lt;p&gt;​		现代操作系统广泛采用的是分页机制。分页机制将应用程序的虚拟地址空间划分成&lt;strong&gt;连续的、等长的虚拟页&lt;/strong&gt;，不同于分段机制下大小不同的段。虚拟页和物理页的页长固定且相等。&lt;/p&gt;
 &lt;p&gt;​		在分页机制下，应用程序虚拟地址空间中的任意虚拟页可以被映射到物理内存中的任意物理页上。因此操作系统也能实现物理内存资源的离散分配。分页机制按照固定页大小分配物理内存，使得物理内存资源易于管理可有效避免分段机制中外部碎片的问题。&lt;/p&gt;
-&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;&lt;img src=&#34;http://ydsungan.com/memory_1.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;memory&#34;
+	
+	
+&gt;&lt;/p&gt;
 &lt;h2 id=&#34;23-虚拟内存的功能&#34;&gt;2.3 虚拟内存的功能&lt;/h2&gt;
-&lt;p&gt;​		&lt;strong&gt;共享内存&lt;/strong&gt; (shared memory) 允许同—个物理页在不同的应用程序间共享，例如，应用程序 A 的虚拟页 V1 被映射到物理页P，若应用程序B的虚拟页 V2 也被映射到物理页P，则物理页 P 是应用程序 A 和应用程序 B 的共享内存。应用程序 A 读取虚拟页 V1 和应用程序 B 读取虚拟页 V2 将得到相同的内容，互相也能看到对方修改的内容。共享内存的一个基本用途是可以让不同的应用程序之间互相通信、传递数据。&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;p&gt;​		&lt;strong&gt;共享内存&lt;/strong&gt; (shared memory) 允许同—个物理页在不同的应用程序间共享，例如，应用程序 A 的虚拟页 V1 被映射到物理页P，若应用程序B的虚拟页 V2 也被映射到物理页P，则物理页 P 是应用程序 A 和应用程序 B 的共享内存。应用程序 A 读取虚拟页 V1 和应用程序 B 读取虚拟页 V2 将得到相同的内容，互相也能看到对方修改的内容。共享内存的一个基本用途是可以让不同的应用程序之间互相通信、传递数据。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://ydsungan.com/memory_2.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;memory2&#34;
+	
+	
+&gt;&lt;/p&gt;
 &lt;p&gt;​&lt;/p&gt;
 </description>
         </item>

@@ -39,7 +39,7 @@ categories:
 
 傲腾 PMem 内部的最小读写粒度为 256B，内部用一个小的写合并缓冲区 XPBuffer 来解决 DDR-T协议传输粒度和傲腾 PMem 的操作粒度不一致的问题。例如，64 B的数据写操作需要先从傲腾 PMem中将对应的256 B数据读入到 XPBuffer 中，然后在 XPBuffer 中更新请求的64 B数据，最后再将256 B数据写入到傲腾PMem存储介质中。这一操作会导致写放大，降低傲腾PMM的性能。
 
-![延时测试](timetest1.png)
+![延时测试](post/timetest1.png)
 
 ## 访问粒度对带宽的影响
 
@@ -47,7 +47,7 @@ categories:
 - 交错和非交错：访问粒度小于 256B时会造成较差的带宽，原因是 XPLine大小为 256B；
 - 非交错：读写带宽较非交错提升 5.8x 和 5.6x (与交错的DIMM个数接近)，在 4KB 处带宽降低，接近交错大小，最大化 iMC 竞争；尽量避免以4KB的交错大小进行随机访问；
 
-![带宽测试](bandwidth1.png)
+![带宽测试](post/bandwidth1.png)
 
 # 文件系统
 
@@ -62,7 +62,7 @@ categories:
   - 访问文件数据不需要多次拷贝，不需要经过 VFS 中的高速缓存，因为PM是直接装在内存总线上，直接在内存与用户进程缓冲区之间直接拷贝数据；
   - 访问NVM通常不会引起进程阻塞挂起。
 
-![持久内存文件系统架构](pm1.png)
+![持久内存文件系统架构](post/pm1.png)
 
 ## 文件系统的结构特征
 
@@ -73,7 +73,7 @@ categories:
 - 访问均衡性：弱 vs 强
 - 一致性层级：元数据一致性 vs 数据一致性 vs 版本一致性
 
-![现有的研究工作](fs.png)
+![现有的研究工作](post/fs.png)
 
 ## 数据更新机制
 
@@ -86,7 +86,7 @@ categories:
 - 关键的变化是如何确定 DRAM 和 NVM 各自存放程序的哪些数据，当系统发生异常时DRAM掉电易失，而 NVM 中的数据在 DRAM 中的数据已然丢失的情况下，如何维护数据一致性；
 - 对应为 Intel 傲腾持久内存的 App-Direct Mode，系统可用的总内存空间为DRAM和NVM容量之和。被更多的研究采用。
 
-![混合内存架构](h1.png)
+![混合内存架构](post/h1.png)
 
 # 键值存储系统
 
@@ -112,7 +112,7 @@ categories:
 
 一般B+树、基数树，为有序索引数据结构，范围查询的性能最好，但需要额外的开销来维护有序性。Add、Get、Update、Delete、Scan等操作的时间复杂度都为O(logN)。
 
-![现有研究工作](tree.png)
+![现有研究工作](post/tree.png)
 
 ## 哈希索引结构
 
@@ -129,7 +129,7 @@ categories:
 3. 若两个位置均非空，则随机踢出一个位置上的 keyx，被踢出的 keyx 再执行该算法找其另一个位置，循环直到插入成功；
 4. 如果被踢出的次数达到一定的阈值，则认为hash表已满，并进行重新哈希 rehashing。
 
-![现有工作研究](hash.png)
+![现有工作研究](post/hash.png)
 
 # 数据一致性
 
@@ -145,9 +145,9 @@ categories:
 
 **缓存行刷新**：x86 提供了 clflush、clflushopt 和 clwb 等指令可以让数据在每次对NVM的写入操作之后从 cache line 强制写回到 NVM。但这些指令减少了Cache作为高速缓存的作用，降低了处理器性能。clwb 指令后跟着 sfence 指令为一次持久化操作。
 
-![fl](flush1.png)
+![fl](post/flush1.png)
 
-![fl](flush2.png)
+![fl](post/flush2.png)
 
 ## 日志
 

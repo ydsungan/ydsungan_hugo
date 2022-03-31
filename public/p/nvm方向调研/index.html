@@ -260,7 +260,7 @@
 </ol>
 <h2 id="延时测试">延时测试</h2>
 <p>傲腾 PMem 内部的最小读写粒度为 256B，内部用一个小的写合并缓冲区 XPBuffer 来解决 DDR-T协议传输粒度和傲腾 PMem 的操作粒度不一致的问题。例如，64 B的数据写操作需要先从傲腾 PMem中将对应的256 B数据读入到 XPBuffer 中，然后在 XPBuffer 中更新请求的64 B数据，最后再将256 B数据写入到傲腾PMem存储介质中。这一操作会导致写放大，降低傲腾PMM的性能。</p>
-<p><img src="/timetest1.png"
+<p><img src="/post/timetest1.png"
 	
 	
 	
@@ -276,7 +276,7 @@
 <li>交错和非交错：访问粒度小于 256B时会造成较差的带宽，原因是 XPLine大小为 256B；</li>
 <li>非交错：读写带宽较非交错提升 5.8x 和 5.6x (与交错的DIMM个数接近)，在 4KB 处带宽降低，接近交错大小，最大化 iMC 竞争；尽量避免以4KB的交错大小进行随机访问；</li>
 </ul>
-<p><img src="/bandwidth1.png"
+<p><img src="/post/bandwidth1.png"
 	
 	
 	
@@ -304,7 +304,7 @@
 </ul>
 </li>
 </ul>
-<p><img src="/pm1.png"
+<p><img src="/post/pm1.png"
 	
 	
 	
@@ -323,7 +323,7 @@
 <li>访问均衡性：弱 vs 强</li>
 <li>一致性层级：元数据一致性 vs 数据一致性 vs 版本一致性</li>
 </ul>
-<p><img src="/fs.png"
+<p><img src="/post/fs.png"
 	
 	
 	
@@ -344,7 +344,7 @@
 <li>关键的变化是如何确定 DRAM 和 NVM 各自存放程序的哪些数据，当系统发生异常时DRAM掉电易失，而 NVM 中的数据在 DRAM 中的数据已然丢失的情况下，如何维护数据一致性；</li>
 <li>对应为 Intel 傲腾持久内存的 App-Direct Mode，系统可用的总内存空间为DRAM和NVM容量之和。被更多的研究采用。</li>
 </ul>
-<p><img src="/h1.png"
+<p><img src="/post/h1.png"
 	
 	
 	
@@ -372,7 +372,7 @@
 <h1 id="索引结构">索引结构</h1>
 <h2 id="树型索引">树型索引</h2>
 <p>一般B+树、基数树，为有序索引数据结构，范围查询的性能最好，但需要额外的开销来维护有序性。Add、Get、Update、Delete、Scan等操作的时间复杂度都为O(logN)。</p>
-<p><img src="/tree.png"
+<p><img src="/post/tree.png"
 	
 	
 	
@@ -396,7 +396,7 @@
 <li>若两个位置均非空，则随机踢出一个位置上的 keyx，被踢出的 keyx 再执行该算法找其另一个位置，循环直到插入成功；</li>
 <li>如果被踢出的次数达到一定的阈值，则认为hash表已满，并进行重新哈希 rehashing。</li>
 </ol>
-<p><img src="/hash.png"
+<p><img src="/post/hash.png"
 	
 	
 	
@@ -416,7 +416,7 @@
 <h2 id="原子更新技术sfenceclflush">原子更新技术：sfence、clflush</h2>
 <p><strong>内存屏障</strong>：CPU 采用乱序调度来增加性能，但 NVM 的写入要保证顺序性否则会导致崩溃一致性的问题，内存屏障的方式如 sfence 指令，可以保证 cache line 刷回NVM 的顺序。但加入 sfence 等内存屏障指令降低 CPU 流水线效率会降低处理器性能。</p>
 <p><strong>缓存行刷新</strong>：x86 提供了 clflush、clflushopt 和 clwb 等指令可以让数据在每次对NVM的写入操作之后从 cache line 强制写回到 NVM。但这些指令减少了Cache作为高速缓存的作用，降低了处理器性能。clwb 指令后跟着 sfence 指令为一次持久化操作。</p>
-<p><img src="/flush1.png"
+<p><img src="/post/flush1.png"
 	
 	
 	
@@ -426,7 +426,7 @@
 	
 	
 ></p>
-<p><img src="/flush2.png"
+<p><img src="/post/flush2.png"
 	
 	
 	

@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='列举第三代至强可扩展处理器，介绍内核数、线程数、基础频率、L3缓存、功耗、内存通道数、是否支持超线程、是否支持傲腾DCPMM、是否支持TSX等信息，此外还列举第二代至强可扩展处理器、第一代至强可扩展处理器等。'><title>intel CPU 不同平台介绍</title>
+
+<link rel='canonical' href='http://ydsungan.com/p/intel-cpu-%E4%B8%8D%E5%90%8C%E5%B9%B3%E5%8F%B0%E4%BB%8B%E7%BB%8D/'>
+
+<link rel="stylesheet" href="/scss/style.min.d9e0562edde3d2bdf9d3d81365095a29d062ddaaa5d671f22168e57dfdb18b4f.css"><meta property='og:title' content='intel CPU 不同平台介绍'>
+<meta property='og:description' content='列举第三代至强可扩展处理器，介绍内核数、线程数、基础频率、L3缓存、功耗、内存通道数、是否支持超线程、是否支持傲腾DCPMM、是否支持TSX等信息，此外还列举第二代至强可扩展处理器、第一代至强可扩展处理器等。'>
+<meta property='og:url' content='http://ydsungan.com/p/intel-cpu-%E4%B8%8D%E5%90%8C%E5%B9%B3%E5%8F%B0%E4%BB%8B%E7%BB%8D/'>
+<meta property='og:site_name' content='ydsungan的博客'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='intel' /><meta property='article:published_time' content='2022-04-04T10:33:12&#43;08:00'/><meta property='article:modified_time' content='2022-04-04T10:33:12&#43;08:00'/><meta property='og:image' content='http://ydsungan.com/post/intel_xe.jpg' />
+<meta name="twitter:title" content="intel CPU 不同平台介绍">
+<meta name="twitter:description" content="列举第三代至强可扩展处理器，介绍内核数、线程数、基础频率、L3缓存、功耗、内存通道数、是否支持超线程、是否支持傲腾DCPMM、是否支持TSX等信息，此外还列举第二代至强可扩展处理器、第一代至强可扩展处理器等。"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='http://ydsungan.com/post/intel_xe.jpg' />
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/cat2_huef20e5e895d95524d5e6d9818f968d02_472246_300x0_resize_q75_box.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">ydsungan的博客</a></h1>
+            <h2 class="site-description">任凭风浪起，稳坐钓鱼台</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://gitee.com/ydsungan'
+                        target="_blank"
+                        title="GitHub"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+
+        <div class="menu-bottom-section">
+                <li id="i18n-switch">  
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                    <select name="language" onchange="window.location.href = this.selectedOptions[0].value">
+                        
+                            <option value="http://ydsungan.com/" selected>English</option>
+                        
+                            <option value="http://ydsungan.com/zh-cn/" >中文</option>
+                        
+                            <option value="http://ydsungan.com/ar/" >عربي</option>
+                        
+                    </select>
+                </li>
+            
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+<main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/intel-cpu-%E4%B8%8D%E5%90%8C%E5%B9%B3%E5%8F%B0%E4%BB%8B%E7%BB%8D/">
+                
+                    <img src="/post/intel_xe.jpg" loading="lazy" alt="Featured image of post intel CPU 不同平台介绍" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/nvm/" >
+                NVM
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/intel-cpu-%E4%B8%8D%E5%90%8C%E5%B9%B3%E5%8F%B0%E4%BB%8B%E7%BB%8D/">intel CPU 不同平台介绍</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            列举第三代至强可扩展处理器，介绍内核数、线程数、基础频率、L3缓存、功耗、内存通道数、是否支持超线程、是否支持傲腾DCPMM、是否支持TSX等信息，此外还列举第二代至强可扩展处理器、第一代至强可扩展处理器等。
+        </h3>
+        
+    </div>
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Apr 04, 2022</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    2 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="第三代至强可扩展处理器">第三代至强可扩展处理器</h1>
+<p>编号的解释：<em><strong>系列-家族-编号-架构代号-发行-光刻-售价美金</strong></em></p>
+<p>规格的解释：<em><strong>内核数-线程数-基础频率-L3缓存-功耗</strong></em></p>
+<p>支持的解释：<em><strong>内存通道数-是否支持超线程-是否支持傲腾DCPMM-是否支持TSX</strong></em></p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>编号</th>
+<th>规格</th>
+<th>支持</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>至强-金牌-5315Y-IceLake-21Q2-10-958</td>
+<td>8-16-3.2-12-140</td>
+<td>8-是-是-是</td>
+</tr>
+<tr>
+<td>至强-金牌-5320-IceLake-21Q2-10-1670</td>
+<td>26-52-2.2-39-185</td>
+<td>8-是-是-是</td>
+</tr>
+<tr>
+<td>至强-金牌-6330-IceLake-21Q2-10-2030</td>
+<td>28-56-2.0-42-205</td>
+<td>8-是-是-是</td>
+</tr>
+<tr>
+<td>至强-金牌-6348-IceLake-21Q2-10-3287</td>
+<td>28-56-2.6-42-235</td>
+<td>8-是-是-是</td>
+</tr>
+<tr>
+<td>至强-铂金-8358-IceLake-21Q2-10-4227</td>
+<td>32-64-2.6-48-250</td>
+<td>8-是-是-是</td>
+</tr>
+<tr>
+<td>至强-铂金-8360Y-IceLake-21Q2-10-5031</td>
+<td>36-72-2.4-54-250</td>
+<td>8-是-是-是</td>
+</tr>
+<tr>
+<td>至强-铂金-8368Q-IceLake-21Q2-10-7214</td>
+<td>38-76-2.6-57-270</td>
+<td>8-是-是-是</td>
+</tr>
+<tr>
+<td>至强-银牌-4316-IceLake-21Q2-10-1080</td>
+<td>20-40-2.3-30-150</td>
+<td>8-是-是-是</td>
+</tr>
+<tr>
+<td>至强-金牌-5318H-CooperLake-20Q2-14-1273</td>
+<td>18-36-2.5-24.75-150</td>
+<td>6-是-是-是</td>
+</tr>
+<tr>
+<td>至强-铂金-8376H-CooperLake-20Q2-14-8719</td>
+<td>28-56-2.6-38.5-205</td>
+<td>6-是-是-是</td>
+</tr>
+<tr>
+<td>至强-金牌-6330H-CooperLake-20Q3-14-1894</td>
+<td>24-48-2.0-33-150</td>
+<td>6-是-是-是</td>
+</tr>
+</tbody>
+</table></div>
+<h1 id="第二代至强可扩展处理器">第二代至强可扩展处理器</h1>
+<p>编号的解释：<em><strong>系列-家族-编号-架构代号-发行-光刻-售价美元</strong></em></p>
+<p>规格的解释：<em><strong>内核数-线程数-基础频率-L3缓存-功耗</strong></em></p>
+<p>支持的解释：<em><strong>内存通道数-是否支持超线程-是否支持傲腾DCPMM-是否支持TSX</strong></em></p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>编号</th>
+<th>规格</th>
+<th>支持</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>至强-金牌-3206R-CascadeLake-20Q1-14-330</td>
+<td>8-8-1.9-11-85</td>
+<td>6-否-否-是</td>
+</tr>
+<tr>
+<td>至强-金牌-5220R-CascadeLake-20Q1-14-1670</td>
+<td>24-48-2.2-35.75-150</td>
+<td>6-是-是-是</td>
+</tr>
+<tr>
+<td>至强-金牌-6256-CascadeLake-20Q1-14-4174</td>
+<td>12-24-3.6-33-205</td>
+<td>6-是-是-是</td>
+</tr>
+<tr>
+<td>至强-银牌-4214R-CascadeLake-20Q1-14-750</td>
+<td>12-24-2.4-16.5-100</td>
+<td>6-是-否-是</td>
+</tr>
+<tr>
+<td>至强-铂金-8270-CascadeLake-19Q2-14-7922</td>
+<td>26-52-2.7-35.75-205</td>
+<td>6-是-是-是</td>
+</tr>
+<tr>
+<td>至强-铂金-8280-CascadeLake-19Q2-14-10710</td>
+<td>28-56-2.7-38.5-205</td>
+<td>6-是-是-是</td>
+</tr>
+<tr>
+<td>至强-铂金-9242-CascadeLake-19Q2-14-?</td>
+<td>48-96-2.3-71.5-350</td>
+<td>12-是-?-是</td>
+</tr>
+</tbody>
+</table></div>
+<h1 id="第一代至强可扩展处理器">第一代至强可扩展处理器</h1>
+<p>编号的解释：<em><strong>系列-家族-编号-架构代号-发行-光刻-售价美元</strong></em></p>
+<p>规格的解释：<em><strong>内核数-线程数-基础频率-L3缓存-功耗</strong></em></p>
+<p>支持的解释：<em><strong>内存通道数-是否支持超线程-是否支持傲腾DCPMM-是否支持TSX</strong></em></p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>编号</th>
+<th>规格</th>
+<th>支持</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>至强-金牌-6138P-Skylake-18Q2-14-4937</td>
+<td>20-40-2.0-27.5-195</td>
+<td>6-是-否-是</td>
+</tr>
+<tr>
+<td>至强-铜牌-3104-Skylake-17Q3-14</td>
+<td>6-6-1.7-8.25-85</td>
+<td>6-否-否-是</td>
+</tr>
+<tr>
+<td>至强-金牌-6150-Skylake-17Q3-14-3358</td>
+<td>18-36-2.7-24.75-165</td>
+<td>6-是-否-是</td>
+</tr>
+<tr>
+<td>至强-铂金-8160T-Skylake-17Q3-14-4936</td>
+<td>24-48-2.1-33-150</td>
+<td>6-是-否-是</td>
+</tr>
+<tr>
+<td>至强-银牌-4110-Skylake-17Q3-14-505</td>
+<td>8-16-2.1-11-85</td>
+<td>6-是-否-是</td>
+</tr>
+<tr>
+<td>至强-银牌-4108-Skylake-17Q3-14-420</td>
+<td>8-16-1.8-11-85</td>
+<td>6-是-否-是</td>
+</tr>
+</tbody>
+</table></div>
+<h1 id="至强-e7-v4家族">至强-E7-V4家族</h1>
+<p>编号的解释：<em><strong>编号-架构代号-发行-光刻-售价美元</strong></em></p>
+<p>规格的解释：<em><strong>内核数-线程数-基础频率-L3缓存-功耗</strong></em></p>
+<p>支持的解释：<em><strong>内存通道数-是否支持超线程-是否支持傲腾DCPMM-是否支持TSX</strong></em></p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>编号</th>
+<th>规格</th>
+<th>支持</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E7-8894V4-Broadwell-17Q1-14-8898</td>
+<td>24-28-2.4-60-165</td>
+<td>4-是-否-是</td>
+</tr>
+<tr>
+<td>E7-4809V4-Broadwell-16Q2-14-1223</td>
+<td>8-16-2.1-20-115</td>
+<td>4-是-否-是</td>
+</tr>
+<tr>
+<td>E7-8891V4-Broadwell-16Q2-14-6841</td>
+<td>10-20-2.8-60-165</td>
+<td>4-是-否-是</td>
+</tr>
+</tbody>
+</table></div>
+<h1 id="至强-e7-v3家族">至强-E7-V3家族</h1>
+<p>编号的解释：<em><strong>编号-架构代号-发行-光刻-售价美元</strong></em></p>
+<p>规格的解释：<em><strong>内核数-线程数-基础频率-L3缓存-功耗</strong></em></p>
+<p>支持的解释：<em><strong>内存通道数-是否支持超线程-是否支持傲腾DCPMM-是否支持TSX</strong></em></p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>编号</th>
+<th>规格</th>
+<th>支持</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E7-4809V3-Haswell-15Q2-22-1223</td>
+<td>8-16-2.0-20-115</td>
+<td>4-是-否-是</td>
+</tr>
+<tr>
+<td>E7-8890V3-Haswell-15Q2-22-7174</td>
+<td>18-36-2.5-45-165</td>
+<td>4-是-否-是</td>
+</tr>
+<tr>
+<td>E7-8867V3-Haswell-15Q2-22-4672</td>
+<td>16-32-2.5-45-165</td>
+<td>4-是-否-是</td>
+</tr>
+</tbody>
+</table></div>
+<h1 id="至强-e7-v2家族">至强-E7-V2家族</h1>
+<p>编号的解释：<em><strong>编号-架构代号-发行-光刻-售价美元</strong></em></p>
+<p>规格的解释：<em><strong>内核数-线程数-基础频率-L3缓存-功耗</strong></em></p>
+<p>支持的解释：<em><strong>内存通道数-是否支持超线程-是否支持傲腾DCPMM-是否支持TSX</strong></em></p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>编号</th>
+<th>规格</th>
+<th>支持</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E7-2850V2-Ivy Bridge-14Q1-22-?</td>
+<td>12-24-2.3-24-105</td>
+<td>4-是-否-否</td>
+</tr>
+<tr>
+<td>E7-4830V2-Ivy Bridge-14Q1-22-2059</td>
+<td>10-20-2.2-20-105</td>
+<td>4-是-否-否</td>
+</tr>
+<tr>
+<td>E7-4890V2-Ivy Bridge-14Q1-22-6619</td>
+<td>15-30-2.8-37.5-155</td>
+<td>4-是-否-否</td>
+</tr>
+</tbody>
+</table></div>
+<h1 id="至强-e5-v4家族">至强-E5-V4家族</h1>
+<p>编号的解释：<em><strong>编号-架构代号-发行-光刻-售价美元</strong></em></p>
+<p>规格的解释：<em><strong>内核数-线程数-基础频率-L3缓存-功耗</strong></em></p>
+<p>支持的解释：<em><strong>内存通道数-是否支持超线程-是否支持傲腾DCPMM-是否支持TSX</strong></em></p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>编号</th>
+<th>规格</th>
+<th>支持</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E5-2683V4-Broadwell-16Q1-14-1846</td>
+<td>16-32-2.1-40-120</td>
+<td>4-是-否-是</td>
+</tr>
+<tr>
+<td>E5-2699AV4-Broadwell-16Q2-14-4938</td>
+<td>22-44-2.4-55-145</td>
+<td>4-是-否-是</td>
+</tr>
+<tr>
+<td>E5-4610V4-Broadwell-16Q2-14-1219</td>
+<td>10-20-1.8-25-105</td>
+<td>4-是-否-是</td>
+</tr>
+<tr>
+<td>E5-1650V4-Broadwell-16Q2-14-621</td>
+<td>6-12-3.6-15-140</td>
+<td>4-是-否-是</td>
+</tr>
+</tbody>
+</table></div>
+<h1 id="至强-e5-v1家族">至强-E5-V1家族</h1>
+<p>编号的解释：<em><strong>编号-架构代号-发行-光刻-售价美元</strong></em></p>
+<p>规格的解释：<em><strong>内核数-线程数-基础频率-L3缓存-功耗</strong></em></p>
+<p>支持的解释：<em><strong>内存通道数-是否支持超线程-是否支持傲腾DCPMM-是否支持TSX</strong></em></p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>编号</th>
+<th>规格</th>
+<th>支持</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E5-1428L-Sandy Bridge EN-12Q2-32-480</td>
+<td>6-12-1.8-15-60</td>
+<td>4-是-否-否</td>
+</tr>
+<tr>
+<td>E5-4610-Sandy Bridge EN-12Q2-32-1220</td>
+<td>6-12-2.4-15-95</td>
+<td>4-是-否-否</td>
+</tr>
+<tr>
+<td>E5-1660-Sandy Bridge EN-12Q2-32-1080</td>
+<td>6-12-3.3-15-130</td>
+<td>4-是-否-否</td>
+</tr>
+</tbody>
+</table></div>
+<h1 id="至强-e3-v6家族">至强-E3-V6家族</h1>
+<p>编号的解释：<em><strong>编号-架构代号-发行-光刻-售价美元</strong></em></p>
+<p>规格的解释：<em><strong>内核数-线程数-基础频率-L3缓存-功耗</strong></em></p>
+<p>支持的解释：<em><strong>内存通道数-是否支持超线程-是否支持傲腾DCPMM-是否支持TSX</strong></em></p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>编号</th>
+<th>规格</th>
+<th>支持</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E3-1285V6-Kaby Lake-17Q3-14-450</td>
+<td>4-8-4.1-8-79</td>
+<td>2-是-否-是</td>
+</tr>
+<tr>
+<td>E3-1245V6-Kaby Lake-17Q1-14-290</td>
+<td>4-8-3.7-8-73</td>
+<td>2-是-否-是</td>
+</tr>
+<tr>
+<td>E3-1505MV6-Kaby Lake-17Q1-14-434</td>
+<td>4-8-3.0-8-45</td>
+<td>2-是-否-是</td>
+</tr>
+</tbody>
+</table></div>
+<h1 id="至强-w-处理器">至强 W 处理器</h1>
+<p>编号的解释：<em><strong>编号-架构代号-发行-光刻-售价美元</strong></em></p>
+<p>规格的解释：<em><strong>内核数-线程数-基础频率-L3缓存-功耗</strong></em></p>
+<p>支持的解释：<em><strong>内存通道数-是否支持超线程-是否支持傲腾DCPMM-是否支持TSX</strong></em></p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>编号</th>
+<th>规格</th>
+<th>支持</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>W-11155MLE-Tiger Lake-21Q3-10-242</td>
+<td>4-8-1.8-8-25</td>
+<td>2-是-否-否</td>
+</tr>
+<tr>
+<td>W-11865MLE-Tiger Lake-21Q3-10-467</td>
+<td>8-16-1.5-24-25</td>
+<td>2-是-否-否</td>
+</tr>
+<tr>
+<td>W-3365-Ice Lake-21Q3-10-3499</td>
+<td>32-64-2.7-48-270</td>
+<td>8-是-否-是</td>
+</tr>
+</tbody>
+</table></div>
+<h1 id="至强-d-处理器">至强 D 处理器</h1>
+<p>编号的解释：<em><strong>编号-架构代号-发行-光刻-售价美元</strong></em></p>
+<p>规格的解释：<em><strong>内核数-线程数-基础频率-L3缓存-功耗</strong></em></p>
+<p>支持的解释：<em><strong>最大内存大小-是否支持超线程-是否支持傲腾DCPMM-是否支持TSX</strong></em></p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>编号</th>
+<th>规格</th>
+<th>支持</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D-1712TR-Ice Lake-22Q1-10-240</td>
+<td>4-8-2.0-10-40</td>
+<td>384-是-否-否</td>
+</tr>
+<tr>
+<td>D-1718T-Ice Lake-22Q1-10-274</td>
+<td>4-8-2.6-10-46</td>
+<td>256-是-否-否</td>
+</tr>
+<tr>
+<td>D-1747NTE-Ice Lake-22Q1-10-1201</td>
+<td>10-20-2.5-15-80</td>
+<td>384-是-否-否</td>
+</tr>
+</tbody>
+</table></div>
+<h1 id="酷睿-i7-第12代-处理器">酷睿 i7 第12代 处理器</h1>
+<p>编号的解释：<em><strong>编号-市场-架构代号-发行-光刻-售价美元</strong></em></p>
+<p>规格的解释：<em><strong>内核数-线程数-最大睿频-L3缓存-基础功耗</strong></em></p>
+<p>支持的解释：<em><strong>最大内存-内存通道-是否支持TSX-最大DP-最大HDMI-核显</strong></em></p>
+<p>市场的Mobile表示适用于笔记本，Desktop表示适用于台式机。</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>编号</th>
+<th>规格</th>
+<th>支持</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>i7-12700-Desktop-Alder Lake-22Q1-7-340</td>
+<td>12-20-4.9-25-65</td>
+<td>128-2-否-8K60帧-4K60帧-770</td>
+</tr>
+<tr>
+<td>i7-12650H-Mobile-Alder Lake-22Q1-7-457</td>
+<td>10-16-4.7-24-45</td>
+<td>64-2-否-8K60帧-4K60帧-?</td>
+</tr>
+<tr>
+<td>i7-12800H-Mobile-Alder Lake-22Q1-7-457</td>
+<td>14-20-4.8-24-45</td>
+<td>64-2-否-8K60帧-4K60帧-锐炬Xe</td>
+</tr>
+</tbody>
+</table></div>
+<h1 id="酷睿-i5-第12代-处理器">酷睿 i5 第12代 处理器</h1>
+<p>编号的解释：<em><strong>编号-市场-架构代号-发行-光刻-售价美元</strong></em></p>
+<p>规格的解释：<em><strong>内核数-线程数-最大睿频-L3缓存-基础功耗</strong></em></p>
+<p>支持的解释：<em><strong>最大内存-内存通道-是否支持TSX-最大DP-最大HDMI-核显</strong></em></p>
+<p>市场的Mobile表示适用于笔记本，Desktop表示适用于台式机。</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>编号</th>
+<th>规格</th>
+<th>支持</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>i5-1230U-Mobile-Alder Lake-22Q1-7-?</td>
+<td>10-12-4.4-12-9</td>
+<td>64-2-否-8K60帧-4K60帧-锐炬Xe</td>
+</tr>
+<tr>
+<td>i5-1245U-Mobile-Alder Lake-22Q1-7-309</td>
+<td>10-12-4.4-12-15</td>
+<td>64-2-否-8K60帧-4K60帧-锐炬Xe</td>
+</tr>
+<tr>
+<td>i5-12400-Desktop-Alder Lake-22Q1-7-199</td>
+<td>6-12-4.4-18-65</td>
+<td>128-2-否-8K60帧-4K60帧-730</td>
+</tr>
+<tr>
+<td>i5-12600-Desktop-Alder Lake-22Q1-7-230</td>
+<td>6-12-4.8-18-65</td>
+<td>128-2-否-8K60帧-4K60帧-770</td>
+</tr>
+<tr>
+<td>i5-12600H-Mobile-Alder Lake-22Q1-7-311</td>
+<td>12-16-4.5-18-45</td>
+<td>64-2-否-8K60帧-4K60帧-锐炬Xe</td>
+</tr>
+</tbody>
+</table></div>
+<h1 id="酷睿-i5-第11代-处理器">酷睿 i5 第11代 处理器</h1>
+<p>编号的解释：<em><strong>编号-市场-架构代号-发行-光刻-售价美元</strong></em></p>
+<p>规格的解释：<em><strong>内核数-线程数-最大睿频-L3缓存-基础功耗</strong></em></p>
+<p>支持的解释：<em><strong>最大内存-内存通道-是否支持TSX-最大DP-最大HDMI-核显</strong></em></p>
+<p>市场的Mobile表示适用于笔记本，Desktop表示适用于台式机。</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>编号</th>
+<th>规格</th>
+<th>支持</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>i5-11300H-Mobile-Tiger Lake-21Q1-10-309</td>
+<td>4-8-4.4-8-28</td>
+<td>64-2-否-8K60帧-4K60帧-锐炬Xe</td>
+</tr>
+<tr>
+<td>i5-1135G7-Mobile-Tiger Lake-20Q3-10-309</td>
+<td>4-8-4.2-8-12</td>
+<td>64-2-否-8K60帧-4K60帧-锐炬Xe</td>
+</tr>
+<tr>
+<td>i5-1145G7-Mobile-Tiger Lake-21Q1-10-309</td>
+<td>4-8-4.4-8-12</td>
+<td>64-2-否-8K60帧-4K60帧-锐炬Xe</td>
+</tr>
+<tr>
+<td>i5-1155G7-Mobile-Tiger Lake-21Q2-10-309</td>
+<td>4-8-4.5-8-12</td>
+<td>64-2-否-8K60帧-4K60帧-锐炬Xe</td>
+</tr>
+<tr>
+<td>i5-11400-Desktop-Rocket Lake-21Q1-14-182</td>
+<td>6-12-4.4-12-65</td>
+<td>128-2-否-5K60帧-4K60帧-730</td>
+</tr>
+<tr>
+<td>i5-1145G7-Mobile-Tiger Lake-21Q2-10-309</td>
+<td>4-8-4.4-8-12</td>
+<td>64-2-否-8K60帧-4K60帧-锐炬Xe</td>
+</tr>
+<tr>
+<td>i5-11600K-Desktop-Rocket Lake-21Q1-14-270</td>
+<td>6-12-4.9-12-125</td>
+<td>128-2-否-5K60帧-4K60帧-750</td>
+</tr>
+</tbody>
+</table></div>
+<h1 id="酷睿-i5-第10代-处理器">酷睿 i5 第10代 处理器</h1>
+<p>编号的解释：<em><strong>编号-市场-架构代号-发行-光刻-售价美元</strong></em></p>
+<p>规格的解释：<em><strong>内核数-线程数-最大睿频-L3缓存-基础功耗</strong></em></p>
+<p>支持的解释：<em><strong>最大内存-内存通道-是否支持TSX-最大DP-最大HDMI-核显</strong></em></p>
+<p>市场的Mobile表示适用于笔记本，Desktop表示适用于台式机。</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>编号</th>
+<th>规格</th>
+<th>支持</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>i5-10500H-Mobile-Comet Lake-20Q4-14-250</td>
+<td>6-12-4.5-12-45</td>
+<td>128-2-否-4K60帧-4K30帧-?</td>
+</tr>
+<tr>
+<td>i5-10210U-Mobile-Comet Lake-19Q3-14-297</td>
+<td>4-8-4.2-6-15</td>
+<td>64-2-否-4K60帧-4K30帧-?</td>
+</tr>
+<tr>
+<td>i5-10310U-Mobile-Comet Lake-20Q2-14-297</td>
+<td>4-8-4.4-6-15</td>
+<td>64-2-否-4K60帧-4K24帧-?</td>
+</tr>
+<tr>
+<td>i5-10400F-Desktop-Comet Lake-20Q2-14-157</td>
+<td>6-12-4.3-12-65</td>
+<td>128-2-否-无核显-无核显-无核显</td>
+</tr>
+</tbody>
+</table></div>
+<h1 id="奔腾金牌处理器">奔腾金牌处理器</h1>
+<p>编号的解释：<em><strong>编号-市场-架构代号-发行-光刻-售价美元</strong></em></p>
+<p>规格的解释：<em><strong>内核数-线程数-最大睿频-L3缓存-基础功耗</strong></em></p>
+<p>支持的解释：<em><strong>最大内存-内存通道-是否支持TSX-最大DP-最大HDMI-核显</strong></em></p>
+<p>市场的Mobile表示适用于笔记本，Desktop表示适用于台式机。</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>编号</th>
+<th>规格</th>
+<th>支持</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>G7400-Desktop-Alder Lake-22Q1-7-70</td>
+<td>2-4-3.7-6-46</td>
+<td>128-2-否-8K60帧-4K60帧-710</td>
+</tr>
+<tr>
+<td>G6405-Desktop-Comet Lake-21Q1-14-64</td>
+<td>2-4-4.1-4-58</td>
+<td>128-2-否-4K60帧-4K30帧-610</td>
+</tr>
+<tr>
+<td>6500Y-Mobile-Amber Lake Y-21Q1-14-?</td>
+<td>2-4-1.1-4-5</td>
+<td>16-2-否-3K60帧-4K24帧-615</td>
+</tr>
+<tr>
+<td>4425Y-Mobile-Amber Lake-19Q1-14-161</td>
+<td>2-4-1.7-2-6</td>
+<td>16-2-否-4K60帧-4K24帧-615</td>
+</tr>
+</tbody>
+</table></div>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/intel/">intel</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css"integrity="sha384-RZU/ijkSsFbcmivfdRBQDtwuwVqK7GMOw6IMvKyeWL2K5UAlyp6WonmB8m7Jd0Hn"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.js"integrity="sha384-pK1WpvzWVBQiP0/GjnvRxV4mOb0oxFuyRxJlk6vVw146n3egcN5C925NCP7a7BY8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/contrib/auto-render.min.js"integrity="sha384-vZTG03m&#43;2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.querySelector(`.article-content`), {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ]
+        });})
+</script>
+    
+</article>
+
+    
+
+    
+
+<aside class="related-contents--wrapper">
+    <h2 class="section-title">Related contents</h2>
+    <div class="related-contents">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/nvm%E6%96%B9%E5%90%91%E8%B0%83%E7%A0%94/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="/post/dcpmm.jpg" loading="lazy" data-key="" data-hash="/post/dcpmm.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">NVM方向调研</h2>
+        </div>
+    </a>
+</article>
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2022 ydsungan的博客
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.11.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

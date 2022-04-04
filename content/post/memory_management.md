@@ -2,6 +2,7 @@
 title: "内存管理"
 date: 2022-03-30T14:47:12+08:00
 draft: false
+description: "介绍虚拟内存，物理地址和虚拟地址等相关内容"
 tags:
   - 操作系统
 categories:

@@ -2,6 +2,8 @@
 title: "使用Hugo平台搭建个人博客"
 date: 2022-03-22T12:44:12+08:00
 draft: false
+description: "Hugo is one of the most popular open-source static site generators. With its amazing speed and flexibility, Hugo makes building websites fun again."
+image: "post/hugo-logo-wide.svg"
 tags:
   - 软件
 categories:

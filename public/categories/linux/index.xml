@@ -52,7 +52,6 @@
 	
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;​&lt;/p&gt;
 </description>
         </item>
         <item>
@@ -85,7 +84,7 @@
 &lt;h2 id=&#34;6-内存映射&#34;&gt;6 内存映射&lt;/h2&gt;
 &lt;p&gt;​		除了文件的 read 和 write 接口外，应用程序还可以通过内存映射机制，以访问内存的形式访问文件内容。Linux在其页缓存的基础上实现了文件的内存映射机制。&lt;/p&gt;
 &lt;p&gt;​		将一个文件或者其它对象映射到进程虚拟地址空间，实现文件磁盘地址和进程虚拟地址空间中的地址一一对映关系。&lt;/p&gt;
-&lt;p&gt;​		&lt;img src=&#34;http://ydsungan.com/mmap_1.png&#34;
+&lt;p&gt;​		&lt;img src=&#34;http://ydsungan.com/post/mmap_1.png&#34;
 	
 	
 	

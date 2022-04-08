@@ -114,3 +114,25 @@ location / {
 
 ydsungan_hugo 就是从 Github 拉取的项目，而静态HTML就生成在 public/ 目录下；输入命令 *./sbin/nginx -s reload* 重启 nginx 即可。现在可以在浏览器访问自己的服务器了。
 
+# 2.9 配置disqus评论
+
+1. 首先注册**disqus**账号，https://disqus.com，注册好之后，选择 “*I want to install Disqus on my site*” ，如下图所示：![disqus_1](post/disqus_1.png)
+2. 关于 “What platform is your site on?” ，这里没有Hugo平台的选项，所以选择最下方的“Universal Code”通用代码的选项；
+3. 然后把它给的如下代码放在项目根目录下的：layouts\partials\comments\provider文件夹中的disqus.html中，没有的话自己新建![disqus_2](post/disqus_2.png)
+4. 修改项目的配置文件，将comments设置为true，提供商为“disqus”，关于disqus的配置只需要写一个shortname即可，这个shortname是disqus平台注册的时候就有的。
+
+```yaml
+comments:
+	enabled: true
+	provider: disqus
+
+disqusjs:
+    shortname: ydsungan
+    apiUrl:
+    apiKey:
+    admin:
+    adminLabel:
+```
+
+ 
+

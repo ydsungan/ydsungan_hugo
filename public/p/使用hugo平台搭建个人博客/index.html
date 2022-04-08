@@ -351,7 +351,58 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>ydsungan_hugo 就是从 Github 拉取的项目，而静态HTML就生成在 public/ 目录下；输入命令 <em>./sbin/nginx -s reload</em> 重启 nginx 即可。现在可以在浏览器访问自己的服务器了。</p>
-
+<h1 id="29-配置disqus评论">2.9 配置disqus评论</h1>
+<ol>
+<li>首先注册<strong>disqus</strong>账号，https://disqus.com，注册好之后，选择 “<em>I want to install Disqus on my site</em>” ，如下图所示：<img src="/post/disqus_1.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="disqus_1"
+	
+	
+></li>
+<li>关于 “What platform is your site on?” ，这里没有Hugo平台的选项，所以选择最下方的“Universal Code”通用代码的选项；</li>
+<li>然后把它给的如下代码放在项目根目录下的：layouts\partials\comments\provider文件夹中的disqus.html中，没有的话自己新建<img src="/post/disqus_2.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="disqus_2"
+	
+	
+></li>
+<li>修改项目的配置文件，将comments设置为true，提供商为“disqus”，关于disqus的配置只需要写一个shortname即可，这个shortname是disqus平台注册的时候就有的。</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">comments</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">	</span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">	</span><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="l">disqus</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">disqusjs</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">shortname</span><span class="p">:</span><span class="w"> </span><span class="l">ydsungan</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">apiUrl</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">apiKey</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">admin</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">adminLabel</span><span class="p">:</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
 </section>
 
 

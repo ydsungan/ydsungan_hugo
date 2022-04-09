@@ -10,7 +10,7 @@ draft: false
 
 # 给大家看猫
 
-![cat3](pics/cat3.jpg)
+<img src="pics/cat3.jpg" alt="cat3" style="zoom:67%;" />
 
 ![cat4](pics/cat4.jpg)
 

@@ -497,6 +497,28 @@
 <p><strong>编号的解释：<em>系列-家族-编号-架构代号-发行-光刻-售价美金</em></strong></p>
 <p><strong>规格的解释：<em>内核数-线程数-基础频率-L3缓存-功耗</em></strong></p>
 <p><strong>支持的解释：<em>内存通道数-是否支持超线程-是否支持傲腾DCPMM-是否支持TSX</em></strong></p>
+<hr>
+<p><strong>超线程</strong>：一个物理内核支持2个线程，比如常见的“4核8线程”</p>
+<p>Linux中可以通过下面指令查看内核数：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat /proc/cpuinfo <span class="p">|</span> grep <span class="s2">&#34;cpu cores&#34;</span> <span class="p">|</span> uniq
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Linux中可以通过下面指令查看总的线程数：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat /proc/cpuinfo <span class="p">|</span> grep <span class="s2">&#34;processor&#34;</span> <span class="p">|</span> wc -l
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>内存通道</strong>：CPU里面有几个内存通道就是几个内存控制器，即iMC，这些内存控制器可以相互独立工作，从而使得内存的带宽增加一倍。现在的一般家用的CPU都是双通道，也就是说插2个8G的内存条远比插一个16GB的内存条性能高。</p>
+<p><strong>缓存</strong>：CPU每个核都是独占一个L1、L2缓存，唯独L3缓存是每个核共享的。</p>
 <div class="table-wrapper"><table>
 <thead>
 <tr>

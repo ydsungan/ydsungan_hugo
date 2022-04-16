@@ -6,6 +6,7 @@ draft: false
 description: "计算机体系结构之Cache Coherence的Snooping-based Protocol"
 categories:
   - Architecture
+image: "post/snooping4.png"
 ---
 
 # Snooping-based Protocol

@@ -6,7 +6,1079 @@
         <description>Recent content in Posts on ydsungan的博客</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Mon, 04 Apr 2022 10:33:12 +0800</lastBuildDate><atom:link href="http://ydsungan.com/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 16 Apr 2022 15:15:12 +0800</lastBuildDate><atom:link href="http://ydsungan.com/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Snooping-based Protocol</title>
+        <link>http://ydsungan.com/p/snooping-based-protocol/</link>
+        <pubDate>Sat, 16 Apr 2022 15:15:12 +0800</pubDate>
+        
+        <guid>http://ydsungan.com/p/snooping-based-protocol/</guid>
+        <description>&lt;h1 id=&#34;snooping-based-protocol&#34;&gt;Snooping-based Protocol&lt;/h1&gt;
+&lt;p&gt;参考：https://www.youtube.com/watch?v=YNpaELJZm2c&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://ydsungan.com/post/snooping1.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;img&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;如上图所示：有 4 个 processor，P1-P4，每个 processor 下面的方框表示私有的 Cache。此时，P1要读主存中的 A，而 P1 的 Cache（方框）为空，表示 Miss，所以它向共享的 Bus 发送一条请求，这个请求在 Bus 上广播出去，因为每个 processor 的 Cache都在监听着总线，所以每个 processor 的Cache都会知道和理解这个请求。由于其他的 processor （P2-P4）的Cache里面都没有A，所以其他的 processor 都忽略这个请求。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://ydsungan.com/post/snooping2.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;img&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;如上图所示，P1的Cache已经把A从主存请求过来了，这时候的P1的Cache中的A为shared状态。现在，P3也要请求主存中的A，经过同样的向总线发送请求的过程，将 A 请求到 P3 的Cache中，如下图所示，A的状态也是 Shared状态。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://ydsungan.com/post/snooping3.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;img&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;现在，P1修改了A的值，将A修改为8，此时，P1的Cache的A的状态为Modified，【无图】&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;write invalidate 策略：当P1的Cache的A的状态修改为M后，会像总线发送一条 invalidation 信号让总线上的所有的processor都将他们自己cache内的A改为invalid状态。所以P3中的A的状态修改为 I （Invalid）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Write Through：马上把Cache中的A = 8写回主存，如下图所示。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Write Back：会等到下一次Cache置换的时候才把A=8写回主存。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;http://ydsungan.com/post/snooping4.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;img&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;然而现在，P3的Cache中的A是一个无效值，认为这是一个Cache Miss，叫做 &lt;strong&gt;Coherence Miss&lt;/strong&gt;.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;write update策略：不会像write invalidate策略那样向总线发送一条无效信号，而是发送一条更新信号，通知其他的processor去更新他们本地的Cache Copy。当所有其他的processor更新自己的cache中的A后，所有的Cache中的A的状态改为Shared，包括P1.
+&lt;ul&gt;
+&lt;li&gt;write through&lt;/li&gt;
+&lt;li&gt;write back：均和上述相同&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;目前AMD和Intel的CPU都是采用的Snooping-based Protocol。&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>LP建模5道题</title>
+        <link>http://ydsungan.com/p/lp%E5%BB%BA%E6%A8%A15%E9%81%93%E9%A2%98/</link>
+        <pubDate>Sat, 16 Apr 2022 15:09:12 +0800</pubDate>
+        
+        <guid>http://ydsungan.com/p/lp%E5%BB%BA%E6%A8%A15%E9%81%93%E9%A2%98/</guid>
+        <description>&lt;h3 id=&#34;1-road-lighting-problem&#34;&gt;1 Road Lighting Problem&lt;/h3&gt;
+&lt;p&gt;​		Consider a road divided into $n$ segments that is illuminated by $m$ lamps. Let $p_{j}$ be the power of the $jth$ lamp and $c$ is the cost to operate a single lamp per hour. The illumination $I_{i}$ of the $ith$ segment is assumed to be $\sum_{j=1}^ma_{ij}p_j$, where $a_{ij}$ are known coefficients. Let $I^∗_i$ be the desired illumination of segment $i$. In order to prolong the life of the lamps, each lamp needs to be turned off for one hour within 24 hours. Assume that the start and end time for the lamp to remain off are integer numbers of hours.&lt;/p&gt;
+&lt;p&gt;​		We need to choosing the lamp powers $p_{j}$ and determining the turning off time for all lamps so that the illuminations $I_{i}$ meet the desired illuminations $I^∗_i$. Formulate this problem as an $ILP$ so as to minimize the cost in operating all lamps.&lt;/p&gt;
+&lt;p&gt;解：&lt;/p&gt;
+&lt;p&gt;​		设 $O_{hj}$ 表示第 $j$ 盏灯在第 $h$ 个小时是否开启，$O_{hj} = 1$ 表示开启了，$O_{hj} = 0$ 表示没有开启，其中$h = 1,2,&amp;hellip;,24$ , $j = 1,2,&amp;hellip;,m$ ，则目标函数为 min  $\sum_{h=1}^{24}\sum_{j=1}^mcO_{hj}$&lt;/p&gt;
+&lt;p&gt;​		对于第 $j$ 盏灯，24小时之内最多只能开23个小时， 至少可以开0小时，则有：&lt;/p&gt;
+&lt;p&gt;​														$\sum_{h=1}^{24}O_{hj} \leq 23$ , $j = 1,2,&amp;hellip;,m$&lt;/p&gt;
+&lt;p&gt;​														$\sum_{h=1}^{24}O_{hj} \geq 0$ , $j = 1,2,&amp;hellip;,m$&lt;/p&gt;
+&lt;p&gt;​		对于第 $i$ 个路段，在每个小时内都满足照明要求，则有：&lt;/p&gt;
+&lt;p&gt;​														$\sum_{j=1}^{m}a_{ij}p_{j}O_{hj} \geq I^∗_i$ , $i = 1,2,&amp;hellip;,n$ , $h = 1,2,&amp;hellip;,24$&lt;/p&gt;
+&lt;p&gt;​		总的有：&lt;/p&gt;
+&lt;p&gt;​					min	$\sum_{h=1}^{24}\sum_{j=1}^mcO_{hj}$&lt;/p&gt;
+&lt;p&gt;​					s.t.	  $\sum_{h=1}^{24}O_{hj} \leq 23$ , $j = 1,2,&amp;hellip;,m$&lt;/p&gt;
+&lt;p&gt;​							   $\sum_{h=1}^{24}O_{hj} \geq 0$ , $j = 1,2,&amp;hellip;,m$&lt;/p&gt;
+&lt;p&gt;​							   $\sum_{j=1}^{m}a_{ij}p_{j}O_{hj} \geq I^∗_i$ , $i = 1,2,&amp;hellip;,n$ , $h = 1,2,&amp;hellip;,24$&lt;/p&gt;
+&lt;h3 id=&#34;2-profit-maximization&#34;&gt;2 Profit Maximization&lt;/h3&gt;
+&lt;p&gt;​		Your factory produces three kinds of product: A, B and C. All of them need two kinds of raw materials: nickel and aluminum. The profit and cost of each kind of product are shown in the following table.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;Product&lt;/th&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;Profit($)&lt;/th&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;Nickel(kg)&lt;/th&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;Aluminum(kg)&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;A&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;10&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;3&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;B&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;8&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;3&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;3&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;C&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;16&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;2&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;7&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;​		You only have 200 kg of nickle and 300 kg of aluminum in stock. How to arrange production to maximize profits? Please formulate this problem as a LP and transform it into dual form. Then you may solve both primal and dual problems using GLPK or Gurobi or other similar tools.&lt;/p&gt;
+&lt;p&gt;解：&lt;/p&gt;
+&lt;p&gt;​		设产品A、B、C分别生产 $x_{1}$、$x_{2}$、$x_{3}$ kg，则有：&lt;/p&gt;
+&lt;p&gt;​		max	$10x_{1} + 8x_{2} + 16x_{3}$&lt;/p&gt;
+&lt;p&gt;​		s.t.	   $3x_{1} + 3x_{2} +   2x_{3} \leq 200 $&lt;/p&gt;
+&lt;p&gt;​					$4x_{1} + 3x_{2} +   7x_{3} \leq 300$&lt;/p&gt;
+&lt;p&gt;​				    $x_{1} \geq 0$&lt;/p&gt;
+&lt;p&gt;​					$x_{2} \geq 0$&lt;/p&gt;
+&lt;p&gt;​				    $x_{3} \geq 0$&lt;/p&gt;
+&lt;p&gt;​&lt;/p&gt;
+&lt;p&gt;​		对偶问题为：&lt;/p&gt;
+&lt;p&gt;​		min		$200y_{1} + 300y_{2}$&lt;/p&gt;
+&lt;p&gt;​		s.t.		  $3y_{1} + 4y_{2} \geq 10$&lt;/p&gt;
+&lt;p&gt;​					   $3y_{1} + 3y_{2} \geq 8$&lt;/p&gt;
+&lt;p&gt;​					   $2y_{1} + 7y_{2} \geq 16$&lt;/p&gt;
+&lt;p&gt;​					   $y_{1},y_{2} \geq 0$&lt;/p&gt;
+&lt;p&gt;​		GLPK的解：当 $x_{1} = 0, x_{2} = 53.3, x_{3} = 20$ 时，可以使利润最大化，最大利润为 746.7，具体如下图所示。&lt;/p&gt;
+&lt;h3 id=&#34;3-cutting-paper-minimization&#34;&gt;3 Cutting Paper Minimization&lt;/h3&gt;
+&lt;p&gt;​		Your factory has expanded its bussiness. Suppose you have an unlimited number of large rolls of paper, of width $W$ meters per roll ($W$ is a positive integer). However, different m customers demands are for smaller width of paper; in particular, customer $i$ needs $b_{i}$ rolls of paper of width $w_{i}$ , i = 1, 2, &amp;hellip;, m. We assume that $w_{i}$ ≤ W for each $i$, and each $w_{i}$ is an integer. Smaller rolls are obtained by slicing a large roll in a certain way. You can slice one roll of paper for different customers only if their total width does not exceed $W$.&lt;/p&gt;
+&lt;p&gt;​		The goal of you is to minimize the number of large rolls used while satisfying customer demand. Please formulate this problem as an ILP. Assume that there is no cost for slicing.&lt;/p&gt;
+&lt;p&gt;解：&lt;/p&gt;
+&lt;p&gt;​		第 $i$ 个顾客需要$b_{i}$ 卷纸，所以设 $N$ 为总共需要的较小宽度卷纸数目，同时 $N$ 也是所需的完整宽度$W$的卷纸的数目的上界， $N = \sum_{i=1}^mb_{i}$ , 即在这种情况下，每个宽度较小的卷纸都是从完整卷纸里面裁切出来的。&lt;/p&gt;
+&lt;p&gt;​		设$w_{j}$为$N$ 个较小宽度的卷纸中的第 $j$ 个的宽度，设变量 $y_{i}$ 代表是否使用了第 $i$ 个完整宽度的卷纸，$y_{i} = 1$表示使用了，$y_{i} = 0$ 表示没有使用，其中 $i = 1,2, &amp;hellip;, N$，设 $x_{ij}$ 代表第 $j$ 个较小宽度的卷纸是否是从第$i$ 个完整宽度的卷纸里面裁切的，$x_{ij} = 1$ 表示是，$x_{ij} = 0$ 表示否，其中 $j = 1,2, &amp;hellip;, N$。&lt;/p&gt;
+&lt;p&gt;​		对于第 $i$ 个完整宽度的卷纸，所有从该卷纸里面裁切出来的小卷纸的总宽度应该小于$W$，即有：																$\sum_{j=1}^Nx_{ij}w_{j} \leq W$ , $i = 1, &amp;hellip;, N$&lt;/p&gt;
+&lt;p&gt;​		对于每个较小宽度的卷纸 $j$ , 都应该被生产，它可能裁切于第 $i = 1,&amp;hellip;,N$ 个完整卷纸，即有：&lt;/p&gt;
+&lt;p&gt;​																$\sum_{i=1}^Nx_{ij} = 1$ , $j = 1,&amp;hellip;,N$&lt;/p&gt;
+&lt;p&gt;​		如果第 $i$ 个完整宽度的卷纸没有被使用，那么第 $j$ 个较小宽度的卷纸也不可能从中裁切出来，即有：&lt;/p&gt;
+&lt;p&gt;​																$0 \leq x_{ij} \leq y_{i}, i=1,&amp;hellip;,N ,j=1,&amp;hellip;,N$&lt;/p&gt;
+&lt;p&gt;​		总的有：&lt;/p&gt;
+&lt;p&gt;​					min	$\sum_{i=1}^Ny_{i}$&lt;/p&gt;
+&lt;p&gt;​					s.t.	 $\sum_{j=1}^Nx_{ij}w_{j} \leq W$ , $i = 1, &amp;hellip;, N$&lt;/p&gt;
+&lt;p&gt;​							  $\sum_{i=1}^Nx_{ij} = 1$ , $j = 1,&amp;hellip;,N$&lt;/p&gt;
+&lt;p&gt;​							  $0 \leq x_{ij} \leq y_{i}$ , $ i=1,&amp;hellip;,N ,j=1,&amp;hellip;,N$&lt;/p&gt;
+&lt;p&gt;​							  $y_{i}\in {0,1}$&lt;/p&gt;
+&lt;p&gt;​							  $x_{ij} \in {0,1}$&lt;/p&gt;
+&lt;h3 id=&#34;4-reformulation-problems-with-absolute-values&#34;&gt;4 Reformulation Problems with Absolute Values&lt;/h3&gt;
+&lt;p&gt;​		Consider the problem:&lt;/p&gt;
+&lt;p&gt;​												minimize 	$2|x_{1}| + x_{2}$&lt;/p&gt;
+&lt;p&gt;​												subject to    $x_{1} + x_{2} \geq 4$&lt;/p&gt;
+&lt;p&gt;​		Please reformulate this problem as a LP without absolute values.&lt;/p&gt;
+&lt;p&gt;解：&lt;/p&gt;
+&lt;p&gt;​		minimize	$2|x_{1}| + x_{2}$ 可以写成 2·max{x~1~, -x~1~} + x~2~ ，设变量$z_{1}$，&lt;/p&gt;
+&lt;p&gt;​		$z_{1} \geq x_{1}$ ,  $z_{1} \geq -x_{1}$&lt;/p&gt;
+&lt;p&gt;​		可以用 z~1~ 替换|x~1~|, 则原问题可以写成：&lt;/p&gt;
+&lt;p&gt;​												minimize	$2z_{1} + x_{2}$&lt;/p&gt;
+&lt;p&gt;​												subject to   $x_{1} + x_{2} \geq 4$&lt;/p&gt;
+&lt;p&gt;​																	 $z_{1} \geq x_{1}$&lt;/p&gt;
+&lt;p&gt;​																	 $z_{1} \geq -x_{1}$&lt;/p&gt;
+&lt;h3 id=&#34;5-cook-recruitment-for-ucas-canteen&#34;&gt;5 Cook Recruitment for UCAS Canteen&lt;/h3&gt;
+&lt;p&gt;​		Suppose that you are the canteen manager of UCAS and you are asked to recruit a group of cooks for improving the quality of meals. It is estimated that there are $N$ stalls need to change cooks, and the $i(th)$stall needs at least $n_{i}$ cooks. The number of recruitment firms is $F$. Cooks from the $j(th)$ recruitment firm can cook different foods in several stalls $S_{j}$ and the recruitment fee for one cook from the $j(th)$ recruitment firm is $c_{j}$ . Note that $S_{j}$ is a subset of $N = {1, 2, · · · , n}$ and the union of $S_{j}$ equals to $N$.&lt;/p&gt;
+&lt;p&gt;​		Your boss wants you to save money so your need to formulate this problem as an $ILP$ and your goal is minimizing the recruitment fee of enough cooks.&lt;/p&gt;
+&lt;p&gt;解：&lt;/p&gt;
+&lt;p&gt;​		令 $K = \sum_{i=1}^Nn_{i}$ , $K$ 表示总共需要的厨师数量的上界。&lt;/p&gt;
+&lt;p&gt;​		就设一共有 $K$ 个厨师，$x_{l}$ 表示第 $l$ 个厨师是否被录用，$x_l = 1$ 表示被录用，$x_l = 0$ 表示没有被录用；$y_{lj}$ 表示第 $l$ 个厨师是否是第 $j$ 家公司的，$y_{lj} = 1$ 表示属于，$y_{lj} = 0$ 表示不属于；则目标函数为 min $\sum_{l=1}^K\sum_{j=1}^Fx_{l}y_{lj}c_{j}$ .&lt;/p&gt;
+&lt;p&gt;​		由于第 $i$ 个摊位需要 $n_{i}$ 个厨师，设 $z_{lji}$ 表示第 $l$ 位来自第 $j$ 家公司的厨师是否去了第 $i$ 个摊位，$z_{lji} = 1$ 表示去了，$z_{lji} = 0$ 表示没去，则有：&lt;/p&gt;
+&lt;p&gt;​														$\sum_{l=1}^{K}x_lz_{lji} = n_{i}$ , $i = 1,2,&amp;hellip;,N$&lt;/p&gt;
+&lt;p&gt;​		由于第 $j$ 个公司的厨师可以同时为 $S_{j}$ 个摊位服务，每个厨师所服务的摊位数都不大于 $S_{j}$，则有：&lt;/p&gt;
+&lt;p&gt;​													   $\sum_{i=1}^Nx_{l}y_{lj}z_{lji} \leq S_{j}$ , $j = 1,2,&amp;hellip;,m$ , $l = 1,2,&amp;hellip;,K$&lt;/p&gt;
+&lt;p&gt;​		总的有：&lt;/p&gt;
+&lt;p&gt;​					min	$\sum_{l=1}^K\sum_{j=1}^Fx_{l}y_{lj}c_{j}$&lt;/p&gt;
+&lt;p&gt;​					s.t.	 $\sum_{l=1}^{K}x_lz_{lji} = n_{i}$ , $i = 1,2,&amp;hellip;,N$&lt;/p&gt;
+&lt;p&gt;​							  $\sum_{i=1}^Nx_{l}y_{lj}z_{lji} \leq S_{j}$ , $j = 1,2,&amp;hellip;,m$ , $l = 1,2,&amp;hellip;,K$&lt;/p&gt;
+&lt;p&gt;​							  $x_{l} \geq y_{lj} \geq z_{lji}$ , $\forall l,j,i$&lt;/p&gt;
+&lt;p&gt;​							 $x_{l}\in {0,1}$&lt;/p&gt;
+&lt;p&gt;​							 $y_{lj}\in {0,1}$&lt;/p&gt;
+&lt;p&gt;​							 $z_{lji}\in {0,1}$&lt;/p&gt;
+&lt;p&gt;​&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>DC算法6道题</title>
+        <link>http://ydsungan.com/p/dc%E7%AE%97%E6%B3%956%E9%81%93%E9%A2%98/</link>
+        <pubDate>Sat, 16 Apr 2022 15:06:12 +0800</pubDate>
+        
+        <guid>http://ydsungan.com/p/dc%E7%AE%97%E6%B3%956%E9%81%93%E9%A2%98/</guid>
+        <description>&lt;h3 id=&#34;1-divide-and-conquer&#34;&gt;1 Divide and Conquer&lt;/h3&gt;
+&lt;p&gt;​		Given an integer array numbers and an integer k, please return the k-th largest element in the array.
+​		Your algorithm&amp;rsquo;s runtime complexity must be in the order of O(logn), prove the correctness and analyze the complexity.(k is much smaller than n, n is the length of the array.)&lt;/p&gt;
+&lt;p&gt;(1) Describe algorithm in natural language&lt;/p&gt;
+&lt;p&gt;​		本题的解决方法是在快速排序的基础上做出选择。对数组A[l&amp;hellip;r]做快速排序的过程是：首先从数组中选择一个元素x作为主元，将数组A[l&amp;hellip;r]划分成俩个子数组A[l&amp;hellip;q-1]、A[q+1&amp;hellip;r]，使得A[l&amp;hellip;q-1]中的每一个元素都小于A[q]，且A[q]小于A[q+1&amp;hellip;r]中的每一个元素，x的最终位置就是q；然后通过递归调用快速排序对子数组A[l&amp;hellip;q-1]、A[q+1&amp;hellip;r]进行排序；因为子数组都是原地址排序的，所以不需要合并操作。&lt;/p&gt;
+&lt;p&gt;​		每次划分操作后，可以确定一个元素的最终位置，所以如果某次划分操作后的q为倒数第k个下标后，则返回A[q]，否则，如果q小于倒数第k个下标，就递归右边的子数组，否则递归左边的子数组，将原来递归俩个子数组变成了只递归一个子数组。&lt;/p&gt;
+&lt;p&gt;(2) Pseudo-code&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;function findKthLargest(A, l, r, k1) //k1 = n - k, n is the lenth of A
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;1: q = partition(A, l, r)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;2: if q == k1 then
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;3:     return A[k1];
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;4: else if q &amp;lt; k1 then
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;5:     return findKthLargest(A, q+1, r, k1)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;6: else
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;7:     return findKthLargest(A, l, q-1, k1)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;8: end if
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;function partition(A, l, r)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;1: Choose an index x from [l,r] at random and use A[x] as pivot
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;2: Swap A[x] with A[r]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;3: pivot = A[r]; i = l;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;4: for j = l to r - 1 do
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;5:     if A[j] &amp;lt; pivot then
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;6:         Swap A[i] with A[j];
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;7:         i ++;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;8:     end if
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;9: end for
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;10:Swap A[i] with A[r];
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;11:return i;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;(4) Prove the correctness of algorithm&lt;/p&gt;
+&lt;p&gt;​		上述算法采用基于快速排序的选择方法。对于数组A[l,r]，每次选择一个元素作为pivot，设pivot下标为q，划分为俩个数组A[l, q-1]和A[q+1, r]，使得数组A[l, q-1]中的每一个元素都小于pivot，数组A[q+1, r]中的每一个元素都大于pivot，每经过一次划分数组，pivot元素的位置都是可以最终确定的，所以有以下三种情况：&lt;/p&gt;
+&lt;p&gt;​		若pivot的下标q = n - k，其中n是A数组的长度，则返回A[q]，A[q]即为答案；&lt;/p&gt;
+&lt;p&gt;​		若pivot的下标q &amp;lt; n - k，就对右子区间[q+1, r]实行递归调用；&lt;/p&gt;
+&lt;p&gt;​		若pivot的下标q &amp;gt; n - k，就对左子区间[l, q-1]实行递归调用；&lt;/p&gt;
+&lt;p&gt;​		因此，基于快速排序的选择方法必能找到第k大的数字。&lt;/p&gt;
+&lt;p&gt;(5) Analyze the complexity of algorithm&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;最坏时间复杂度&lt;/p&gt;
+&lt;p&gt;若每次选择的都是数组中最大或者最小的元素，则有T(n) &amp;lt;= T(n-1) + cn，则复杂度为O(n^2)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;最好时间复杂度&lt;/p&gt;
+&lt;p&gt;若每次选择的为中间的元素，则有T(n) &amp;lt;= T(n/2) + cn，则时间复杂度为O(n)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;平均时间复杂度&lt;/p&gt;
+&lt;p&gt;O(n)&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;2-divide-and-conquer&#34;&gt;2 Divide and Conquer&lt;/h3&gt;
+&lt;p&gt;​		Consider an n-node complete binary tree T, where n = 2^d − 1 for some d. Each node v of T is labeled with a real number Xv. You may assume that the real numbers labeling the nodes are all distinct. A node v of T is a local minimum if the label Xv is less than the label Xw for all nodes w that are joined to v by an edge.&lt;/p&gt;
+&lt;p&gt;​		You are given such a complete binary tree T, but the labeling is only specified in the following:&lt;/p&gt;
+&lt;p&gt;​		implicit way: for each node v, you can determine the value Xv by probing the node v.&lt;/p&gt;
+&lt;p&gt;​		Show how to find a local minimum of T using only O(logn) probes to the nodes of T.&lt;/p&gt;
+&lt;p&gt;(1) Describe algorithm in natural language&lt;/p&gt;
+&lt;p&gt;​		从二叉树的根节点出发，如果根节点的左右子节点的值均大于根节点的值，则返回根节点的值，否则至少有一个子节点的值小于其值。选择拥有较小值的子节点作为根节点递归。&lt;/p&gt;
+&lt;p&gt;(2) Pseudo-code&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;function findLocalMinNode(root)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;1: if root == NIL then
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;2:     return;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;3: end if
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;4: if root.lchild != NIL and root.rchild != NIL then
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;5:     if root.val &amp;lt; root.lchild.val and root.val &amp;lt; root.rchild.val then
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;6:         return root.val;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;7:     else if root.lchild.val &amp;lt; root.rchild.val then
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;8:         findLocalMinNode(root.lchild);
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;9:     else then
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;10:        findLocalMinNode(root.rchild);
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;11:    end if
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;12:else then
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;13:    return root.val;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;14:end if
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;(4) Prove the correctness of algorithm&lt;/p&gt;
+&lt;p&gt;​		在上述算法过程中，从完全二叉树的根节点开始遍历，如果根节点的值小于俩个子节点的值，则根节点就是一个局部最小值点，返回根节点的值即可。否则，至少存在一个子节点的值小于根节点，将较小值的子节点作为根节点递归即可，这样一定能找到一个局部最小值。最坏的情况是遍历到叶节点，叶节点只其父节点与其相连，父节点的值大于叶节点的值，则该叶节点就是局部最小值。&lt;/p&gt;
+&lt;p&gt;(5) Analyze the complexity of algorithm&lt;/p&gt;
+&lt;p&gt;​		时间复杂度为O(logn)&lt;/p&gt;
+&lt;h3 id=&#34;3-divide-and-conquer&#34;&gt;3 Divide and Conquer&lt;/h3&gt;
+&lt;p&gt;​		Given an integer array, one or more consecutive integers in the array form a sub-array. Find the maximum value of the sum of all sub-array.
+​		Please give an algorithm with O(nlogn) complexity.&lt;/p&gt;
+&lt;p&gt;(1) Describe algorithm in natural language&lt;/p&gt;
+&lt;p&gt;​		将区间[l,r]划分为左区间[l,mid]和右区间[mid+1,r]，对左右子区间分治求解，当递归到区间长度为1的时候，这时需要将左区间[l,mid]的信息和右区间[mid+1,r]的信息合并成区间[l,r]的信息。&lt;/p&gt;
+&lt;p&gt;​		对于一个区间[l,r]，需要维护的变量有：lSum表示[l,r]内以l为左端点的最大子序列和，rSum表示[l,r]内以r为右端点的最大子序列和，mSum表示[l,r]内的最大子序列和，iSum表示[l,r]的区间和。将左右子区间的信息合并到[l,r]按照以下方式：&lt;/p&gt;
+&lt;p&gt;​		[l,r]区间的iSum就等于左区间的iSum加上右区间的iSum;&lt;/p&gt;
+&lt;p&gt;​		[l,r]区间的lSum就等于左区间的lSum和左区间的iSum加上右区间的lSum俩者的最大值；&lt;/p&gt;
+&lt;p&gt;​		[l,r]区间的rSum就等于右区间的rSum和右区间的iSum加上左区间的rSum俩者的最大值；&lt;/p&gt;
+&lt;p&gt;​		[l,r]区间的mSum取左区间的mSum，右区间的mSum，左区间的rSum加上右区间的lSum三者的最大值；&lt;/p&gt;
+&lt;p&gt;​		而对于长度为1的区间[i,i]上面4个值都等于A[i]，最终所求的mSum就是答案；&lt;/p&gt;
+&lt;p&gt;(2) Pseudo-code&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;function maxSubArraySum(A, l, r)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;1: if l == r then
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;2:     return {A[r], A[r], A[r], A[r]}; //返回数组中的元素从左到右分别是iSum,lSum,rSum,mSum
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;3: end if
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;4: mid = ⌊(l+r)/2⌋
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;5: lSub = maxSubArraySum(A, l, mid);
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;6: rSub = maxSubArraySum(A, mid+1, r);
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;7: iSum = lSub[0] + rSub[0];
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;8: lSum = max{lSub[1], lSub[0]+rSub[1]};
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;9: rSum = max{rSub[2], rSub[0]+lSub[2]};
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;10:mSum = max{lSub[3], rSub[3], lSub[2]+rSub[1]};
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;11:return {iSum, lSum, rSum, mSum}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;(4) Prove the correctness of algorithm&lt;/p&gt;
+&lt;p&gt;​		本题采用分治解法。对于一个区间[l, r]，取 mid = ⌊(l+r)/2⌋，划分成俩个区间 [l, mid] 和 [mid+1, r]，同样对这俩个区间递归划分，直到区间的长度为1的时候，开始合并区间的信息。对于一个区间[l, r]需要维护的变量有4个：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;lSum 表示 [l,r] 内以 l 为左端点的最大子序列和&lt;/li&gt;
+&lt;li&gt;rSum 表示 [l,r] 内以 r 为右端点的最大子序列和&lt;/li&gt;
+&lt;li&gt;mSum 表示 [l,r] 内的最大子序列和&lt;/li&gt;
+&lt;li&gt;iSum 表示 [l,r] 内所有元素的和&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;对于长度为1的区间[i,i]，以上4个变量相等，为A[i]；对于合并后长度大于1的区间，上述4个变量更新的方式如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;[l,r]区间的iSum就等于左区间的iSum加上右区间的iSum;&lt;/li&gt;
+&lt;li&gt;[l,r]区间的lSum就等于左区间的lSum和左区间的iSum加上右区间的lSum俩者的最大值；&lt;/li&gt;
+&lt;li&gt;[l,r]区间的rSum就等于右区间的rSum和右区间的iSum加上左区间的rSum俩者的最大值；&lt;/li&gt;
+&lt;li&gt;[l,r]区间的mSum取左区间的mSum，右区间的mSum，左区间的rSum加上右区间的lSum三者的最大值；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;最终的mSum就是整个区间的最大的子序列的和。&lt;/p&gt;
+&lt;p&gt;(5) Analyze the complexity of algorithm&lt;/p&gt;
+&lt;p&gt;​		时间复杂度为O(n)。&lt;/p&gt;
+&lt;h3 id=&#34;4-divide-and-conquer&#34;&gt;4 Divide and Conquer&lt;/h3&gt;
+&lt;p&gt;​		Given an array of integers numbers sorted in ascending order, find the starting and ending position of a given target value. If the target is not found in the array, return [-1, -1]. For example, if the array is [5, 7, 7, 8, 8, 10] and the target is 8, then the output should be [3, 4].
+​		Your algorithm&amp;rsquo;s runtime complexity must be in the order of O(log n), prove the correctness and analyze the complexity.&lt;/p&gt;
+&lt;p&gt;(1) Describe algorithm in natural language&lt;/p&gt;
+&lt;p&gt;​		本题的解决方式为使用二分查找。需要寻找数组中第一个等于target的位置和最后一个等于target的位置。&lt;/p&gt;
+&lt;p&gt;​		二分查找第一个等于target的位置：当A[mid] &amp;gt;= target时，往左半区间寻找，r = mid；当A[mid] &amp;lt; target时，往右半区间查找，l = mid + 1；当l = r二分查找结束，如果A[r] != target说明数组中不存在target，返回[-1, -1]。&lt;/p&gt;
+&lt;p&gt;​		二分查找最后一个等于target的位置：当A[mid]&amp;lt;=target时，往右半区间查找，l = mid；当A[mid] &amp;gt; target时，往左半区间查找，r = mid - 1；当l = r二分查找结束，此时的r就是第二次二分查找的位置，返回区间即可。&lt;/p&gt;
+&lt;p&gt;(2) Pseudo-code&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;function binarySearch(A, n, target)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;1: if n == 0 then
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;2:     return {-1, -1};
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;3: end if
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;4: l = 0;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;5: r = n - 1;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;6: while l &amp;lt; r do //二分查找开始位置
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;7:     mid = ⌊(l+r)/2⌋
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;8:     if A[mid] &amp;gt;= target then
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;9:         r = mid;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;10:    else
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;11:        l = mid + 1;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;12:    end if
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;13:end while
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;14:if A[r] != target then
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;15:    return {-1, -1};
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;16:end if
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;17:L = r;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;18:l = 0;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;19:r = n - 1;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;20:while l &amp;lt; r do //二分查找结束位置
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;21:    mid = ⌊(l+r+1)/2⌋
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;22:    if A[mid] &amp;lt;= target then
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;23:        l = mid;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;24:    else
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;25:        r = mid - 1
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;26:    end if
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;27:end while
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;28:return {L,r};
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;(4) Prove the correctness of algorithm&lt;/p&gt;
+&lt;p&gt;​		本题采用二分查找的方式。需要查找目标值target第一次出现的位置和最后一次出现的位置。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;查找目标值第一次出现的位置：取mid = ⌊(l+r)/2⌋，将区间[l,r]划分成俩个区间[l,mid]和[mid+1,r]
+&lt;ul&gt;
+&lt;li&gt;当 A[mid] &amp;gt;= target，往左半区间查找，r = mid;&lt;/li&gt;
+&lt;li&gt;当 A[mid] &amp;lt; target，往右半区间查找，l = mid + 1;&lt;/li&gt;
+&lt;li&gt;当 l = r，二分查找结束，如果A[r] != target，说明数组中不存在目标值target，返回[-1, -1]。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;查找目标值最后一次出现的位置：取mid = ⌊(l+r+1)/2⌋，将区间[l,r]划分成俩个区间[l,mid-1]和[mid,r]
+&lt;ul&gt;
+&lt;li&gt;当 A[mid] &amp;lt;= target，往右半区间查找，l = mid;&lt;/li&gt;
+&lt;li&gt;当 A[mid] &amp;gt; target，往左半区间查找，r = mid - 1;&lt;/li&gt;
+&lt;li&gt;当 l = r，二分查找结束，r就是目标值最后一次出现的位置。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;因此，采用俩次二分查找可以找到目标值的开始出现位置和最后出现位置。&lt;/p&gt;
+&lt;p&gt;(5) Analyze the complexity of algorithm&lt;/p&gt;
+&lt;p&gt;​		时间复杂度：O(log n) ，其中 n 为数组的长度。二分查找的时间复杂度为O(log n)，一共会执行两次，因此总时间复杂度为O(log n)。&lt;/p&gt;
+&lt;h3 id=&#34;5-divide-and-conquer&#34;&gt;5 Divide and Conquer&lt;/h3&gt;
+&lt;p&gt;​		Given a convex polygon with n vertices, we can divide it into several separated pieces, such that every piece is a triangle. When n = 4, there are two different ways to divide the polygon; When n = 5, there are five different ways.
+​		Give an algorithm that decides how many ways we can divide a convex polygon with n vertices into triangles.&lt;/p&gt;
+&lt;p&gt;(1) Describe algorithm in natural language&lt;/p&gt;
+&lt;p&gt;​		一般 n 个顶点的凸多边形可以分成 m = n - 2 个三角形。&lt;/p&gt;
+&lt;p&gt;​		将n个顶点的凸多边形的顶点依次序标记为P1、P2、P3、&amp;hellip;、Pn， 凸多边形的任意一条边必属于某一个三角形，以这条边为基准，设这条边的俩个顶点分别是P1、Pn，然后在凸多边形中找一个任意不属于该边的顶点Pk，（2&amp;lt;=k&amp;lt;=n-1），组成一个三角形，这个三角形将原来的凸多边形分割成俩个凸多边形，其中一个凸多边形的顶点数目为n-k+1，另一个凸多边形的顶点数目k；&lt;/p&gt;
+&lt;p&gt;​		则 f(n) 的解由 f(n-k+1) 和 f(k) 组成，f(n) = f(n-k+1) * f(k)，而 2&amp;lt;=k&amp;lt;=n-1，所以原式可以分解为 ：f(n) = f(n-1) * f(2) + f(n-2) * f(3) + &amp;hellip; + f(2) * f(n-1)，另外f(2) = f(3) = 1，f(2)表示这个三角形只将原凸多边形分割成一个凸多边形，可以认为f(2) = 1。这样就把 f(n) 问题的求解分成一个个子问题的求解，直到子问题的规模为n = 2或者n = 3。&lt;/p&gt;
+&lt;p&gt;(2) Pseudo-code&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;function divideConvexPolygon(n)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;1: initialize an array A with size of n + 1, and assign a value of 0 to each element;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;2: A[2] = A[3] = 1;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;3: return subProblem(A, n);
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;function subProblem(A, n)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;1: if A[n] != 0 then
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;2:     return A[n];
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;3: end if
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;4: sum = 0
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;5: for k = 2 to n - 1 do
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;6:     if A[k] == 0 then    
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;7:         A[k] = subProblem(A, k);
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;8:     end if
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;9:     if A[n-k+1] == 0 then
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;10:        A[n-k+1] = subProblem(A, n-k+1);
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;11:    end if
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;12:    sum += A[k] * A[n-k+1];
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;13:end for
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;14:A[n] = sum;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;15:return A[n];
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;(4) Prove the correctness of algorithm&lt;/p&gt;
+&lt;p&gt;​		本算法采用自顶向下的带记忆的递归解法。具有n个顶点的凸多边形的任意一条边必属于某一个三角形，那么以这条边为基准，然后在凸多边形中找一个任意不属于这条边上的顶点，组成一个三角形，这个三角形会将原凸多边形分割成俩个小的凸多边形（也可能只有一个小的凸多边形），这样就将大问题的解分解成俩个小问题的解，同样对于小凸多边形以同样的方法将其分解为更小的凸多边形。&lt;/p&gt;
+&lt;p&gt;​		假设凸多边形的n个顶点依次按序标记为P1、P2、P3、&amp;hellip;、Pn，以P1-Pn作为基准边，任意选择一个不属于该边的顶点Pk，（2&amp;lt;=k&amp;lt;=n-1），组成的三角形将原凸多边形分割成俩个小的凸多边形，则f(n)的解由 f(n-k+1) 和 f(k) 组成，f(n) = f(n-k+1) * f(k)，k有n-2种选择，所以原式可以分解为 ：f(n) = f(n-1) * f(2) + f(n-2) * f(3) + &amp;hellip; + f(2) * f(n-1)，这样子问题递归分解下去直到遇到f(2)和f(3)不再分解，f(2) = f(3) = 1。所以这样自顶向下的递归分解子问题最终一定能求出f(n)的问题。&lt;/p&gt;
+&lt;p&gt;(5) Analyze the complexity of algorithm&lt;/p&gt;
+&lt;p&gt;​		由于该算法设置了一个数组A去记录每一步计算中产生的f(k)的子问题的解，避免f(k)子问题的重复计算，子问题就是f(2)，f(3)，&amp;hellip;，f(n)，所以本算法的时间复杂度为O(n)。&lt;/p&gt;
+&lt;h3 id=&#34;6-divide-and-conquer&#34;&gt;6 Divide and Conquer&lt;/h3&gt;
+&lt;p&gt;​		Given an array of k linked-lists lists, each linked-list is sorted in ascending order. Given an O(knlogk) algorithm to merge all the linked-lists into one sorted linked-list. (Note that the length of a linked-lists is n)&lt;/p&gt;
+&lt;p&gt;(1) Describe algorithm in natural language&lt;/p&gt;
+&lt;p&gt;​		将 k 个链表俩俩一组，共有 k/2 组，每一组俩个链表合并成一个链表，得到 k/2 个链表；将 k/2 个链表俩俩一组，共有 k/4 组，每一组俩个链表合并成一个链表，得到 k/4 个链表；依此类推，最终得到合并的结果。&lt;/p&gt;
+&lt;p&gt;(2) Pseudo-code&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;function mergeKLists(A, l, r)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;1: while l &amp;lt; r do
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;2:     mid = ⌊(l+r)/2⌋
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;3:     return merge(mergeKLists(A, l, mid), mergeKLists(A, mid+1, r));
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;4: end while
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;5: return A[l];
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;function merge(L1, L2)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;1: a = L1, b = L2;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;2: initialize two list node: head, tail;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;3: tail = head;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;4: while a != NIL &amp;amp;&amp;amp; b != NIL do
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;5:     if a.val &amp;lt; b.val then
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;6:         tail.next = a;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;7:         a = a.next;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;8:     else then
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;9:         tail.next = b;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;10:        b = b.next;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;11:    end if
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;12:    tail = tail.next
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;13:end while
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;14:tail.next = a ? a : b;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;15:return head.next;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;(4) Prove the correctness of algorithm&lt;/p&gt;
+&lt;p&gt;​		将 k 个链表俩俩一组，共有 k/2 组，每一组俩个链表合并成一个链表，得到 k/2 个链表；将 k/2 个链表俩俩一组，共有 k/4 组，每一组俩个链表合并成一个链表，得到 k/4 个链表；依此类推，最终得到合并的结果。&lt;/p&gt;
+&lt;p&gt;(5) Analyze the complexity of algorithm&lt;/p&gt;
+&lt;p&gt;​		俩个长度均为n的升序链表的合并的时间复杂度为O(2n)，第一轮合并时有 k/2 组，每组的时间复杂度为O(2n)，则第一轮合并的总的时间复杂度为O(kn)；第二轮合并时有 k/4 组，每组的时间复杂度为O(4n)，则第二轮合并的总的时间复杂度为O(kn)；一共logk次合并，则总的时间复杂度为O(knlogk)。&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>DP算法5道题</title>
+        <link>http://ydsungan.com/p/dp%E7%AE%97%E6%B3%955%E9%81%93%E9%A2%98/</link>
+        <pubDate>Sat, 16 Apr 2022 15:06:12 +0800</pubDate>
+        
+        <guid>http://ydsungan.com/p/dp%E7%AE%97%E6%B3%955%E9%81%93%E9%A2%98/</guid>
+        <description>&lt;h3 id=&#34;1-money-robbing&#34;&gt;1 Money robbing&lt;/h3&gt;
+&lt;p&gt;​		A robber is planning to rob houses along a street. Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of them is that adjacent houses have security system connected and it will automatically contact the police if two adjacent houses were broken into on the same night.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Given a list of non-negative integers representing the amount of money of each house, determine the maximum amount of money you can rob tonight without alerting the police.&lt;/p&gt;
+&lt;p&gt;(1) Describe the optimal substructure and DP equation&lt;/p&gt;
+&lt;p&gt;设列表 nums 表示每个房间的现金，设数组 dp 中元素 dp[i] 表示在第 0 ~ i 间房子可偷窃的最大金额，有状态转移方程：&lt;/p&gt;
+&lt;p&gt;​										dp[i] = max(dp[i-2] + nums[i], dp[i-1])&lt;/p&gt;
+&lt;p&gt;(2) Describe your algorithm in pseudo-code&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;function rob(nums)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;1: if nums == NIL or nums.length == 0 then
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;2:     return 0;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;3: end if
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;4: if nums.length == 1 then
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;5:     return nums[0];
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;6: end if
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;7: initialize an array dp with size of nums.length;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;8: dp[0] = nums[0];
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;9: dp[1] = max(nums[0], nums[1]);
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;10:for i = 2 to nums.length -1 do
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;11:    dp[i] = max(dp[i - 2] + nums[i], dp[i-1]);
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;12:end for
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;13:return dp[nums.length - 1]
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;(3) Prove the correctness of your algorithm&lt;/p&gt;
+&lt;p&gt;本题采用动态规划的方法来解题。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;确定 dp 数组以及含义：设 dp[i] 表示第 0~i 间房子可偷窃的最大现金，dp数组的大小为房间的个数；&lt;/li&gt;
+&lt;li&gt;确定基础解：如果只有一间房子，则 dp[0] = nums[0]，如果有俩间房子，偷盗其中现金多的一间房子，则 dp[1] = max(nums[0], nums[1])，对于 2 &amp;lt;= i &amp;lt; nums.length，dp[i] 无需初始化；&lt;/li&gt;
+&lt;li&gt;确定状态转移方程：对于第 i 间房子（i &amp;gt;= 2，i 从0开始），有俩个选择，即要么偷盗第 i 间房子，那么就无法偷盗第 i - 1 间房子，这时可以偷盗的最大价值为 dp[i] = dp[i - 2] + nums[i]；要么不偷盗第 i 间房子，可偷盗的最大价值为前 i - 1 间房子的最大价值 dp[i] = dp[i - 1]；则有状态转移方程 dp[i] = max(dp[i - 2] + nums[i], dp[i-1])。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这样，计算到 dp[nums.length - 1] 即表示结果。&lt;/p&gt;
+&lt;p&gt;(4) Analyze the complexity of your algorithm&lt;/p&gt;
+&lt;p&gt;本题算法只需要对 dp 数组遍历一遍即可，时间复杂度为 O(n)，其中n是dp数组的长度。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;What if all houses are arranged in a circle?&lt;/p&gt;
+&lt;p&gt;(1) Describe the optimal substructure and DP equation&lt;/p&gt;
+&lt;p&gt;设列表 nums 表示每个房间的现金，设数组 dp 中元素 dp[i] 表示在第 start ~ i 间房子可偷窃的最大金额，有状态转移方程：&lt;/p&gt;
+&lt;p&gt;​										dp[i] = max(dp[i-2] + nums[i], dp[i-1])&lt;/p&gt;
+&lt;p&gt;(2) Describe your algorithm in pseudo-code&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;function rob(nums)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;1: len = nums.length;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;2: if len == 1 then
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;3:     return nums[0];
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;4: else if len == 2 then
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;5:     return max(nums[0],nums[1]);
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;6: end if
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;7: initialize an array dp with size of len;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;8: dp[0] = nums[0];
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;9: dp[1] = max(nums[0],nums[1]);
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;10:for i = 2 to len - 1 do
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;11:    dp[i] = max(dp[i-1], nums[i] + dp[i-2]);
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;12:end for
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;13:if nums[1] &amp;gt;= nums[0] and dp[2] != dp[1] or nums[1] &amp;lt; nums[0] then
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;14:    dp[len - 1] = min(dp[len - 1], dp[len - 2]);
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;15:end if
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;16:m = dp[len - 1];
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;17:dp[1] = nums[1];
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;18:dp[2] = max(nums[1],nums[2]);
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;19:for i = 3 to len - 1 do
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;20:    dp[i] = max(dp[i-1], nums[i] + dp[i-2]);
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;21:end for
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;22:n = dp[len - 1];
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;23:return max(m,n);
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;(3) Prove the correctness of your algorithm&lt;/p&gt;
+&lt;p&gt;如果只有一间房屋，则可以偷窃该房子；如果有俩间房子，只能偷窃一间房子，则偷窃现金多的一间房子。当房屋的数量多于2间需要考虑首位相连的情况。&lt;/p&gt;
+&lt;p&gt;需要考虑到不能同时偷窃第一间和最后一间房子，如果偷窃了第一间房子则不能偷窃最后一间，如果没有偷窃第一间，则可以偷窃最后一间房子。首先在第一问的基础上计算得到 dp[0, 1, &amp;hellip;, n-1] 的所有元素，在此基础上判断第一间房子是否被偷窃，如果第一间房子被偷窃了，那么最后一间房子不能被偷窃了，则有 dp[n - 1] = dp[n - 2]；然后选择不偷窃第一间房子，那么最后一间房子就可以被偷窃了，重新选择区间按照第一问的状态转移公式再计算一遍。&lt;/p&gt;
+&lt;p&gt;所以本题算法需要执行俩次状态转移公式的过程。第一次执行时的基础解为 dp[0] = nums[0], dp[1] = max(nums[0], nums[1])；第二次执行时的基础解为 dp[1] = nums[1], dp[2] = max(nums[1], nums[2])。第一次执行完成过后需要检查一遍第一间房子有没有被盗窃，如果第一间被盗窃了，再检查一遍最后一件房子有没有被盗窃，如果最后一间房子被盗窃了，则修改 dp[n - 1] = dp[n - 2]；而执行完第二遍公式后，不需要检查。最后比较俩次的最终的dp[n-1]结果，返回值大的即可。&lt;/p&gt;
+&lt;p&gt;(4) Analyze the complexity of your algorithm&lt;/p&gt;
+&lt;p&gt;对dp数组遍历了2次，所以时间复杂度为O(n)。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;2--largest-divisible-subset&#34;&gt;2  Largest Divisible Subset&lt;/h3&gt;
+&lt;p&gt;​		Given a set of distinct positive integers, find the largest subset such that every pair (S~i~ , S~j~ ) of elements in this subset satisfies: S~i~%S~j~ = 0 or S~j~%S~i~ = 0.&lt;/p&gt;
+&lt;p&gt;​		Please return the largest size of the subset.&lt;/p&gt;
+&lt;p&gt;​		Note: S~i~%S~j~ = 0 means that S~i~ is divisible by S~j~&lt;/p&gt;
+&lt;p&gt;(1) Describe the optimal substructure and DP equation&lt;/p&gt;
+&lt;p&gt;dp[i] 表示数组 nums 中下标从 0 到 i 的序列中包含 nums[i] 的最大整除子序列的长度，dp数组的长度等于nums数组的长度，且其中的每一个元素都被初始化为1，对于每一个 nums[i]，需要检查 [0, i-1] 区间上的每一位nums[j]，使得 nums[i] % nums[j] == 0，有状态转移方程：&lt;/p&gt;
+&lt;p&gt;​														dp[i] = max(dp[i], dp[j] + 1)&lt;/p&gt;
+&lt;p&gt;(2) Describe your algorithm in pseudo-code&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;function largestDivisibleSubset(nums)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;1: len = nums.length;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;2: initialize an array dp with size of len and assign a value of 1 to each element;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;3: sort(nums);
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;4: for i = 1 to len - 1 do
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;5:     for j = 0 to i - 1 do
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;6:         if nums[i] % nums[j] == 0 then
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;7:             dp[i] = max(dp[i], dp[j]+1);
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;8:         end if
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;9:     end for
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;10:end for
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;11:return max(dp);
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;(3) Prove the correctness of your algorithm&lt;/p&gt;
+&lt;p&gt;首先将数组nums进行升序排列，这样如果 nums[j] 可以整除 nums[k]，而nums[l]可以整除nums[j]，则nums[l]也可以整除nums[k]。dp[i] 表示 nums数组中下标 0 ~ i 的序列里包含 nums[i] 的最长整除子序列的长度，在计算 dp[i]的过程中，需要枚举 j = 0, 1, &amp;hellip;, i-1的所有数nums[j]，如果 nums[i] 可以整除 nums[j]，说明nums[i] 可以扩充在以 nums[j] 为最大整数的整除子集里成为一个更大的整除子集，这时在下标 0 ~ i 的区间一个可能的最大的整除序列的长度就是 dp[j] + 1，如果dp[j] + 1大于自身dp[i]，则更新。这样就能求出最终的值。&lt;/p&gt;
+&lt;p&gt;(4) Analyze the complexity of your algorithm&lt;/p&gt;
+&lt;p&gt;对数组排序的时间复杂度为O(nlogn)，计算dp数组的时间复杂度为O(n^2^)，所以总的时间复杂度为O(n^2^)。&lt;/p&gt;
+&lt;h3 id=&#34;5-distinct-sequences&#34;&gt;5 Distinct Sequences&lt;/h3&gt;
+&lt;p&gt;​		Given two strings S and T, return the number of distinct subsequences of S which equals T.
+​		A string’s subsequence is a new string formed from the original string by deleting some (can
+be none) of the characters without disturbing the remaining characters’ relative positions. (i.e.,
+”ACE” is a subsequence of ”ABCDE” while ”AEC” is not).&lt;/p&gt;
+&lt;p&gt;(1) Describe the optimal substructure and DP equation&lt;/p&gt;
+&lt;p&gt;dp[i] [j]表示字符串S的第 1 ~ i个字符组成的子串中以S[i]结尾的子序列中由字符串 T 的第 1~ j 个字符组成的子串出现的个数，并认为一个空字符串是任何字符串的子序列。有状态转移方程：当 t[j-1] == s[i-1] 时，有 dp[i] [j] = dp[i-1] [j-1] + dp[i-1] [j]；当 t[j-1] != s[i-1] 时，有 dp[i] [j] = dp[i-1] [j]。&lt;/p&gt;
+&lt;p&gt;(2) Describe your algorithm in pseudo-code&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;function distinctSequences(S, T)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;1: m = S.length;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;2: n = T.length;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;3: if n &amp;lt; m then
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;4:     return 0;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;5: end if
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;6: define a two-dimensional array dp[m+1][n+1] and assign a value of 0 to each element;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;7: for i = 0 to m do
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;8:     dp[i][0] = 1;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;9: end for
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;10:for i = 1 to m do
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;11:    for j = 1 to n do
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;12:        if t[j-1] == s[i-1] then
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;13:            dp[i][j] = dp[i-1][j-1] + dp[i-1][j];
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;14:        else then
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;15:            dp[i][j] = dp[i-1][j];
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;16:        end if
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;17:    end for
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;18:end for
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;19:return dp[m][n];
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;(3) Prove the correctness of your algorithm&lt;/p&gt;
+&lt;p&gt;首先确定dp数组的下标的含义，dp[i] [j] 表示字符串S的第 1 ~ i个字符组成的子串中以S[i]结尾的子序列中由字符串 T 的第 1~ j 个字符组成的子串出现的个数，并认为一个空字符串是任何字符串的子序列。在依次枚举每个字符时，如果 S[i - 1] 与 T[j - 1]相等，dp[i] [j]可以有两部分组成：一部分是用S[i - 1]来匹配，那么个数为dp[i - 1] [j - 1]，一部分是不用S[i - 1]来匹配，个数为dp[i - 1] [j]，所以当S[i - 1] 与 T[j - 1]相等时，dp[i] [j] = dp[i - 1] [j - 1] + dp[i - 1] [j]；如果S[i - 1] 与 T[j - 1]不相等时，dp[i] [j]只有一部分组成，不用S[i - 1]来匹配，即：dp[i - 1] [j]，所以递推公式为：dp[i] [j] = dp[i - 1] [j]；这样当计算到dp[m+1] [n+1]即为结果。&lt;/p&gt;
+&lt;p&gt;(4) Analyze the complexity of your algorithm&lt;/p&gt;
+&lt;p&gt;时间复杂度：O(mn)，其中 m 和 n 分别是字符串 S 和 T 的长度。二维数组 dp 有 m+1 行和 n+1 列，需要对 dp 中的 mn 个元素进行计算。&lt;/p&gt;
+&lt;h3 id=&#34;4-word-break&#34;&gt;4 Word Break&lt;/h3&gt;
+&lt;p&gt;​		Given a string S and a dictionary of words, determine if the string S can be segmented into a space-separated sequence of one or more dictionary words.&lt;/p&gt;
+&lt;p&gt;​		Note: Each word in the dictionary may be reused multiple times in the segmentation. You can return TRUE if the string S is empty.&lt;/p&gt;
+&lt;p&gt;(1) Describe the optimal substructure and DP equation&lt;/p&gt;
+&lt;p&gt;dp[i] 表示字符串S的下标为0~i-1的子串能否被字典中的单词组合表示。对于S[0&amp;hellip;i-1]可以分割为俩个部分S[0&amp;hellip;j-1]和 S[j&amp;hellip;i-1]，而 dp[j] 表示S[0&amp;hellip;j-1]的子串是否可以被字典中的单词组合而成，只需判断S[j&amp;hellip;i-1] 即可：&lt;/p&gt;
+&lt;p&gt;​			dp[i] = dp[j] &amp;amp;&amp;amp; dict contains S[j&amp;hellip;i-1]&lt;/p&gt;
+&lt;p&gt;(2) Describe your algorithm in pseudo-code&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;function wordBreak(S, dict)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;1: len = S.length
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;2: define an array dp with size of len;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;3: dp[0] = true;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;4: for i = 1 to len do
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;5:     for j = 0 to i - 1 do
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;6:         if dp[j] &amp;amp;&amp;amp; dict contains S[j, i - j] then
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;7:             dp[i] = true;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;8:             break;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;9:         end if
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;10:    end for
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;11:end for
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;12:return dp[len];
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;(3) Prove the correctness of your algorithm&lt;/p&gt;
+&lt;p&gt;dp[i] 表示字符串S的下标为0~i-1的子串能否被字典中的单词组合表示。计算 dp[i] 时，对于S[0&amp;hellip;i-1]可以分割为俩个部分S[0&amp;hellip;j-1]和 S[j&amp;hellip;i-1]，枚举每一个 j，如果左半部分S[0&amp;hellip;j-1] 和右半部分S[j&amp;hellip;i-1]都可以由字典中的单词组合而成则S[0&amp;hellip;i-1]部分就可以由字典中的单词组合而成。而 dp[j] 刚好表示S[0&amp;hellip;j-1]的子串是否可以被字典中的单词组合而成，而计算 dp[i] 时dp[j] 已经有了结果，只需要判断 S[j&amp;hellip;i-1] 部分是否在字典中即可，如果在字典中，说明这左右俩部分都可以由字典中的单词组合而成，也就说明dp[i] 所表示的 S[0&amp;hellip;i-1] 可以由字典中的单词组合而成，dp[i] = true。这样当计算到dp[n]即可得到结果。&lt;/p&gt;
+&lt;p&gt;(4) Analyze the complexity of your algorithm&lt;/p&gt;
+&lt;p&gt;假设判断某个字符串是否出现在字典中使用哈希表查找来实现，则时间复杂度为O(1)，这样，一共需要求dp数组中的n个值，求解每个值需要的时间复杂度为O(n)，则总的时间复杂度为O(n^2^)。&lt;/p&gt;
+&lt;h3 id=&#34;3-unique-binary-search-trees&#34;&gt;3 Unique Binary Search Trees&lt;/h3&gt;
+&lt;p&gt;​		Given n, how many structurally unique BST’s (binary search trees) that store values 1&amp;hellip;n?&lt;/p&gt;
+&lt;p&gt;​		Explanation: Given n = 3, there are a total of 5 unique BST’s:&lt;/p&gt;
+&lt;p&gt;(1) Describe the optimal substructure and DP equation&lt;/p&gt;
+&lt;p&gt;对于序列 1&amp;hellip;n，分别以每个元素 i 作为根节点建立二叉搜索树，则根节点左侧的序列为 1 ~ i-1，根节点右侧的序列为 i+1 ~ n，然后按照同样的方法对根节点左右俩个子序列构建左右二叉搜索子树。以 dp[n] 表示对于序列 1&amp;hellip;n可以构建的不同的二叉搜索树为 dp[n] 个，以 f(i) 表示以 i （1 &amp;lt;= i &amp;lt;= n）为根节点，可以构建的不同的二叉搜索树的个数，则有：&lt;/p&gt;
+&lt;p&gt;​		dp[n] = f(1) + f(2) + &amp;hellip; + f(n)，&lt;/p&gt;
+&lt;p&gt;而对于每个 f(i) 有：&lt;/p&gt;
+&lt;p&gt;​		f(i) = dp[i-1] * dp[n-i]，&lt;/p&gt;
+&lt;p&gt;则 dp[n] = dp[0] * dp[n-1] + dp[1] * dp[n-2] + &amp;hellip; + dp[n-1] * dp[0]。&lt;/p&gt;
+&lt;p&gt;(2) Describe your algorithm in pseudo-code&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;function numTrees(n)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;1: define an array dp[n+1] and assign a value of 0 to each element;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;2: dp[0] = 1;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;3: dp[1] = 1;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;4: dp[2] = 2;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;5: for i = 3 to n do
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;6:     for j = 1 to i do
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;7:         dp[i] += dp[j - 1] * dp[i - j];
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;8:     end for
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;9: end for
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;10:return dp[n];
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;(3) Prove the correctness of your algorithm&lt;/p&gt;
+&lt;p&gt;对于序列 1 &amp;hellip; n，分别以每个元素 i 作为根节点建立二叉搜索树，则左侧序列为 1 &amp;hellip; i-1，右侧的序列为 i+1 &amp;hellip; n，符合二叉搜索树的特性，然后对俩侧的序列采用同样的方法，由于每次选择的根节点不同，则建立的二叉搜索树也不同。&lt;/p&gt;
+&lt;p&gt;首先，对于长度为 k 的俩个序列 1 &amp;hellip; k 和 k+1 &amp;hellip; 2k 它们分别能够构建的不同的二叉搜索树的个数是相同的，设为dp[k]，则可定义数组dp[n] 为长度为 n 的序列能够构建的不同的二叉搜索树个数为 dp[n]；以 f(i) 表示为以 i （1 &amp;lt;= i &amp;lt;= n）为根节点可以构建的二叉搜索树的个数，且 f(i) 之间相互独立，则有:&lt;/p&gt;
+&lt;p&gt;​								dp[n] = f(1) + f(2) + &amp;hellip; + f(n)&lt;/p&gt;
+&lt;p&gt;以 i 为根节点可以建立的二叉搜索树的个数为 其左侧序列可以建立的二叉搜索树的个数和其右侧节点可以建立的二叉搜索树的个数的乘积，即：&lt;/p&gt;
+&lt;p&gt;​								f(i) = dp[i-1] * dp[n-i]&lt;/p&gt;
+&lt;p&gt;设dp[0] = 1,则有 dp[n] 的解：&lt;/p&gt;
+&lt;p&gt;​								 dp[n] = dp[0] * dp[n-1] + dp[1] * dp[n-2] + &amp;hellip; + dp[n-1] * dp[0]&lt;/p&gt;
+&lt;p&gt;(4) Analyze the complexity of your algorithm&lt;/p&gt;
+&lt;p&gt;需要求解dp数组的n个数，每个数的求解复杂度为O(n)，所以总的时间复杂度为O(n^2^)。&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>Greedy算法3道题</title>
+        <link>http://ydsungan.com/p/greedy%E7%AE%97%E6%B3%953%E9%81%93%E9%A2%98/</link>
+        <pubDate>Sat, 16 Apr 2022 15:06:12 +0800</pubDate>
+        
+        <guid>http://ydsungan.com/p/greedy%E7%AE%97%E6%B3%953%E9%81%93%E9%A2%98/</guid>
+        <description>&lt;h3 id=&#34;3-cross-the-river&#34;&gt;3 Cross the River&lt;/h3&gt;
+&lt;p&gt;Some people want to cross a river by boat. Each person has a weight, and each boat can carry an equal maximum weight limit. Each boat carries at most 2 people at the same time, provided the sum of the weight of those people is at most boat’s weight limit. Return the minimum number of boats to carry every given person.&lt;/p&gt;
+&lt;p&gt;Note that it is guaranteed each person can be carried by a boat.&lt;/p&gt;
+&lt;p&gt;(1). Describe the basic idea of your algorithm in natural language&lt;/p&gt;
+&lt;p&gt;首先将 people 数组升序排序，定义俩个指针，初始时，一个指向数组的头部，另一个指向数组的尾部，俩个指针所指向的人的体重之和如果小于或等于 limit，那么这俩个人可以坐一艘船离开，然后俩个指针相向各移动一位；否则，只能是体重大的乘船离开，指向尾部的指针向左移动一位。&lt;/p&gt;
+&lt;p&gt;(2). Pseudo-code&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;function crossTheRiver(people, limit)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;1: sort people in ascending order;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;2: i = 0;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;3: j = people.num - 1;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;4: boats = 0;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;5: while i &amp;lt;= j do
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;6:     if people[i] + people[j] &amp;lt;= limit then
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;7:         i += 1;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;8:         j -= 1;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;9:         boats += 1;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;10:    else then
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;11:        j -= 1;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;12:        boats += 1;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;13:    end if
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;14:end while
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;15:return boats;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;(3). Describe the greedy-choice property and optimal substructure&lt;/p&gt;
+&lt;p&gt;贪心选择思想：体重最小的人选择和体重最大的人乘同一艘船，这样能最大利用船的承重，如果这俩个人不满足要求，则体重最大的人单独乘船离开。&lt;/p&gt;
+&lt;p&gt;从 people 中去除乘船离开的人，对于剩下的人而言，问题的结构没有发生改变，即问题的规模由 n 变成 n -1 或者 n - 2，使用同样的方法来分配乘船。&lt;/p&gt;
+&lt;p&gt;所以最优子结构是：每次在当前剩余的人当中选择体重最小和体重最大的一起乘船，如果不能同时乘船，那么让体重最大的人单独乘船。&lt;/p&gt;
+&lt;p&gt;(4). Prove the correctness of your algorithm&lt;/p&gt;
+&lt;p&gt;首先对所有人的体重从小到大排序，这样对于体重最小的人，如果他能和体重最大的人乘同一艘船，那么他能和所有人乘同一艘船。所以贪心选择的思想是这个体重最小的人选择和体重最大的人乘同一艘船，可以最大利用船的承重。当俩人离开后，对剩下的人而言问题的结构没有发生变化，采用同样的方法来分配乘船。&lt;/p&gt;
+&lt;p&gt;而对于体重最小的人，如果他不能和体重最大的人乘同一艘船，那么没有人能和体重最大的人乘同一艘船，所以体重最大的人应该单独乘船离开。当他离开后，对剩下的人而言问题的结构没有发生变化，采用同样的方法来分配乘船。&lt;/p&gt;
+&lt;p&gt;(5). Analyse the complexity of your algorithm&lt;/p&gt;
+&lt;p&gt;排序的时间复杂度为 O(nlogn)，而使用双指针计算的复杂度为 O(n)，所以总的时间复杂度为 O(nlogn)。&lt;/p&gt;
+&lt;h3 id=&#34;6-maximum-number-of-coins-you-can-get&#34;&gt;6 Maximum Number of Coins You Can Get&lt;/h3&gt;
+&lt;p&gt;There are 3n piles of coins of different size, you and your friends will take piles of coins as follows: In each step, you will choose any 3 piles of coins (not necessarily consecutive). Your friend Alice will pick the pile with the maximum number of coins. You will pick the pile with submaximal number of coins. Your friend Bob will pick the last pile. Repeat until there are no more piles of coins. Given an array of integers piles where piles[i] is the number of coins in the i-th pile. Return the maximum number of coins which you can have.&lt;/p&gt;
+&lt;p&gt;(1). Describe the basic idea of your algorithm in natural language&lt;/p&gt;
+&lt;p&gt;首先将 piles 按照升序排序，piles 的大小为 3n，则能够获得的最多的硬币的数量的组成的堆为第 n+1 堆，第 n + 3堆，&amp;hellip;，第 3n-1 堆的硬币数量和。&lt;/p&gt;
+&lt;p&gt;(2).  Pseudo-code&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;function maxNumOfCoins(piles)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;1: sort piles in ascending order;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;2: n = piles.length / 3;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;3: max = 0;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;4: for i = n to 3*n-2 , i += 2 do
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;5:     max += piles[i];
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;6: end for
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;7: return max;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;(3). Describe the greedy-choice property and optimal substructure&lt;/p&gt;
+&lt;p&gt;贪心选择思想：3n堆硬币中，因为Alice每次必须选择最多的硬币，我必须获得第二多的硬币才能使自己的收益最大，为了使Bob不影响我的收益，Bob取最少的硬币；所以每次取的3堆中，第一堆和第二堆的硬币数量应该是当前所有堆中最多的和第二多的，第三堆的硬币数量该是当前堆中硬币最少的。&lt;/p&gt;
+&lt;p&gt;取当前所有堆中第一多和第二多以及最少的3堆，除去这3堆后，对于剩下的 3n-3 堆，问题的结构不变，仍以同样方法取即可。&lt;/p&gt;
+&lt;p&gt;所以最优子结构是：每次都是取当前所有堆中的第一多、第二多、最少的3堆，这3堆中，我取第二多的堆，所有堆的硬币总数就是我的最大收益。&lt;/p&gt;
+&lt;p&gt;(4). Prove the correctness of your algorithm&lt;/p&gt;
+&lt;p&gt;3n堆硬币中，硬币最多的一堆无论如何都会被Alice取走，当Alice每次取走第一多的，显然我必须取下剩余的最多的一堆，才使自己的收益最大。所以关键是Bob怎么取。&lt;/p&gt;
+&lt;p&gt;如果Bob第一次取了 3n 堆中第3多的，第二次我只能取第5多的，而如果Bob第一次取的是很少的一堆硬币，第二次我能取第4多的，显然Bob的取法会影响我的最大收益，如果Bob每次都是取最少的一堆硬币，就把影响降至最低。&lt;/p&gt;
+&lt;p&gt;(5). Analyse the complexity of your algorithm&lt;/p&gt;
+&lt;p&gt;n 为 piles 数组的长度，则排序的时间复杂度为 O(nlogn)，而遍历数组的时间复杂度为 O(n)，所以总的时间复杂度为 O(nlogn)。&lt;/p&gt;
+&lt;h3 id=&#34;4-permutation-partition&#34;&gt;4 Permutation Partition&lt;/h3&gt;
+&lt;p&gt;Bob is given a permutation p~1~, p~2~, . . . , p~n~ of integers from 1 to n and an integer k, such that 1 ≤ k ≤ n. A permutation means that every number from 1 to n is contained exactly once.&lt;/p&gt;
+&lt;p&gt;Consider all partitions of this permutation into k disjoint segments. Formally, a partition is a set of segments {[s~0~, s~1~], [s~1~ + 1, s~2~], . . . , [s~k−1~ + 1, s~k~]}, such that: 1 = s~0~ &amp;lt; s~1~ &amp;lt; s~2~ &amp;lt; . . . &amp;lt; s~k−1~ &amp;lt; s~k~ = n. Two partitions are different if there exists a segment that lies in one partition but not the other.&lt;/p&gt;
+&lt;p&gt;Bob wants to calculate the partition value, defined as  i=1 max s~i−1~≤ j ≤ s~i~ p~j~ for all possible partitions of the permutation into k disjoint segments. Please help him find the maximum possible partition value over all such partitions, and the number of ways to make partition with this value.&lt;/p&gt;
+&lt;p&gt;(1). Describe the basic idea of your algorithm in natural language&lt;/p&gt;
+&lt;p&gt;定义变量 max 为最大分区值并初始化为0，定义变量 num 为达到这个最大分区值的方法数并初始化为1，定义变量 prev 记录上一个分组的最大值的位置并初始化为0，遍历排列中的每个元素，如果某个元素的值大于 n - k，则将 max 加上其值，且如果不是第一个元素，则将该元素的位置与 prev 的差值和 num 相乘，再将 prev 指向该元素的位置。&lt;/p&gt;
+&lt;p&gt;(2).  Pseudo-code&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;function partition(permutation, k, n)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;1: max = 0;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;2: num = 1;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;3: prev = 0;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;4: for i = 0 to n - 1 do
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;5:     if permutation[i] &amp;gt; n - k then
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;6:         max += permutation[i];
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;7:         if i &amp;gt; 0 then
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;8:             num = num * (i - prev)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;9:         end if
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;10:	       prev = i
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;11:    end if
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;12:end for
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;13:return max, num
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;(3). Describe the greedy-choice property and optimal substructure&lt;/p&gt;
+&lt;p&gt;贪心选择思想：选出排列中的最大的 k 个数，将这 k 个数分别划分在 k 个不同组中。&lt;/p&gt;
+&lt;p&gt;(4). Prove the correctness of your algorithm&lt;/p&gt;
+&lt;p&gt;对于将排列分k组，选出最大的分区值，显然最大的分区值为排列中最大的 k 个数的相加和，所以把这 k 个数分别划分在 k 个不同组即可。&lt;/p&gt;
+&lt;p&gt;对如如何取得最大的 k 个值，本算法没有选择排序，只需要在遍历排列元素的时候判断该元素值是否大于 n - k 即可，因为这个排列是由 1 ~ n 组成的无重复元素的 n 大小的排列，只要元素值大于 n - k 即可判断属于最大的 k 个值之列。&lt;/p&gt;
+&lt;p&gt;在确定了 k 个最大值之后，每两个最大值之间的划分方法为这俩个最大值之间的元素的个数加1，所以在所有最大值之间划分的方法就是这些值逐个相乘即可。&lt;/p&gt;
+&lt;p&gt;(5). Analyse the complexity of your algorithm&lt;/p&gt;
+&lt;p&gt;该算法需要遍历整个排列，所以时间复杂度为 O(n)，n 为排列的长度。&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>intel CPU 不同平台介绍</title>
         <link>http://ydsungan.com/p/intel-cpu-%E4%B8%8D%E5%90%8C%E5%B9%B3%E5%8F%B0%E4%BB%8B%E7%BB%8D/</link>
         <pubDate>Mon, 04 Apr 2022 10:33:12 +0800</pubDate>

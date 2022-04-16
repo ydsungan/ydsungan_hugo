@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Greedy算法3道题，含分析、伪代码、正确性证明'><title>Greedy算法3道题</title>
+
+<link rel='canonical' href='http://ydsungan.com/p/greedy%E7%AE%97%E6%B3%953%E9%81%93%E9%A2%98/'>
+
+<link rel="stylesheet" href="/scss/style.min.d9e0562edde3d2bdf9d3d81365095a29d062ddaaa5d671f22168e57dfdb18b4f.css"><meta property='og:title' content='Greedy算法3道题'>
+<meta property='og:description' content='Greedy算法3道题，含分析、伪代码、正确性证明'>
+<meta property='og:url' content='http://ydsungan.com/p/greedy%E7%AE%97%E6%B3%953%E9%81%93%E9%A2%98/'>
+<meta property='og:site_name' content='ydsungan的博客'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2022-04-16T15:06:12&#43;08:00'/><meta property='article:modified_time' content='2022-04-16T15:06:12&#43;08:00'/>
+<meta name="twitter:title" content="Greedy算法3道题">
+<meta name="twitter:description" content="Greedy算法3道题，含分析、伪代码、正确性证明">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/cat2_huef20e5e895d95524d5e6d9818f968d02_472246_300x0_resize_q75_box.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">ydsungan的博客</a></h1>
+            <h2 class="site-description">任凭风浪起，稳坐钓鱼台</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://gitee.com/ydsungan'
+                        target="_blank"
+                        title="GitHub"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/about' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+                <li id="i18n-switch">  
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                    <select name="language" onchange="window.location.href = this.selectedOptions[0].value">
+                        
+                            <option value="http://ydsungan.com/" selected>English</option>
+                        
+                            <option value="http://ydsungan.com/zh-cn/" >中文</option>
+                        
+                            <option value="http://ydsungan.com/ar/" >عربي</option>
+                        
+                    </select>
+                </li>
+            
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/algorithm/" >
+                Algorithm
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/greedy%E7%AE%97%E6%B3%953%E9%81%93%E9%A2%98/">Greedy算法3道题</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            Greedy算法3道题，含分析、伪代码、正确性证明
+        </h3>
+        
+    </div>
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Apr 16, 2022</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    4 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h3 id="3-cross-the-river">3 Cross the River</h3>
+<p>Some people want to cross a river by boat. Each person has a weight, and each boat can carry an equal maximum weight limit. Each boat carries at most 2 people at the same time, provided the sum of the weight of those people is at most boat’s weight limit. Return the minimum number of boats to carry every given person.</p>
+<p>Note that it is guaranteed each person can be carried by a boat.</p>
+<p>(1). Describe the basic idea of your algorithm in natural language</p>
+<p>首先将 people 数组升序排序，定义俩个指针，初始时，一个指向数组的头部，另一个指向数组的尾部，俩个指针所指向的人的体重之和如果小于或等于 limit，那么这俩个人可以坐一艘船离开，然后俩个指针相向各移动一位；否则，只能是体重大的乘船离开，指向尾部的指针向左移动一位。</p>
+<p>(2). Pseudo-code</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">function crossTheRiver(people, limit)
+</span></span><span class="line"><span class="cl">1: sort people in ascending order;
+</span></span><span class="line"><span class="cl">2: i = 0;
+</span></span><span class="line"><span class="cl">3: j = people.num - 1;
+</span></span><span class="line"><span class="cl">4: boats = 0;
+</span></span><span class="line"><span class="cl">5: while i &lt;= j do
+</span></span><span class="line"><span class="cl">6:     if people[i] + people[j] &lt;= limit then
+</span></span><span class="line"><span class="cl">7:         i += 1;
+</span></span><span class="line"><span class="cl">8:         j -= 1;
+</span></span><span class="line"><span class="cl">9:         boats += 1;
+</span></span><span class="line"><span class="cl">10:    else then
+</span></span><span class="line"><span class="cl">11:        j -= 1;
+</span></span><span class="line"><span class="cl">12:        boats += 1;
+</span></span><span class="line"><span class="cl">13:    end if
+</span></span><span class="line"><span class="cl">14:end while
+</span></span><span class="line"><span class="cl">15:return boats;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>(3). Describe the greedy-choice property and optimal substructure</p>
+<p>贪心选择思想：体重最小的人选择和体重最大的人乘同一艘船，这样能最大利用船的承重，如果这俩个人不满足要求，则体重最大的人单独乘船离开。</p>
+<p>从 people 中去除乘船离开的人，对于剩下的人而言，问题的结构没有发生改变，即问题的规模由 n 变成 n -1 或者 n - 2，使用同样的方法来分配乘船。</p>
+<p>所以最优子结构是：每次在当前剩余的人当中选择体重最小和体重最大的一起乘船，如果不能同时乘船，那么让体重最大的人单独乘船。</p>
+<p>(4). Prove the correctness of your algorithm</p>
+<p>首先对所有人的体重从小到大排序，这样对于体重最小的人，如果他能和体重最大的人乘同一艘船，那么他能和所有人乘同一艘船。所以贪心选择的思想是这个体重最小的人选择和体重最大的人乘同一艘船，可以最大利用船的承重。当俩人离开后，对剩下的人而言问题的结构没有发生变化，采用同样的方法来分配乘船。</p>
+<p>而对于体重最小的人，如果他不能和体重最大的人乘同一艘船，那么没有人能和体重最大的人乘同一艘船，所以体重最大的人应该单独乘船离开。当他离开后，对剩下的人而言问题的结构没有发生变化，采用同样的方法来分配乘船。</p>
+<p>(5). Analyse the complexity of your algorithm</p>
+<p>排序的时间复杂度为 O(nlogn)，而使用双指针计算的复杂度为 O(n)，所以总的时间复杂度为 O(nlogn)。</p>
+<h3 id="6-maximum-number-of-coins-you-can-get">6 Maximum Number of Coins You Can Get</h3>
+<p>There are 3n piles of coins of different size, you and your friends will take piles of coins as follows: In each step, you will choose any 3 piles of coins (not necessarily consecutive). Your friend Alice will pick the pile with the maximum number of coins. You will pick the pile with submaximal number of coins. Your friend Bob will pick the last pile. Repeat until there are no more piles of coins. Given an array of integers piles where piles[i] is the number of coins in the i-th pile. Return the maximum number of coins which you can have.</p>
+<p>(1). Describe the basic idea of your algorithm in natural language</p>
+<p>首先将 piles 按照升序排序，piles 的大小为 3n，则能够获得的最多的硬币的数量的组成的堆为第 n+1 堆，第 n + 3堆，&hellip;，第 3n-1 堆的硬币数量和。</p>
+<p>(2).  Pseudo-code</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">function maxNumOfCoins(piles)
+</span></span><span class="line"><span class="cl">1: sort piles in ascending order;
+</span></span><span class="line"><span class="cl">2: n = piles.length / 3;
+</span></span><span class="line"><span class="cl">3: max = 0;
+</span></span><span class="line"><span class="cl">4: for i = n to 3*n-2 , i += 2 do
+</span></span><span class="line"><span class="cl">5:     max += piles[i];
+</span></span><span class="line"><span class="cl">6: end for
+</span></span><span class="line"><span class="cl">7: return max;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>(3). Describe the greedy-choice property and optimal substructure</p>
+<p>贪心选择思想：3n堆硬币中，因为Alice每次必须选择最多的硬币，我必须获得第二多的硬币才能使自己的收益最大，为了使Bob不影响我的收益，Bob取最少的硬币；所以每次取的3堆中，第一堆和第二堆的硬币数量应该是当前所有堆中最多的和第二多的，第三堆的硬币数量该是当前堆中硬币最少的。</p>
+<p>取当前所有堆中第一多和第二多以及最少的3堆，除去这3堆后，对于剩下的 3n-3 堆，问题的结构不变，仍以同样方法取即可。</p>
+<p>所以最优子结构是：每次都是取当前所有堆中的第一多、第二多、最少的3堆，这3堆中，我取第二多的堆，所有堆的硬币总数就是我的最大收益。</p>
+<p>(4). Prove the correctness of your algorithm</p>
+<p>3n堆硬币中，硬币最多的一堆无论如何都会被Alice取走，当Alice每次取走第一多的，显然我必须取下剩余的最多的一堆，才使自己的收益最大。所以关键是Bob怎么取。</p>
+<p>如果Bob第一次取了 3n 堆中第3多的，第二次我只能取第5多的，而如果Bob第一次取的是很少的一堆硬币，第二次我能取第4多的，显然Bob的取法会影响我的最大收益，如果Bob每次都是取最少的一堆硬币，就把影响降至最低。</p>
+<p>(5). Analyse the complexity of your algorithm</p>
+<p>n 为 piles 数组的长度，则排序的时间复杂度为 O(nlogn)，而遍历数组的时间复杂度为 O(n)，所以总的时间复杂度为 O(nlogn)。</p>
+<h3 id="4-permutation-partition">4 Permutation Partition</h3>
+<p>Bob is given a permutation p~1~, p~2~, . . . , p~n~ of integers from 1 to n and an integer k, such that 1 ≤ k ≤ n. A permutation means that every number from 1 to n is contained exactly once.</p>
+<p>Consider all partitions of this permutation into k disjoint segments. Formally, a partition is a set of segments {[s~0~, s~1~], [s~1~ + 1, s~2~], . . . , [s~k−1~ + 1, s~k~]}, such that: 1 = s~0~ &lt; s~1~ &lt; s~2~ &lt; . . . &lt; s~k−1~ &lt; s~k~ = n. Two partitions are different if there exists a segment that lies in one partition but not the other.</p>
+<p>Bob wants to calculate the partition value, defined as  i=1 max s~i−1~≤ j ≤ s~i~ p~j~ for all possible partitions of the permutation into k disjoint segments. Please help him find the maximum possible partition value over all such partitions, and the number of ways to make partition with this value.</p>
+<p>(1). Describe the basic idea of your algorithm in natural language</p>
+<p>定义变量 max 为最大分区值并初始化为0，定义变量 num 为达到这个最大分区值的方法数并初始化为1，定义变量 prev 记录上一个分组的最大值的位置并初始化为0，遍历排列中的每个元素，如果某个元素的值大于 n - k，则将 max 加上其值，且如果不是第一个元素，则将该元素的位置与 prev 的差值和 num 相乘，再将 prev 指向该元素的位置。</p>
+<p>(2).  Pseudo-code</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">function partition(permutation, k, n)
+</span></span><span class="line"><span class="cl">1: max = 0;
+</span></span><span class="line"><span class="cl">2: num = 1;
+</span></span><span class="line"><span class="cl">3: prev = 0;
+</span></span><span class="line"><span class="cl">4: for i = 0 to n - 1 do
+</span></span><span class="line"><span class="cl">5:     if permutation[i] &gt; n - k then
+</span></span><span class="line"><span class="cl">6:         max += permutation[i];
+</span></span><span class="line"><span class="cl">7:         if i &gt; 0 then
+</span></span><span class="line"><span class="cl">8:             num = num * (i - prev)
+</span></span><span class="line"><span class="cl">9:         end if
+</span></span><span class="line"><span class="cl">10:	       prev = i
+</span></span><span class="line"><span class="cl">11:    end if
+</span></span><span class="line"><span class="cl">12:end for
+</span></span><span class="line"><span class="cl">13:return max, num
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>(3). Describe the greedy-choice property and optimal substructure</p>
+<p>贪心选择思想：选出排列中的最大的 k 个数，将这 k 个数分别划分在 k 个不同组中。</p>
+<p>(4). Prove the correctness of your algorithm</p>
+<p>对于将排列分k组，选出最大的分区值，显然最大的分区值为排列中最大的 k 个数的相加和，所以把这 k 个数分别划分在 k 个不同组即可。</p>
+<p>对如如何取得最大的 k 个值，本算法没有选择排序，只需要在遍历排列元素的时候判断该元素值是否大于 n - k 即可，因为这个排列是由 1 ~ n 组成的无重复元素的 n 大小的排列，只要元素值大于 n - k 即可判断属于最大的 k 个值之列。</p>
+<p>在确定了 k 个最大值之后，每两个最大值之间的划分方法为这俩个最大值之间的元素的个数加1，所以在所有最大值之间划分的方法就是这些值逐个相乘即可。</p>
+<p>(5). Analyse the complexity of your algorithm</p>
+<p>该算法需要遍历整个排列，所以时间复杂度为 O(n)，n 为排列的长度。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css"integrity="sha384-RZU/ijkSsFbcmivfdRBQDtwuwVqK7GMOw6IMvKyeWL2K5UAlyp6WonmB8m7Jd0Hn"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.js"integrity="sha384-pK1WpvzWVBQiP0/GjnvRxV4mOb0oxFuyRxJlk6vVw146n3egcN5C925NCP7a7BY8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/contrib/auto-render.min.js"integrity="sha384-vZTG03m&#43;2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.querySelector(`.article-content`), {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ]
+        });})
+</script>
+    
+</article>
+
+    
+
+    
+
+<aside class="related-contents--wrapper">
+    <h2 class="section-title">Related contents</h2>
+    <div class="related-contents">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/lp%E5%BB%BA%E6%A8%A15%E9%81%93%E9%A2%98/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">LP建模5道题</h2>
+        </div>
+    </a>
+</article>
+            
+                
+<article class="">
+    <a href="/p/dc%E7%AE%97%E6%B3%956%E9%81%93%E9%A2%98/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">DC算法6道题</h2>
+        </div>
+    </a>
+</article>
+            
+                
+<article class="">
+    <a href="/p/dp%E7%AE%97%E6%B3%955%E9%81%93%E9%A2%98/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">DP算法5道题</h2>
+        </div>
+    </a>
+</article>
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div id="disqus_thread"></div>
+<script>
+    
+
+    
+
+    (function() { 
+    var d = document, s = d.createElement('script');
+    s.src = 'https://ydsungan.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2022 ydsungan的博客
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.11.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li>
+      <ol>
+        <li><a href="#3-cross-the-river">3 Cross the River</a></li>
+        <li><a href="#6-maximum-number-of-coins-you-can-get">6 Maximum Number of Coins You Can Get</a></li>
+        <li><a href="#4-permutation-partition">4 Permutation Partition</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

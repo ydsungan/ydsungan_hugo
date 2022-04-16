@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='LP建模5道题，只建模不计算。'><title>LP建模5道题</title>
+
+<link rel='canonical' href='http://ydsungan.com/p/lp%E5%BB%BA%E6%A8%A15%E9%81%93%E9%A2%98/'>
+
+<link rel="stylesheet" href="/scss/style.min.d9e0562edde3d2bdf9d3d81365095a29d062ddaaa5d671f22168e57dfdb18b4f.css"><meta property='og:title' content='LP建模5道题'>
+<meta property='og:description' content='LP建模5道题，只建模不计算。'>
+<meta property='og:url' content='http://ydsungan.com/p/lp%E5%BB%BA%E6%A8%A15%E9%81%93%E9%A2%98/'>
+<meta property='og:site_name' content='ydsungan的博客'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2022-04-16T15:09:12&#43;08:00'/><meta property='article:modified_time' content='2022-04-16T15:09:12&#43;08:00'/>
+<meta name="twitter:title" content="LP建模5道题">
+<meta name="twitter:description" content="LP建模5道题，只建模不计算。">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/cat2_huef20e5e895d95524d5e6d9818f968d02_472246_300x0_resize_q75_box.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">ydsungan的博客</a></h1>
+            <h2 class="site-description">任凭风浪起，稳坐钓鱼台</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://gitee.com/ydsungan'
+                        target="_blank"
+                        title="GitHub"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/about' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+                <li id="i18n-switch">  
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                    <select name="language" onchange="window.location.href = this.selectedOptions[0].value">
+                        
+                            <option value="http://ydsungan.com/" selected>English</option>
+                        
+                            <option value="http://ydsungan.com/zh-cn/" >中文</option>
+                        
+                            <option value="http://ydsungan.com/ar/" >عربي</option>
+                        
+                    </select>
+                </li>
+            
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/algorithm/" >
+                Algorithm
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/lp%E5%BB%BA%E6%A8%A15%E9%81%93%E9%A2%98/">LP建模5道题</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            LP建模5道题，只建模不计算。
+        </h3>
+        
+    </div>
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Apr 16, 2022</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    6 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h3 id="1-road-lighting-problem">1 Road Lighting Problem</h3>
+<p>​		Consider a road divided into $n$ segments that is illuminated by $m$ lamps. Let $p_{j}$ be the power of the $jth$ lamp and $c$ is the cost to operate a single lamp per hour. The illumination $I_{i}$ of the $ith$ segment is assumed to be $\sum_{j=1}^ma_{ij}p_j$, where $a_{ij}$ are known coefficients. Let $I^∗_i$ be the desired illumination of segment $i$. In order to prolong the life of the lamps, each lamp needs to be turned off for one hour within 24 hours. Assume that the start and end time for the lamp to remain off are integer numbers of hours.</p>
+<p>​		We need to choosing the lamp powers $p_{j}$ and determining the turning off time for all lamps so that the illuminations $I_{i}$ meet the desired illuminations $I^∗_i$. Formulate this problem as an $ILP$ so as to minimize the cost in operating all lamps.</p>
+<p>解：</p>
+<p>​		设 $O_{hj}$ 表示第 $j$ 盏灯在第 $h$ 个小时是否开启，$O_{hj} = 1$ 表示开启了，$O_{hj} = 0$ 表示没有开启，其中$h = 1,2,&hellip;,24$ , $j = 1,2,&hellip;,m$ ，则目标函数为 min  $\sum_{h=1}^{24}\sum_{j=1}^mcO_{hj}$</p>
+<p>​		对于第 $j$ 盏灯，24小时之内最多只能开23个小时， 至少可以开0小时，则有：</p>
+<p>​														$\sum_{h=1}^{24}O_{hj} \leq 23$ , $j = 1,2,&hellip;,m$</p>
+<p>​														$\sum_{h=1}^{24}O_{hj} \geq 0$ , $j = 1,2,&hellip;,m$</p>
+<p>​		对于第 $i$ 个路段，在每个小时内都满足照明要求，则有：</p>
+<p>​														$\sum_{j=1}^{m}a_{ij}p_{j}O_{hj} \geq I^∗_i$ , $i = 1,2,&hellip;,n$ , $h = 1,2,&hellip;,24$</p>
+<p>​		总的有：</p>
+<p>​					min	$\sum_{h=1}^{24}\sum_{j=1}^mcO_{hj}$</p>
+<p>​					s.t.	  $\sum_{h=1}^{24}O_{hj} \leq 23$ , $j = 1,2,&hellip;,m$</p>
+<p>​							   $\sum_{h=1}^{24}O_{hj} \geq 0$ , $j = 1,2,&hellip;,m$</p>
+<p>​							   $\sum_{j=1}^{m}a_{ij}p_{j}O_{hj} \geq I^∗_i$ , $i = 1,2,&hellip;,n$ , $h = 1,2,&hellip;,24$</p>
+<h3 id="2-profit-maximization">2 Profit Maximization</h3>
+<p>​		Your factory produces three kinds of product: A, B and C. All of them need two kinds of raw materials: nickel and aluminum. The profit and cost of each kind of product are shown in the following table.</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th style="text-align:center">Product</th>
+<th style="text-align:center">Profit($)</th>
+<th style="text-align:center">Nickel(kg)</th>
+<th style="text-align:center">Aluminum(kg)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">A</td>
+<td style="text-align:center">10</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">4</td>
+</tr>
+<tr>
+<td style="text-align:center">B</td>
+<td style="text-align:center">8</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">3</td>
+</tr>
+<tr>
+<td style="text-align:center">C</td>
+<td style="text-align:center">16</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">7</td>
+</tr>
+</tbody>
+</table></div>
+<p>​		You only have 200 kg of nickle and 300 kg of aluminum in stock. How to arrange production to maximize profits? Please formulate this problem as a LP and transform it into dual form. Then you may solve both primal and dual problems using GLPK or Gurobi or other similar tools.</p>
+<p>解：</p>
+<p>​		设产品A、B、C分别生产 $x_{1}$、$x_{2}$、$x_{3}$ kg，则有：</p>
+<p>​		max	$10x_{1} + 8x_{2} + 16x_{3}$</p>
+<p>​		s.t.	   $3x_{1} + 3x_{2} +   2x_{3} \leq 200 $</p>
+<p>​					$4x_{1} + 3x_{2} +   7x_{3} \leq 300$</p>
+<p>​				    $x_{1} \geq 0$</p>
+<p>​					$x_{2} \geq 0$</p>
+<p>​				    $x_{3} \geq 0$</p>
+<p>​</p>
+<p>​		对偶问题为：</p>
+<p>​		min		$200y_{1} + 300y_{2}$</p>
+<p>​		s.t.		  $3y_{1} + 4y_{2} \geq 10$</p>
+<p>​					   $3y_{1} + 3y_{2} \geq 8$</p>
+<p>​					   $2y_{1} + 7y_{2} \geq 16$</p>
+<p>​					   $y_{1},y_{2} \geq 0$</p>
+<p>​		GLPK的解：当 $x_{1} = 0, x_{2} = 53.3, x_{3} = 20$ 时，可以使利润最大化，最大利润为 746.7，具体如下图所示。</p>
+<h3 id="3-cutting-paper-minimization">3 Cutting Paper Minimization</h3>
+<p>​		Your factory has expanded its bussiness. Suppose you have an unlimited number of large rolls of paper, of width $W$ meters per roll ($W$ is a positive integer). However, different m customers demands are for smaller width of paper; in particular, customer $i$ needs $b_{i}$ rolls of paper of width $w_{i}$ , i = 1, 2, &hellip;, m. We assume that $w_{i}$ ≤ W for each $i$, and each $w_{i}$ is an integer. Smaller rolls are obtained by slicing a large roll in a certain way. You can slice one roll of paper for different customers only if their total width does not exceed $W$.</p>
+<p>​		The goal of you is to minimize the number of large rolls used while satisfying customer demand. Please formulate this problem as an ILP. Assume that there is no cost for slicing.</p>
+<p>解：</p>
+<p>​		第 $i$ 个顾客需要$b_{i}$ 卷纸，所以设 $N$ 为总共需要的较小宽度卷纸数目，同时 $N$ 也是所需的完整宽度$W$的卷纸的数目的上界， $N = \sum_{i=1}^mb_{i}$ , 即在这种情况下，每个宽度较小的卷纸都是从完整卷纸里面裁切出来的。</p>
+<p>​		设$w_{j}$为$N$ 个较小宽度的卷纸中的第 $j$ 个的宽度，设变量 $y_{i}$ 代表是否使用了第 $i$ 个完整宽度的卷纸，$y_{i} = 1$表示使用了，$y_{i} = 0$ 表示没有使用，其中 $i = 1,2, &hellip;, N$，设 $x_{ij}$ 代表第 $j$ 个较小宽度的卷纸是否是从第$i$ 个完整宽度的卷纸里面裁切的，$x_{ij} = 1$ 表示是，$x_{ij} = 0$ 表示否，其中 $j = 1,2, &hellip;, N$。</p>
+<p>​		对于第 $i$ 个完整宽度的卷纸，所有从该卷纸里面裁切出来的小卷纸的总宽度应该小于$W$，即有：																$\sum_{j=1}^Nx_{ij}w_{j} \leq W$ , $i = 1, &hellip;, N$</p>
+<p>​		对于每个较小宽度的卷纸 $j$ , 都应该被生产，它可能裁切于第 $i = 1,&hellip;,N$ 个完整卷纸，即有：</p>
+<p>​																$\sum_{i=1}^Nx_{ij} = 1$ , $j = 1,&hellip;,N$</p>
+<p>​		如果第 $i$ 个完整宽度的卷纸没有被使用，那么第 $j$ 个较小宽度的卷纸也不可能从中裁切出来，即有：</p>
+<p>​																$0 \leq x_{ij} \leq y_{i}, i=1,&hellip;,N ,j=1,&hellip;,N$</p>
+<p>​		总的有：</p>
+<p>​					min	$\sum_{i=1}^Ny_{i}$</p>
+<p>​					s.t.	 $\sum_{j=1}^Nx_{ij}w_{j} \leq W$ , $i = 1, &hellip;, N$</p>
+<p>​							  $\sum_{i=1}^Nx_{ij} = 1$ , $j = 1,&hellip;,N$</p>
+<p>​							  $0 \leq x_{ij} \leq y_{i}$ , $ i=1,&hellip;,N ,j=1,&hellip;,N$</p>
+<p>​							  $y_{i}\in {0,1}$</p>
+<p>​							  $x_{ij} \in {0,1}$</p>
+<h3 id="4-reformulation-problems-with-absolute-values">4 Reformulation Problems with Absolute Values</h3>
+<p>​		Consider the problem:</p>
+<p>​												minimize 	$2|x_{1}| + x_{2}$</p>
+<p>​												subject to    $x_{1} + x_{2} \geq 4$</p>
+<p>​		Please reformulate this problem as a LP without absolute values.</p>
+<p>解：</p>
+<p>​		minimize	$2|x_{1}| + x_{2}$ 可以写成 2·max{x~1~, -x~1~} + x~2~ ，设变量$z_{1}$，</p>
+<p>​		$z_{1} \geq x_{1}$ ,  $z_{1} \geq -x_{1}$</p>
+<p>​		可以用 z~1~ 替换|x~1~|, 则原问题可以写成：</p>
+<p>​												minimize	$2z_{1} + x_{2}$</p>
+<p>​												subject to   $x_{1} + x_{2} \geq 4$</p>
+<p>​																	 $z_{1} \geq x_{1}$</p>
+<p>​																	 $z_{1} \geq -x_{1}$</p>
+<h3 id="5-cook-recruitment-for-ucas-canteen">5 Cook Recruitment for UCAS Canteen</h3>
+<p>​		Suppose that you are the canteen manager of UCAS and you are asked to recruit a group of cooks for improving the quality of meals. It is estimated that there are $N$ stalls need to change cooks, and the $i(th)$stall needs at least $n_{i}$ cooks. The number of recruitment firms is $F$. Cooks from the $j(th)$ recruitment firm can cook different foods in several stalls $S_{j}$ and the recruitment fee for one cook from the $j(th)$ recruitment firm is $c_{j}$ . Note that $S_{j}$ is a subset of $N = {1, 2, · · · , n}$ and the union of $S_{j}$ equals to $N$.</p>
+<p>​		Your boss wants you to save money so your need to formulate this problem as an $ILP$ and your goal is minimizing the recruitment fee of enough cooks.</p>
+<p>解：</p>
+<p>​		令 $K = \sum_{i=1}^Nn_{i}$ , $K$ 表示总共需要的厨师数量的上界。</p>
+<p>​		就设一共有 $K$ 个厨师，$x_{l}$ 表示第 $l$ 个厨师是否被录用，$x_l = 1$ 表示被录用，$x_l = 0$ 表示没有被录用；$y_{lj}$ 表示第 $l$ 个厨师是否是第 $j$ 家公司的，$y_{lj} = 1$ 表示属于，$y_{lj} = 0$ 表示不属于；则目标函数为 min $\sum_{l=1}^K\sum_{j=1}^Fx_{l}y_{lj}c_{j}$ .</p>
+<p>​		由于第 $i$ 个摊位需要 $n_{i}$ 个厨师，设 $z_{lji}$ 表示第 $l$ 位来自第 $j$ 家公司的厨师是否去了第 $i$ 个摊位，$z_{lji} = 1$ 表示去了，$z_{lji} = 0$ 表示没去，则有：</p>
+<p>​														$\sum_{l=1}^{K}x_lz_{lji} = n_{i}$ , $i = 1,2,&hellip;,N$</p>
+<p>​		由于第 $j$ 个公司的厨师可以同时为 $S_{j}$ 个摊位服务，每个厨师所服务的摊位数都不大于 $S_{j}$，则有：</p>
+<p>​													   $\sum_{i=1}^Nx_{l}y_{lj}z_{lji} \leq S_{j}$ , $j = 1,2,&hellip;,m$ , $l = 1,2,&hellip;,K$</p>
+<p>​		总的有：</p>
+<p>​					min	$\sum_{l=1}^K\sum_{j=1}^Fx_{l}y_{lj}c_{j}$</p>
+<p>​					s.t.	 $\sum_{l=1}^{K}x_lz_{lji} = n_{i}$ , $i = 1,2,&hellip;,N$</p>
+<p>​							  $\sum_{i=1}^Nx_{l}y_{lj}z_{lji} \leq S_{j}$ , $j = 1,2,&hellip;,m$ , $l = 1,2,&hellip;,K$</p>
+<p>​							  $x_{l} \geq y_{lj} \geq z_{lji}$ , $\forall l,j,i$</p>
+<p>​							 $x_{l}\in {0,1}$</p>
+<p>​							 $y_{lj}\in {0,1}$</p>
+<p>​							 $z_{lji}\in {0,1}$</p>
+<p>​</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css"integrity="sha384-RZU/ijkSsFbcmivfdRBQDtwuwVqK7GMOw6IMvKyeWL2K5UAlyp6WonmB8m7Jd0Hn"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.js"integrity="sha384-pK1WpvzWVBQiP0/GjnvRxV4mOb0oxFuyRxJlk6vVw146n3egcN5C925NCP7a7BY8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/contrib/auto-render.min.js"integrity="sha384-vZTG03m&#43;2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.querySelector(`.article-content`), {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ]
+        });})
+</script>
+    
+</article>
+
+    
+
+    
+
+<aside class="related-contents--wrapper">
+    <h2 class="section-title">Related contents</h2>
+    <div class="related-contents">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/dc%E7%AE%97%E6%B3%956%E9%81%93%E9%A2%98/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">DC算法6道题</h2>
+        </div>
+    </a>
+</article>
+            
+                
+<article class="">
+    <a href="/p/dp%E7%AE%97%E6%B3%955%E9%81%93%E9%A2%98/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">DP算法5道题</h2>
+        </div>
+    </a>
+</article>
+            
+                
+<article class="">
+    <a href="/p/greedy%E7%AE%97%E6%B3%953%E9%81%93%E9%A2%98/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Greedy算法3道题</h2>
+        </div>
+    </a>
+</article>
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div id="disqus_thread"></div>
+<script>
+    
+
+    
+
+    (function() { 
+    var d = document, s = d.createElement('script');
+    s.src = 'https://ydsungan.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2022 ydsungan的博客
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.11.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li>
+      <ol>
+        <li><a href="#1-road-lighting-problem">1 Road Lighting Problem</a></li>
+        <li><a href="#2-profit-maximization">2 Profit Maximization</a></li>
+        <li><a href="#3-cutting-paper-minimization">3 Cutting Paper Minimization</a></li>
+        <li><a href="#4-reformulation-problems-with-absolute-values">4 Reformulation Problems with Absolute Values</a></li>
+        <li><a href="#5-cook-recruitment-for-ucas-canteen">5 Cook Recruitment for UCAS Canteen</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

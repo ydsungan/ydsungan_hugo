@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='DP算法5道题，含分析、伪代码、正确性证明'><title>DP算法5道题</title>
+
+<link rel='canonical' href='http://ydsungan.com/p/dp%E7%AE%97%E6%B3%955%E9%81%93%E9%A2%98/'>
+
+<link rel="stylesheet" href="/scss/style.min.d9e0562edde3d2bdf9d3d81365095a29d062ddaaa5d671f22168e57dfdb18b4f.css"><meta property='og:title' content='DP算法5道题'>
+<meta property='og:description' content='DP算法5道题，含分析、伪代码、正确性证明'>
+<meta property='og:url' content='http://ydsungan.com/p/dp%E7%AE%97%E6%B3%955%E9%81%93%E9%A2%98/'>
+<meta property='og:site_name' content='ydsungan的博客'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2022-04-16T15:06:12&#43;08:00'/><meta property='article:modified_time' content='2022-04-16T15:06:12&#43;08:00'/>
+<meta name="twitter:title" content="DP算法5道题">
+<meta name="twitter:description" content="DP算法5道题，含分析、伪代码、正确性证明">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/cat2_huef20e5e895d95524d5e6d9818f968d02_472246_300x0_resize_q75_box.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">ydsungan的博客</a></h1>
+            <h2 class="site-description">任凭风浪起，稳坐钓鱼台</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://gitee.com/ydsungan'
+                        target="_blank"
+                        title="GitHub"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/about' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+                <li id="i18n-switch">  
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                    <select name="language" onchange="window.location.href = this.selectedOptions[0].value">
+                        
+                            <option value="http://ydsungan.com/" selected>English</option>
+                        
+                            <option value="http://ydsungan.com/zh-cn/" >中文</option>
+                        
+                            <option value="http://ydsungan.com/ar/" >عربي</option>
+                        
+                    </select>
+                </li>
+            
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/algorithm/" >
+                Algorithm
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/dp%E7%AE%97%E6%B3%955%E9%81%93%E9%A2%98/">DP算法5道题</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            DP算法5道题，含分析、伪代码、正确性证明
+        </h3>
+        
+    </div>
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Apr 16, 2022</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    8 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h3 id="1-money-robbing">1 Money robbing</h3>
+<p>​		A robber is planning to rob houses along a street. Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of them is that adjacent houses have security system connected and it will automatically contact the police if two adjacent houses were broken into on the same night.</p>
+<ol>
+<li>
+<p>Given a list of non-negative integers representing the amount of money of each house, determine the maximum amount of money you can rob tonight without alerting the police.</p>
+<p>(1) Describe the optimal substructure and DP equation</p>
+<p>设列表 nums 表示每个房间的现金，设数组 dp 中元素 dp[i] 表示在第 0 ~ i 间房子可偷窃的最大金额，有状态转移方程：</p>
+<p>​										dp[i] = max(dp[i-2] + nums[i], dp[i-1])</p>
+<p>(2) Describe your algorithm in pseudo-code</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">function rob(nums)
+</span></span><span class="line"><span class="cl">1: if nums == NIL or nums.length == 0 then
+</span></span><span class="line"><span class="cl">2:     return 0;
+</span></span><span class="line"><span class="cl">3: end if
+</span></span><span class="line"><span class="cl">4: if nums.length == 1 then
+</span></span><span class="line"><span class="cl">5:     return nums[0];
+</span></span><span class="line"><span class="cl">6: end if
+</span></span><span class="line"><span class="cl">7: initialize an array dp with size of nums.length;
+</span></span><span class="line"><span class="cl">8: dp[0] = nums[0];
+</span></span><span class="line"><span class="cl">9: dp[1] = max(nums[0], nums[1]);
+</span></span><span class="line"><span class="cl">10:for i = 2 to nums.length -1 do
+</span></span><span class="line"><span class="cl">11:    dp[i] = max(dp[i - 2] + nums[i], dp[i-1]);
+</span></span><span class="line"><span class="cl">12:end for
+</span></span><span class="line"><span class="cl">13:return dp[nums.length - 1]
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>(3) Prove the correctness of your algorithm</p>
+<p>本题采用动态规划的方法来解题。</p>
+<ul>
+<li>确定 dp 数组以及含义：设 dp[i] 表示第 0~i 间房子可偷窃的最大现金，dp数组的大小为房间的个数；</li>
+<li>确定基础解：如果只有一间房子，则 dp[0] = nums[0]，如果有俩间房子，偷盗其中现金多的一间房子，则 dp[1] = max(nums[0], nums[1])，对于 2 &lt;= i &lt; nums.length，dp[i] 无需初始化；</li>
+<li>确定状态转移方程：对于第 i 间房子（i &gt;= 2，i 从0开始），有俩个选择，即要么偷盗第 i 间房子，那么就无法偷盗第 i - 1 间房子，这时可以偷盗的最大价值为 dp[i] = dp[i - 2] + nums[i]；要么不偷盗第 i 间房子，可偷盗的最大价值为前 i - 1 间房子的最大价值 dp[i] = dp[i - 1]；则有状态转移方程 dp[i] = max(dp[i - 2] + nums[i], dp[i-1])。</li>
+</ul>
+<p>这样，计算到 dp[nums.length - 1] 即表示结果。</p>
+<p>(4) Analyze the complexity of your algorithm</p>
+<p>本题算法只需要对 dp 数组遍历一遍即可，时间复杂度为 O(n)，其中n是dp数组的长度。</p>
+</li>
+<li>
+<p>What if all houses are arranged in a circle?</p>
+<p>(1) Describe the optimal substructure and DP equation</p>
+<p>设列表 nums 表示每个房间的现金，设数组 dp 中元素 dp[i] 表示在第 start ~ i 间房子可偷窃的最大金额，有状态转移方程：</p>
+<p>​										dp[i] = max(dp[i-2] + nums[i], dp[i-1])</p>
+<p>(2) Describe your algorithm in pseudo-code</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">function rob(nums)
+</span></span><span class="line"><span class="cl">1: len = nums.length;
+</span></span><span class="line"><span class="cl">2: if len == 1 then
+</span></span><span class="line"><span class="cl">3:     return nums[0];
+</span></span><span class="line"><span class="cl">4: else if len == 2 then
+</span></span><span class="line"><span class="cl">5:     return max(nums[0],nums[1]);
+</span></span><span class="line"><span class="cl">6: end if
+</span></span><span class="line"><span class="cl">7: initialize an array dp with size of len;
+</span></span><span class="line"><span class="cl">8: dp[0] = nums[0];
+</span></span><span class="line"><span class="cl">9: dp[1] = max(nums[0],nums[1]);
+</span></span><span class="line"><span class="cl">10:for i = 2 to len - 1 do
+</span></span><span class="line"><span class="cl">11:    dp[i] = max(dp[i-1], nums[i] + dp[i-2]);
+</span></span><span class="line"><span class="cl">12:end for
+</span></span><span class="line"><span class="cl">13:if nums[1] &gt;= nums[0] and dp[2] != dp[1] or nums[1] &lt; nums[0] then
+</span></span><span class="line"><span class="cl">14:    dp[len - 1] = min(dp[len - 1], dp[len - 2]);
+</span></span><span class="line"><span class="cl">15:end if
+</span></span><span class="line"><span class="cl">16:m = dp[len - 1];
+</span></span><span class="line"><span class="cl">17:dp[1] = nums[1];
+</span></span><span class="line"><span class="cl">18:dp[2] = max(nums[1],nums[2]);
+</span></span><span class="line"><span class="cl">19:for i = 3 to len - 1 do
+</span></span><span class="line"><span class="cl">20:    dp[i] = max(dp[i-1], nums[i] + dp[i-2]);
+</span></span><span class="line"><span class="cl">21:end for
+</span></span><span class="line"><span class="cl">22:n = dp[len - 1];
+</span></span><span class="line"><span class="cl">23:return max(m,n);
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>(3) Prove the correctness of your algorithm</p>
+<p>如果只有一间房屋，则可以偷窃该房子；如果有俩间房子，只能偷窃一间房子，则偷窃现金多的一间房子。当房屋的数量多于2间需要考虑首位相连的情况。</p>
+<p>需要考虑到不能同时偷窃第一间和最后一间房子，如果偷窃了第一间房子则不能偷窃最后一间，如果没有偷窃第一间，则可以偷窃最后一间房子。首先在第一问的基础上计算得到 dp[0, 1, &hellip;, n-1] 的所有元素，在此基础上判断第一间房子是否被偷窃，如果第一间房子被偷窃了，那么最后一间房子不能被偷窃了，则有 dp[n - 1] = dp[n - 2]；然后选择不偷窃第一间房子，那么最后一间房子就可以被偷窃了，重新选择区间按照第一问的状态转移公式再计算一遍。</p>
+<p>所以本题算法需要执行俩次状态转移公式的过程。第一次执行时的基础解为 dp[0] = nums[0], dp[1] = max(nums[0], nums[1])；第二次执行时的基础解为 dp[1] = nums[1], dp[2] = max(nums[1], nums[2])。第一次执行完成过后需要检查一遍第一间房子有没有被盗窃，如果第一间被盗窃了，再检查一遍最后一件房子有没有被盗窃，如果最后一间房子被盗窃了，则修改 dp[n - 1] = dp[n - 2]；而执行完第二遍公式后，不需要检查。最后比较俩次的最终的dp[n-1]结果，返回值大的即可。</p>
+<p>(4) Analyze the complexity of your algorithm</p>
+<p>对dp数组遍历了2次，所以时间复杂度为O(n)。</p>
+</li>
+</ol>
+<h3 id="2--largest-divisible-subset">2  Largest Divisible Subset</h3>
+<p>​		Given a set of distinct positive integers, find the largest subset such that every pair (S~i~ , S~j~ ) of elements in this subset satisfies: S~i~%S~j~ = 0 or S~j~%S~i~ = 0.</p>
+<p>​		Please return the largest size of the subset.</p>
+<p>​		Note: S~i~%S~j~ = 0 means that S~i~ is divisible by S~j~</p>
+<p>(1) Describe the optimal substructure and DP equation</p>
+<p>dp[i] 表示数组 nums 中下标从 0 到 i 的序列中包含 nums[i] 的最大整除子序列的长度，dp数组的长度等于nums数组的长度，且其中的每一个元素都被初始化为1，对于每一个 nums[i]，需要检查 [0, i-1] 区间上的每一位nums[j]，使得 nums[i] % nums[j] == 0，有状态转移方程：</p>
+<p>​														dp[i] = max(dp[i], dp[j] + 1)</p>
+<p>(2) Describe your algorithm in pseudo-code</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">function largestDivisibleSubset(nums)
+</span></span><span class="line"><span class="cl">1: len = nums.length;
+</span></span><span class="line"><span class="cl">2: initialize an array dp with size of len and assign a value of 1 to each element;
+</span></span><span class="line"><span class="cl">3: sort(nums);
+</span></span><span class="line"><span class="cl">4: for i = 1 to len - 1 do
+</span></span><span class="line"><span class="cl">5:     for j = 0 to i - 1 do
+</span></span><span class="line"><span class="cl">6:         if nums[i] % nums[j] == 0 then
+</span></span><span class="line"><span class="cl">7:             dp[i] = max(dp[i], dp[j]+1);
+</span></span><span class="line"><span class="cl">8:         end if
+</span></span><span class="line"><span class="cl">9:     end for
+</span></span><span class="line"><span class="cl">10:end for
+</span></span><span class="line"><span class="cl">11:return max(dp);
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>(3) Prove the correctness of your algorithm</p>
+<p>首先将数组nums进行升序排列，这样如果 nums[j] 可以整除 nums[k]，而nums[l]可以整除nums[j]，则nums[l]也可以整除nums[k]。dp[i] 表示 nums数组中下标 0 ~ i 的序列里包含 nums[i] 的最长整除子序列的长度，在计算 dp[i]的过程中，需要枚举 j = 0, 1, &hellip;, i-1的所有数nums[j]，如果 nums[i] 可以整除 nums[j]，说明nums[i] 可以扩充在以 nums[j] 为最大整数的整除子集里成为一个更大的整除子集，这时在下标 0 ~ i 的区间一个可能的最大的整除序列的长度就是 dp[j] + 1，如果dp[j] + 1大于自身dp[i]，则更新。这样就能求出最终的值。</p>
+<p>(4) Analyze the complexity of your algorithm</p>
+<p>对数组排序的时间复杂度为O(nlogn)，计算dp数组的时间复杂度为O(n^2^)，所以总的时间复杂度为O(n^2^)。</p>
+<h3 id="5-distinct-sequences">5 Distinct Sequences</h3>
+<p>​		Given two strings S and T, return the number of distinct subsequences of S which equals T.
+​		A string’s subsequence is a new string formed from the original string by deleting some (can
+be none) of the characters without disturbing the remaining characters’ relative positions. (i.e.,
+”ACE” is a subsequence of ”ABCDE” while ”AEC” is not).</p>
+<p>(1) Describe the optimal substructure and DP equation</p>
+<p>dp[i] [j]表示字符串S的第 1 ~ i个字符组成的子串中以S[i]结尾的子序列中由字符串 T 的第 1~ j 个字符组成的子串出现的个数，并认为一个空字符串是任何字符串的子序列。有状态转移方程：当 t[j-1] == s[i-1] 时，有 dp[i] [j] = dp[i-1] [j-1] + dp[i-1] [j]；当 t[j-1] != s[i-1] 时，有 dp[i] [j] = dp[i-1] [j]。</p>
+<p>(2) Describe your algorithm in pseudo-code</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">function distinctSequences(S, T)
+</span></span><span class="line"><span class="cl">1: m = S.length;
+</span></span><span class="line"><span class="cl">2: n = T.length;
+</span></span><span class="line"><span class="cl">3: if n &lt; m then
+</span></span><span class="line"><span class="cl">4:     return 0;
+</span></span><span class="line"><span class="cl">5: end if
+</span></span><span class="line"><span class="cl">6: define a two-dimensional array dp[m+1][n+1] and assign a value of 0 to each element;
+</span></span><span class="line"><span class="cl">7: for i = 0 to m do
+</span></span><span class="line"><span class="cl">8:     dp[i][0] = 1;
+</span></span><span class="line"><span class="cl">9: end for
+</span></span><span class="line"><span class="cl">10:for i = 1 to m do
+</span></span><span class="line"><span class="cl">11:    for j = 1 to n do
+</span></span><span class="line"><span class="cl">12:        if t[j-1] == s[i-1] then
+</span></span><span class="line"><span class="cl">13:            dp[i][j] = dp[i-1][j-1] + dp[i-1][j];
+</span></span><span class="line"><span class="cl">14:        else then
+</span></span><span class="line"><span class="cl">15:            dp[i][j] = dp[i-1][j];
+</span></span><span class="line"><span class="cl">16:        end if
+</span></span><span class="line"><span class="cl">17:    end for
+</span></span><span class="line"><span class="cl">18:end for
+</span></span><span class="line"><span class="cl">19:return dp[m][n];
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>(3) Prove the correctness of your algorithm</p>
+<p>首先确定dp数组的下标的含义，dp[i] [j] 表示字符串S的第 1 ~ i个字符组成的子串中以S[i]结尾的子序列中由字符串 T 的第 1~ j 个字符组成的子串出现的个数，并认为一个空字符串是任何字符串的子序列。在依次枚举每个字符时，如果 S[i - 1] 与 T[j - 1]相等，dp[i] [j]可以有两部分组成：一部分是用S[i - 1]来匹配，那么个数为dp[i - 1] [j - 1]，一部分是不用S[i - 1]来匹配，个数为dp[i - 1] [j]，所以当S[i - 1] 与 T[j - 1]相等时，dp[i] [j] = dp[i - 1] [j - 1] + dp[i - 1] [j]；如果S[i - 1] 与 T[j - 1]不相等时，dp[i] [j]只有一部分组成，不用S[i - 1]来匹配，即：dp[i - 1] [j]，所以递推公式为：dp[i] [j] = dp[i - 1] [j]；这样当计算到dp[m+1] [n+1]即为结果。</p>
+<p>(4) Analyze the complexity of your algorithm</p>
+<p>时间复杂度：O(mn)，其中 m 和 n 分别是字符串 S 和 T 的长度。二维数组 dp 有 m+1 行和 n+1 列，需要对 dp 中的 mn 个元素进行计算。</p>
+<h3 id="4-word-break">4 Word Break</h3>
+<p>​		Given a string S and a dictionary of words, determine if the string S can be segmented into a space-separated sequence of one or more dictionary words.</p>
+<p>​		Note: Each word in the dictionary may be reused multiple times in the segmentation. You can return TRUE if the string S is empty.</p>
+<p>(1) Describe the optimal substructure and DP equation</p>
+<p>dp[i] 表示字符串S的下标为0~i-1的子串能否被字典中的单词组合表示。对于S[0&hellip;i-1]可以分割为俩个部分S[0&hellip;j-1]和 S[j&hellip;i-1]，而 dp[j] 表示S[0&hellip;j-1]的子串是否可以被字典中的单词组合而成，只需判断S[j&hellip;i-1] 即可：</p>
+<p>​			dp[i] = dp[j] &amp;&amp; dict contains S[j&hellip;i-1]</p>
+<p>(2) Describe your algorithm in pseudo-code</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">function wordBreak(S, dict)
+</span></span><span class="line"><span class="cl">1: len = S.length
+</span></span><span class="line"><span class="cl">2: define an array dp with size of len;
+</span></span><span class="line"><span class="cl">3: dp[0] = true;
+</span></span><span class="line"><span class="cl">4: for i = 1 to len do
+</span></span><span class="line"><span class="cl">5:     for j = 0 to i - 1 do
+</span></span><span class="line"><span class="cl">6:         if dp[j] &amp;&amp; dict contains S[j, i - j] then
+</span></span><span class="line"><span class="cl">7:             dp[i] = true;
+</span></span><span class="line"><span class="cl">8:             break;
+</span></span><span class="line"><span class="cl">9:         end if
+</span></span><span class="line"><span class="cl">10:    end for
+</span></span><span class="line"><span class="cl">11:end for
+</span></span><span class="line"><span class="cl">12:return dp[len];
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>(3) Prove the correctness of your algorithm</p>
+<p>dp[i] 表示字符串S的下标为0~i-1的子串能否被字典中的单词组合表示。计算 dp[i] 时，对于S[0&hellip;i-1]可以分割为俩个部分S[0&hellip;j-1]和 S[j&hellip;i-1]，枚举每一个 j，如果左半部分S[0&hellip;j-1] 和右半部分S[j&hellip;i-1]都可以由字典中的单词组合而成则S[0&hellip;i-1]部分就可以由字典中的单词组合而成。而 dp[j] 刚好表示S[0&hellip;j-1]的子串是否可以被字典中的单词组合而成，而计算 dp[i] 时dp[j] 已经有了结果，只需要判断 S[j&hellip;i-1] 部分是否在字典中即可，如果在字典中，说明这左右俩部分都可以由字典中的单词组合而成，也就说明dp[i] 所表示的 S[0&hellip;i-1] 可以由字典中的单词组合而成，dp[i] = true。这样当计算到dp[n]即可得到结果。</p>
+<p>(4) Analyze the complexity of your algorithm</p>
+<p>假设判断某个字符串是否出现在字典中使用哈希表查找来实现，则时间复杂度为O(1)，这样，一共需要求dp数组中的n个值，求解每个值需要的时间复杂度为O(n)，则总的时间复杂度为O(n^2^)。</p>
+<h3 id="3-unique-binary-search-trees">3 Unique Binary Search Trees</h3>
+<p>​		Given n, how many structurally unique BST’s (binary search trees) that store values 1&hellip;n?</p>
+<p>​		Explanation: Given n = 3, there are a total of 5 unique BST’s:</p>
+<p>(1) Describe the optimal substructure and DP equation</p>
+<p>对于序列 1&hellip;n，分别以每个元素 i 作为根节点建立二叉搜索树，则根节点左侧的序列为 1 ~ i-1，根节点右侧的序列为 i+1 ~ n，然后按照同样的方法对根节点左右俩个子序列构建左右二叉搜索子树。以 dp[n] 表示对于序列 1&hellip;n可以构建的不同的二叉搜索树为 dp[n] 个，以 f(i) 表示以 i （1 &lt;= i &lt;= n）为根节点，可以构建的不同的二叉搜索树的个数，则有：</p>
+<p>​		dp[n] = f(1) + f(2) + &hellip; + f(n)，</p>
+<p>而对于每个 f(i) 有：</p>
+<p>​		f(i) = dp[i-1] * dp[n-i]，</p>
+<p>则 dp[n] = dp[0] * dp[n-1] + dp[1] * dp[n-2] + &hellip; + dp[n-1] * dp[0]。</p>
+<p>(2) Describe your algorithm in pseudo-code</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">function numTrees(n)
+</span></span><span class="line"><span class="cl">1: define an array dp[n+1] and assign a value of 0 to each element;
+</span></span><span class="line"><span class="cl">2: dp[0] = 1;
+</span></span><span class="line"><span class="cl">3: dp[1] = 1;
+</span></span><span class="line"><span class="cl">4: dp[2] = 2;
+</span></span><span class="line"><span class="cl">5: for i = 3 to n do
+</span></span><span class="line"><span class="cl">6:     for j = 1 to i do
+</span></span><span class="line"><span class="cl">7:         dp[i] += dp[j - 1] * dp[i - j];
+</span></span><span class="line"><span class="cl">8:     end for
+</span></span><span class="line"><span class="cl">9: end for
+</span></span><span class="line"><span class="cl">10:return dp[n];
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>(3) Prove the correctness of your algorithm</p>
+<p>对于序列 1 &hellip; n，分别以每个元素 i 作为根节点建立二叉搜索树，则左侧序列为 1 &hellip; i-1，右侧的序列为 i+1 &hellip; n，符合二叉搜索树的特性，然后对俩侧的序列采用同样的方法，由于每次选择的根节点不同，则建立的二叉搜索树也不同。</p>
+<p>首先，对于长度为 k 的俩个序列 1 &hellip; k 和 k+1 &hellip; 2k 它们分别能够构建的不同的二叉搜索树的个数是相同的，设为dp[k]，则可定义数组dp[n] 为长度为 n 的序列能够构建的不同的二叉搜索树个数为 dp[n]；以 f(i) 表示为以 i （1 &lt;= i &lt;= n）为根节点可以构建的二叉搜索树的个数，且 f(i) 之间相互独立，则有:</p>
+<p>​								dp[n] = f(1) + f(2) + &hellip; + f(n)</p>
+<p>以 i 为根节点可以建立的二叉搜索树的个数为 其左侧序列可以建立的二叉搜索树的个数和其右侧节点可以建立的二叉搜索树的个数的乘积，即：</p>
+<p>​								f(i) = dp[i-1] * dp[n-i]</p>
+<p>设dp[0] = 1,则有 dp[n] 的解：</p>
+<p>​								 dp[n] = dp[0] * dp[n-1] + dp[1] * dp[n-2] + &hellip; + dp[n-1] * dp[0]</p>
+<p>(4) Analyze the complexity of your algorithm</p>
+<p>需要求解dp数组的n个数，每个数的求解复杂度为O(n)，所以总的时间复杂度为O(n^2^)。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css"integrity="sha384-RZU/ijkSsFbcmivfdRBQDtwuwVqK7GMOw6IMvKyeWL2K5UAlyp6WonmB8m7Jd0Hn"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.js"integrity="sha384-pK1WpvzWVBQiP0/GjnvRxV4mOb0oxFuyRxJlk6vVw146n3egcN5C925NCP7a7BY8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/contrib/auto-render.min.js"integrity="sha384-vZTG03m&#43;2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.querySelector(`.article-content`), {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ]
+        });})
+</script>
+    
+</article>
+
+    
+
+    
+
+<aside class="related-contents--wrapper">
+    <h2 class="section-title">Related contents</h2>
+    <div class="related-contents">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/lp%E5%BB%BA%E6%A8%A15%E9%81%93%E9%A2%98/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">LP建模5道题</h2>
+        </div>
+    </a>
+</article>
+            
+                
+<article class="">
+    <a href="/p/dc%E7%AE%97%E6%B3%956%E9%81%93%E9%A2%98/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">DC算法6道题</h2>
+        </div>
+    </a>
+</article>
+            
+                
+<article class="">
+    <a href="/p/greedy%E7%AE%97%E6%B3%953%E9%81%93%E9%A2%98/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Greedy算法3道题</h2>
+        </div>
+    </a>
+</article>
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div id="disqus_thread"></div>
+<script>
+    
+
+    
+
+    (function() { 
+    var d = document, s = d.createElement('script');
+    s.src = 'https://ydsungan.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2022 ydsungan的博客
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.11.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li>
+      <ol>
+        <li><a href="#1-money-robbing">1 Money robbing</a></li>
+        <li><a href="#2--largest-divisible-subset">2  Largest Divisible Subset</a></li>
+        <li><a href="#5-distinct-sequences">5 Distinct Sequences</a></li>
+        <li><a href="#4-word-break">4 Word Break</a></li>
+        <li><a href="#3-unique-binary-search-trees">3 Unique Binary Search Trees</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

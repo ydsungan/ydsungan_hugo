@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='DC算法6道题，含分析、伪代码、正确性证明'><title>DC算法6道题</title>
+
+<link rel='canonical' href='http://ydsungan.com/p/dc%E7%AE%97%E6%B3%956%E9%81%93%E9%A2%98/'>
+
+<link rel="stylesheet" href="/scss/style.min.d9e0562edde3d2bdf9d3d81365095a29d062ddaaa5d671f22168e57dfdb18b4f.css"><meta property='og:title' content='DC算法6道题'>
+<meta property='og:description' content='DC算法6道题，含分析、伪代码、正确性证明'>
+<meta property='og:url' content='http://ydsungan.com/p/dc%E7%AE%97%E6%B3%956%E9%81%93%E9%A2%98/'>
+<meta property='og:site_name' content='ydsungan的博客'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2022-04-16T15:06:12&#43;08:00'/><meta property='article:modified_time' content='2022-04-16T15:06:12&#43;08:00'/>
+<meta name="twitter:title" content="DC算法6道题">
+<meta name="twitter:description" content="DC算法6道题，含分析、伪代码、正确性证明">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/cat2_huef20e5e895d95524d5e6d9818f968d02_472246_300x0_resize_q75_box.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">ydsungan的博客</a></h1>
+            <h2 class="site-description">任凭风浪起，稳坐钓鱼台</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://gitee.com/ydsungan'
+                        target="_blank"
+                        title="GitHub"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/about' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+                <li id="i18n-switch">  
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                    <select name="language" onchange="window.location.href = this.selectedOptions[0].value">
+                        
+                            <option value="http://ydsungan.com/" selected>English</option>
+                        
+                            <option value="http://ydsungan.com/zh-cn/" >中文</option>
+                        
+                            <option value="http://ydsungan.com/ar/" >عربي</option>
+                        
+                    </select>
+                </li>
+            
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/algorithm/" >
+                Algorithm
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/dc%E7%AE%97%E6%B3%956%E9%81%93%E9%A2%98/">DC算法6道题</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            DC算法6道题，含分析、伪代码、正确性证明
+        </h3>
+        
+    </div>
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Apr 16, 2022</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    8 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h3 id="1-divide-and-conquer">1 Divide and Conquer</h3>
+<p>​		Given an integer array numbers and an integer k, please return the k-th largest element in the array.
+​		Your algorithm&rsquo;s runtime complexity must be in the order of O(logn), prove the correctness and analyze the complexity.(k is much smaller than n, n is the length of the array.)</p>
+<p>(1) Describe algorithm in natural language</p>
+<p>​		本题的解决方法是在快速排序的基础上做出选择。对数组A[l&hellip;r]做快速排序的过程是：首先从数组中选择一个元素x作为主元，将数组A[l&hellip;r]划分成俩个子数组A[l&hellip;q-1]、A[q+1&hellip;r]，使得A[l&hellip;q-1]中的每一个元素都小于A[q]，且A[q]小于A[q+1&hellip;r]中的每一个元素，x的最终位置就是q；然后通过递归调用快速排序对子数组A[l&hellip;q-1]、A[q+1&hellip;r]进行排序；因为子数组都是原地址排序的，所以不需要合并操作。</p>
+<p>​		每次划分操作后，可以确定一个元素的最终位置，所以如果某次划分操作后的q为倒数第k个下标后，则返回A[q]，否则，如果q小于倒数第k个下标，就递归右边的子数组，否则递归左边的子数组，将原来递归俩个子数组变成了只递归一个子数组。</p>
+<p>(2) Pseudo-code</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">function findKthLargest(A, l, r, k1) //k1 = n - k, n is the lenth of A
+</span></span><span class="line"><span class="cl">1: q = partition(A, l, r)
+</span></span><span class="line"><span class="cl">2: if q == k1 then
+</span></span><span class="line"><span class="cl">3:     return A[k1];
+</span></span><span class="line"><span class="cl">4: else if q &lt; k1 then
+</span></span><span class="line"><span class="cl">5:     return findKthLargest(A, q+1, r, k1)
+</span></span><span class="line"><span class="cl">6: else
+</span></span><span class="line"><span class="cl">7:     return findKthLargest(A, l, q-1, k1)
+</span></span><span class="line"><span class="cl">8: end if
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">function partition(A, l, r)
+</span></span><span class="line"><span class="cl">1: Choose an index x from [l,r] at random and use A[x] as pivot
+</span></span><span class="line"><span class="cl">2: Swap A[x] with A[r]
+</span></span><span class="line"><span class="cl">3: pivot = A[r]; i = l;
+</span></span><span class="line"><span class="cl">4: for j = l to r - 1 do
+</span></span><span class="line"><span class="cl">5:     if A[j] &lt; pivot then
+</span></span><span class="line"><span class="cl">6:         Swap A[i] with A[j];
+</span></span><span class="line"><span class="cl">7:         i ++;
+</span></span><span class="line"><span class="cl">8:     end if
+</span></span><span class="line"><span class="cl">9: end for
+</span></span><span class="line"><span class="cl">10:Swap A[i] with A[r];
+</span></span><span class="line"><span class="cl">11:return i;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>(4) Prove the correctness of algorithm</p>
+<p>​		上述算法采用基于快速排序的选择方法。对于数组A[l,r]，每次选择一个元素作为pivot，设pivot下标为q，划分为俩个数组A[l, q-1]和A[q+1, r]，使得数组A[l, q-1]中的每一个元素都小于pivot，数组A[q+1, r]中的每一个元素都大于pivot，每经过一次划分数组，pivot元素的位置都是可以最终确定的，所以有以下三种情况：</p>
+<p>​		若pivot的下标q = n - k，其中n是A数组的长度，则返回A[q]，A[q]即为答案；</p>
+<p>​		若pivot的下标q &lt; n - k，就对右子区间[q+1, r]实行递归调用；</p>
+<p>​		若pivot的下标q &gt; n - k，就对左子区间[l, q-1]实行递归调用；</p>
+<p>​		因此，基于快速排序的选择方法必能找到第k大的数字。</p>
+<p>(5) Analyze the complexity of algorithm</p>
+<ul>
+<li>
+<p>最坏时间复杂度</p>
+<p>若每次选择的都是数组中最大或者最小的元素，则有T(n) &lt;= T(n-1) + cn，则复杂度为O(n^2)</p>
+</li>
+<li>
+<p>最好时间复杂度</p>
+<p>若每次选择的为中间的元素，则有T(n) &lt;= T(n/2) + cn，则时间复杂度为O(n)</p>
+</li>
+<li>
+<p>平均时间复杂度</p>
+<p>O(n)</p>
+</li>
+</ul>
+<h3 id="2-divide-and-conquer">2 Divide and Conquer</h3>
+<p>​		Consider an n-node complete binary tree T, where n = 2^d − 1 for some d. Each node v of T is labeled with a real number Xv. You may assume that the real numbers labeling the nodes are all distinct. A node v of T is a local minimum if the label Xv is less than the label Xw for all nodes w that are joined to v by an edge.</p>
+<p>​		You are given such a complete binary tree T, but the labeling is only specified in the following:</p>
+<p>​		implicit way: for each node v, you can determine the value Xv by probing the node v.</p>
+<p>​		Show how to find a local minimum of T using only O(logn) probes to the nodes of T.</p>
+<p>(1) Describe algorithm in natural language</p>
+<p>​		从二叉树的根节点出发，如果根节点的左右子节点的值均大于根节点的值，则返回根节点的值，否则至少有一个子节点的值小于其值。选择拥有较小值的子节点作为根节点递归。</p>
+<p>(2) Pseudo-code</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">function findLocalMinNode(root)
+</span></span><span class="line"><span class="cl">1: if root == NIL then
+</span></span><span class="line"><span class="cl">2:     return;
+</span></span><span class="line"><span class="cl">3: end if
+</span></span><span class="line"><span class="cl">4: if root.lchild != NIL and root.rchild != NIL then
+</span></span><span class="line"><span class="cl">5:     if root.val &lt; root.lchild.val and root.val &lt; root.rchild.val then
+</span></span><span class="line"><span class="cl">6:         return root.val;
+</span></span><span class="line"><span class="cl">7:     else if root.lchild.val &lt; root.rchild.val then
+</span></span><span class="line"><span class="cl">8:         findLocalMinNode(root.lchild);
+</span></span><span class="line"><span class="cl">9:     else then
+</span></span><span class="line"><span class="cl">10:        findLocalMinNode(root.rchild);
+</span></span><span class="line"><span class="cl">11:    end if
+</span></span><span class="line"><span class="cl">12:else then
+</span></span><span class="line"><span class="cl">13:    return root.val;
+</span></span><span class="line"><span class="cl">14:end if
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>(4) Prove the correctness of algorithm</p>
+<p>​		在上述算法过程中，从完全二叉树的根节点开始遍历，如果根节点的值小于俩个子节点的值，则根节点就是一个局部最小值点，返回根节点的值即可。否则，至少存在一个子节点的值小于根节点，将较小值的子节点作为根节点递归即可，这样一定能找到一个局部最小值。最坏的情况是遍历到叶节点，叶节点只其父节点与其相连，父节点的值大于叶节点的值，则该叶节点就是局部最小值。</p>
+<p>(5) Analyze the complexity of algorithm</p>
+<p>​		时间复杂度为O(logn)</p>
+<h3 id="3-divide-and-conquer">3 Divide and Conquer</h3>
+<p>​		Given an integer array, one or more consecutive integers in the array form a sub-array. Find the maximum value of the sum of all sub-array.
+​		Please give an algorithm with O(nlogn) complexity.</p>
+<p>(1) Describe algorithm in natural language</p>
+<p>​		将区间[l,r]划分为左区间[l,mid]和右区间[mid+1,r]，对左右子区间分治求解，当递归到区间长度为1的时候，这时需要将左区间[l,mid]的信息和右区间[mid+1,r]的信息合并成区间[l,r]的信息。</p>
+<p>​		对于一个区间[l,r]，需要维护的变量有：lSum表示[l,r]内以l为左端点的最大子序列和，rSum表示[l,r]内以r为右端点的最大子序列和，mSum表示[l,r]内的最大子序列和，iSum表示[l,r]的区间和。将左右子区间的信息合并到[l,r]按照以下方式：</p>
+<p>​		[l,r]区间的iSum就等于左区间的iSum加上右区间的iSum;</p>
+<p>​		[l,r]区间的lSum就等于左区间的lSum和左区间的iSum加上右区间的lSum俩者的最大值；</p>
+<p>​		[l,r]区间的rSum就等于右区间的rSum和右区间的iSum加上左区间的rSum俩者的最大值；</p>
+<p>​		[l,r]区间的mSum取左区间的mSum，右区间的mSum，左区间的rSum加上右区间的lSum三者的最大值；</p>
+<p>​		而对于长度为1的区间[i,i]上面4个值都等于A[i]，最终所求的mSum就是答案；</p>
+<p>(2) Pseudo-code</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">function maxSubArraySum(A, l, r)
+</span></span><span class="line"><span class="cl">1: if l == r then
+</span></span><span class="line"><span class="cl">2:     return {A[r], A[r], A[r], A[r]}; //返回数组中的元素从左到右分别是iSum,lSum,rSum,mSum
+</span></span><span class="line"><span class="cl">3: end if
+</span></span><span class="line"><span class="cl">4: mid = ⌊(l+r)/2⌋
+</span></span><span class="line"><span class="cl">5: lSub = maxSubArraySum(A, l, mid);
+</span></span><span class="line"><span class="cl">6: rSub = maxSubArraySum(A, mid+1, r);
+</span></span><span class="line"><span class="cl">7: iSum = lSub[0] + rSub[0];
+</span></span><span class="line"><span class="cl">8: lSum = max{lSub[1], lSub[0]+rSub[1]};
+</span></span><span class="line"><span class="cl">9: rSum = max{rSub[2], rSub[0]+lSub[2]};
+</span></span><span class="line"><span class="cl">10:mSum = max{lSub[3], rSub[3], lSub[2]+rSub[1]};
+</span></span><span class="line"><span class="cl">11:return {iSum, lSum, rSum, mSum}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>(4) Prove the correctness of algorithm</p>
+<p>​		本题采用分治解法。对于一个区间[l, r]，取 mid = ⌊(l+r)/2⌋，划分成俩个区间 [l, mid] 和 [mid+1, r]，同样对这俩个区间递归划分，直到区间的长度为1的时候，开始合并区间的信息。对于一个区间[l, r]需要维护的变量有4个：</p>
+<ul>
+<li>lSum 表示 [l,r] 内以 l 为左端点的最大子序列和</li>
+<li>rSum 表示 [l,r] 内以 r 为右端点的最大子序列和</li>
+<li>mSum 表示 [l,r] 内的最大子序列和</li>
+<li>iSum 表示 [l,r] 内所有元素的和</li>
+</ul>
+<p>对于长度为1的区间[i,i]，以上4个变量相等，为A[i]；对于合并后长度大于1的区间，上述4个变量更新的方式如下：</p>
+<ul>
+<li>[l,r]区间的iSum就等于左区间的iSum加上右区间的iSum;</li>
+<li>[l,r]区间的lSum就等于左区间的lSum和左区间的iSum加上右区间的lSum俩者的最大值；</li>
+<li>[l,r]区间的rSum就等于右区间的rSum和右区间的iSum加上左区间的rSum俩者的最大值；</li>
+<li>[l,r]区间的mSum取左区间的mSum，右区间的mSum，左区间的rSum加上右区间的lSum三者的最大值；</li>
+</ul>
+<p>最终的mSum就是整个区间的最大的子序列的和。</p>
+<p>(5) Analyze the complexity of algorithm</p>
+<p>​		时间复杂度为O(n)。</p>
+<h3 id="4-divide-and-conquer">4 Divide and Conquer</h3>
+<p>​		Given an array of integers numbers sorted in ascending order, find the starting and ending position of a given target value. If the target is not found in the array, return [-1, -1]. For example, if the array is [5, 7, 7, 8, 8, 10] and the target is 8, then the output should be [3, 4].
+​		Your algorithm&rsquo;s runtime complexity must be in the order of O(log n), prove the correctness and analyze the complexity.</p>
+<p>(1) Describe algorithm in natural language</p>
+<p>​		本题的解决方式为使用二分查找。需要寻找数组中第一个等于target的位置和最后一个等于target的位置。</p>
+<p>​		二分查找第一个等于target的位置：当A[mid] &gt;= target时，往左半区间寻找，r = mid；当A[mid] &lt; target时，往右半区间查找，l = mid + 1；当l = r二分查找结束，如果A[r] != target说明数组中不存在target，返回[-1, -1]。</p>
+<p>​		二分查找最后一个等于target的位置：当A[mid]&lt;=target时，往右半区间查找，l = mid；当A[mid] &gt; target时，往左半区间查找，r = mid - 1；当l = r二分查找结束，此时的r就是第二次二分查找的位置，返回区间即可。</p>
+<p>(2) Pseudo-code</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">function binarySearch(A, n, target)
+</span></span><span class="line"><span class="cl">1: if n == 0 then
+</span></span><span class="line"><span class="cl">2:     return {-1, -1};
+</span></span><span class="line"><span class="cl">3: end if
+</span></span><span class="line"><span class="cl">4: l = 0;
+</span></span><span class="line"><span class="cl">5: r = n - 1;
+</span></span><span class="line"><span class="cl">6: while l &lt; r do //二分查找开始位置
+</span></span><span class="line"><span class="cl">7:     mid = ⌊(l+r)/2⌋
+</span></span><span class="line"><span class="cl">8:     if A[mid] &gt;= target then
+</span></span><span class="line"><span class="cl">9:         r = mid;
+</span></span><span class="line"><span class="cl">10:    else
+</span></span><span class="line"><span class="cl">11:        l = mid + 1;
+</span></span><span class="line"><span class="cl">12:    end if
+</span></span><span class="line"><span class="cl">13:end while
+</span></span><span class="line"><span class="cl">14:if A[r] != target then
+</span></span><span class="line"><span class="cl">15:    return {-1, -1};
+</span></span><span class="line"><span class="cl">16:end if
+</span></span><span class="line"><span class="cl">17:L = r;
+</span></span><span class="line"><span class="cl">18:l = 0;
+</span></span><span class="line"><span class="cl">19:r = n - 1;
+</span></span><span class="line"><span class="cl">20:while l &lt; r do //二分查找结束位置
+</span></span><span class="line"><span class="cl">21:    mid = ⌊(l+r+1)/2⌋
+</span></span><span class="line"><span class="cl">22:    if A[mid] &lt;= target then
+</span></span><span class="line"><span class="cl">23:        l = mid;
+</span></span><span class="line"><span class="cl">24:    else
+</span></span><span class="line"><span class="cl">25:        r = mid - 1
+</span></span><span class="line"><span class="cl">26:    end if
+</span></span><span class="line"><span class="cl">27:end while
+</span></span><span class="line"><span class="cl">28:return {L,r};
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>(4) Prove the correctness of algorithm</p>
+<p>​		本题采用二分查找的方式。需要查找目标值target第一次出现的位置和最后一次出现的位置。</p>
+<ul>
+<li>查找目标值第一次出现的位置：取mid = ⌊(l+r)/2⌋，将区间[l,r]划分成俩个区间[l,mid]和[mid+1,r]
+<ul>
+<li>当 A[mid] &gt;= target，往左半区间查找，r = mid;</li>
+<li>当 A[mid] &lt; target，往右半区间查找，l = mid + 1;</li>
+<li>当 l = r，二分查找结束，如果A[r] != target，说明数组中不存在目标值target，返回[-1, -1]。</li>
+</ul>
+</li>
+<li>查找目标值最后一次出现的位置：取mid = ⌊(l+r+1)/2⌋，将区间[l,r]划分成俩个区间[l,mid-1]和[mid,r]
+<ul>
+<li>当 A[mid] &lt;= target，往右半区间查找，l = mid;</li>
+<li>当 A[mid] &gt; target，往左半区间查找，r = mid - 1;</li>
+<li>当 l = r，二分查找结束，r就是目标值最后一次出现的位置。</li>
+</ul>
+</li>
+</ul>
+<p>因此，采用俩次二分查找可以找到目标值的开始出现位置和最后出现位置。</p>
+<p>(5) Analyze the complexity of algorithm</p>
+<p>​		时间复杂度：O(log n) ，其中 n 为数组的长度。二分查找的时间复杂度为O(log n)，一共会执行两次，因此总时间复杂度为O(log n)。</p>
+<h3 id="5-divide-and-conquer">5 Divide and Conquer</h3>
+<p>​		Given a convex polygon with n vertices, we can divide it into several separated pieces, such that every piece is a triangle. When n = 4, there are two different ways to divide the polygon; When n = 5, there are five different ways.
+​		Give an algorithm that decides how many ways we can divide a convex polygon with n vertices into triangles.</p>
+<p>(1) Describe algorithm in natural language</p>
+<p>​		一般 n 个顶点的凸多边形可以分成 m = n - 2 个三角形。</p>
+<p>​		将n个顶点的凸多边形的顶点依次序标记为P1、P2、P3、&hellip;、Pn， 凸多边形的任意一条边必属于某一个三角形，以这条边为基准，设这条边的俩个顶点分别是P1、Pn，然后在凸多边形中找一个任意不属于该边的顶点Pk，（2&lt;=k&lt;=n-1），组成一个三角形，这个三角形将原来的凸多边形分割成俩个凸多边形，其中一个凸多边形的顶点数目为n-k+1，另一个凸多边形的顶点数目k；</p>
+<p>​		则 f(n) 的解由 f(n-k+1) 和 f(k) 组成，f(n) = f(n-k+1) * f(k)，而 2&lt;=k&lt;=n-1，所以原式可以分解为 ：f(n) = f(n-1) * f(2) + f(n-2) * f(3) + &hellip; + f(2) * f(n-1)，另外f(2) = f(3) = 1，f(2)表示这个三角形只将原凸多边形分割成一个凸多边形，可以认为f(2) = 1。这样就把 f(n) 问题的求解分成一个个子问题的求解，直到子问题的规模为n = 2或者n = 3。</p>
+<p>(2) Pseudo-code</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">function divideConvexPolygon(n)
+</span></span><span class="line"><span class="cl">1: initialize an array A with size of n + 1, and assign a value of 0 to each element;
+</span></span><span class="line"><span class="cl">2: A[2] = A[3] = 1;
+</span></span><span class="line"><span class="cl">3: return subProblem(A, n);
+</span></span><span class="line"><span class="cl">function subProblem(A, n)
+</span></span><span class="line"><span class="cl">1: if A[n] != 0 then
+</span></span><span class="line"><span class="cl">2:     return A[n];
+</span></span><span class="line"><span class="cl">3: end if
+</span></span><span class="line"><span class="cl">4: sum = 0
+</span></span><span class="line"><span class="cl">5: for k = 2 to n - 1 do
+</span></span><span class="line"><span class="cl">6:     if A[k] == 0 then    
+</span></span><span class="line"><span class="cl">7:         A[k] = subProblem(A, k);
+</span></span><span class="line"><span class="cl">8:     end if
+</span></span><span class="line"><span class="cl">9:     if A[n-k+1] == 0 then
+</span></span><span class="line"><span class="cl">10:        A[n-k+1] = subProblem(A, n-k+1);
+</span></span><span class="line"><span class="cl">11:    end if
+</span></span><span class="line"><span class="cl">12:    sum += A[k] * A[n-k+1];
+</span></span><span class="line"><span class="cl">13:end for
+</span></span><span class="line"><span class="cl">14:A[n] = sum;
+</span></span><span class="line"><span class="cl">15:return A[n];
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>(4) Prove the correctness of algorithm</p>
+<p>​		本算法采用自顶向下的带记忆的递归解法。具有n个顶点的凸多边形的任意一条边必属于某一个三角形，那么以这条边为基准，然后在凸多边形中找一个任意不属于这条边上的顶点，组成一个三角形，这个三角形会将原凸多边形分割成俩个小的凸多边形（也可能只有一个小的凸多边形），这样就将大问题的解分解成俩个小问题的解，同样对于小凸多边形以同样的方法将其分解为更小的凸多边形。</p>
+<p>​		假设凸多边形的n个顶点依次按序标记为P1、P2、P3、&hellip;、Pn，以P1-Pn作为基准边，任意选择一个不属于该边的顶点Pk，（2&lt;=k&lt;=n-1），组成的三角形将原凸多边形分割成俩个小的凸多边形，则f(n)的解由 f(n-k+1) 和 f(k) 组成，f(n) = f(n-k+1) * f(k)，k有n-2种选择，所以原式可以分解为 ：f(n) = f(n-1) * f(2) + f(n-2) * f(3) + &hellip; + f(2) * f(n-1)，这样子问题递归分解下去直到遇到f(2)和f(3)不再分解，f(2) = f(3) = 1。所以这样自顶向下的递归分解子问题最终一定能求出f(n)的问题。</p>
+<p>(5) Analyze the complexity of algorithm</p>
+<p>​		由于该算法设置了一个数组A去记录每一步计算中产生的f(k)的子问题的解，避免f(k)子问题的重复计算，子问题就是f(2)，f(3)，&hellip;，f(n)，所以本算法的时间复杂度为O(n)。</p>
+<h3 id="6-divide-and-conquer">6 Divide and Conquer</h3>
+<p>​		Given an array of k linked-lists lists, each linked-list is sorted in ascending order. Given an O(knlogk) algorithm to merge all the linked-lists into one sorted linked-list. (Note that the length of a linked-lists is n)</p>
+<p>(1) Describe algorithm in natural language</p>
+<p>​		将 k 个链表俩俩一组，共有 k/2 组，每一组俩个链表合并成一个链表，得到 k/2 个链表；将 k/2 个链表俩俩一组，共有 k/4 组，每一组俩个链表合并成一个链表，得到 k/4 个链表；依此类推，最终得到合并的结果。</p>
+<p>(2) Pseudo-code</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">function mergeKLists(A, l, r)
+</span></span><span class="line"><span class="cl">1: while l &lt; r do
+</span></span><span class="line"><span class="cl">2:     mid = ⌊(l+r)/2⌋
+</span></span><span class="line"><span class="cl">3:     return merge(mergeKLists(A, l, mid), mergeKLists(A, mid+1, r));
+</span></span><span class="line"><span class="cl">4: end while
+</span></span><span class="line"><span class="cl">5: return A[l];
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">function merge(L1, L2)
+</span></span><span class="line"><span class="cl">1: a = L1, b = L2;
+</span></span><span class="line"><span class="cl">2: initialize two list node: head, tail;
+</span></span><span class="line"><span class="cl">3: tail = head;
+</span></span><span class="line"><span class="cl">4: while a != NIL &amp;&amp; b != NIL do
+</span></span><span class="line"><span class="cl">5:     if a.val &lt; b.val then
+</span></span><span class="line"><span class="cl">6:         tail.next = a;
+</span></span><span class="line"><span class="cl">7:         a = a.next;
+</span></span><span class="line"><span class="cl">8:     else then
+</span></span><span class="line"><span class="cl">9:         tail.next = b;
+</span></span><span class="line"><span class="cl">10:        b = b.next;
+</span></span><span class="line"><span class="cl">11:    end if
+</span></span><span class="line"><span class="cl">12:    tail = tail.next
+</span></span><span class="line"><span class="cl">13:end while
+</span></span><span class="line"><span class="cl">14:tail.next = a ? a : b;
+</span></span><span class="line"><span class="cl">15:return head.next;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>(4) Prove the correctness of algorithm</p>
+<p>​		将 k 个链表俩俩一组，共有 k/2 组，每一组俩个链表合并成一个链表，得到 k/2 个链表；将 k/2 个链表俩俩一组，共有 k/4 组，每一组俩个链表合并成一个链表，得到 k/4 个链表；依此类推，最终得到合并的结果。</p>
+<p>(5) Analyze the complexity of algorithm</p>
+<p>​		俩个长度均为n的升序链表的合并的时间复杂度为O(2n)，第一轮合并时有 k/2 组，每组的时间复杂度为O(2n)，则第一轮合并的总的时间复杂度为O(kn)；第二轮合并时有 k/4 组，每组的时间复杂度为O(4n)，则第二轮合并的总的时间复杂度为O(kn)；一共logk次合并，则总的时间复杂度为O(knlogk)。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css"integrity="sha384-RZU/ijkSsFbcmivfdRBQDtwuwVqK7GMOw6IMvKyeWL2K5UAlyp6WonmB8m7Jd0Hn"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.js"integrity="sha384-pK1WpvzWVBQiP0/GjnvRxV4mOb0oxFuyRxJlk6vVw146n3egcN5C925NCP7a7BY8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/contrib/auto-render.min.js"integrity="sha384-vZTG03m&#43;2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.querySelector(`.article-content`), {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ]
+        });})
+</script>
+    
+</article>
+
+    
+
+    
+
+<aside class="related-contents--wrapper">
+    <h2 class="section-title">Related contents</h2>
+    <div class="related-contents">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/lp%E5%BB%BA%E6%A8%A15%E9%81%93%E9%A2%98/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">LP建模5道题</h2>
+        </div>
+    </a>
+</article>
+            
+                
+<article class="">
+    <a href="/p/dp%E7%AE%97%E6%B3%955%E9%81%93%E9%A2%98/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">DP算法5道题</h2>
+        </div>
+    </a>
+</article>
+            
+                
+<article class="">
+    <a href="/p/greedy%E7%AE%97%E6%B3%953%E9%81%93%E9%A2%98/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Greedy算法3道题</h2>
+        </div>
+    </a>
+</article>
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div id="disqus_thread"></div>
+<script>
+    
+
+    
+
+    (function() { 
+    var d = document, s = d.createElement('script');
+    s.src = 'https://ydsungan.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2022 ydsungan的博客
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.11.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li>
+      <ol>
+        <li><a href="#1-divide-and-conquer">1 Divide and Conquer</a></li>
+        <li><a href="#2-divide-and-conquer">2 Divide and Conquer</a></li>
+        <li><a href="#3-divide-and-conquer">3 Divide and Conquer</a></li>
+        <li><a href="#4-divide-and-conquer">4 Divide and Conquer</a></li>
+        <li><a href="#5-divide-and-conquer">5 Divide and Conquer</a></li>
+        <li><a href="#6-divide-and-conquer">6 Divide and Conquer</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

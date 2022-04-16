@@ -3,10 +3,10 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>http://ydsungan.com/categories/architecture/</loc>
-    <lastmod>2022-04-16T15:15:12+08:00</lastmod>
+    <lastmod>2022-04-16T16:07:12+08:00</lastmod>
   </url><url>
     <loc>http://ydsungan.com/categories/</loc>
-    <lastmod>2022-04-16T15:15:12+08:00</lastmod>
+    <lastmod>2022-04-16T16:07:12+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
@@ -23,14 +23,14 @@
                 href="http://ydsungan.com/categories/"
                 />
   </url><url>
-    <loc>http://ydsungan.com/post/</loc>
-    <lastmod>2022-04-16T15:15:12+08:00</lastmod>
+    <loc>http://ydsungan.com/p/directory-based-protocol/</loc>
+    <lastmod>2022-04-16T16:07:12+08:00</lastmod>
   </url><url>
-    <loc>http://ydsungan.com/p/snooping-based-protocol/</loc>
-    <lastmod>2022-04-16T15:15:12+08:00</lastmod>
+    <loc>http://ydsungan.com/post/</loc>
+    <lastmod>2022-04-16T16:07:12+08:00</lastmod>
   </url><url>
     <loc>http://ydsungan.com/</loc>
-    <lastmod>2022-04-16T15:15:12+08:00</lastmod>
+    <lastmod>2022-04-16T16:07:12+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
@@ -46,6 +46,9 @@
                 hreflang="en"
                 href="http://ydsungan.com/"
                 />
+  </url><url>
+    <loc>http://ydsungan.com/p/snooping-based-protocol/</loc>
+    <lastmod>2022-04-16T15:15:12+08:00</lastmod>
   </url><url>
     <loc>http://ydsungan.com/categories/algorithm/</loc>
     <lastmod>2022-04-16T15:09:12+08:00</lastmod>
